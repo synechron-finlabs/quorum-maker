@@ -2,7 +2,7 @@
 
 J.P Morgan Quorum nodes can be setup with different roles such as block maker, voter and observer. Manually editing the configuration files and creating the node is a tedious and error prone process. Quorum Maker can create several nodes of various configurations dynamically with no or limited user input. This provides a wizard like interface with a series of questions to guide the user to create nodes. Quorum Maker provides scripts to run Quorum on separate Linux boxes or Docker image to run them on separate containers on a single box. It also provides Vagrant scripts to spin up Ubuntu instances on Windows/Mac. 
 
-![Screenshot](https://github.com/dhyansraj/quorum-maker/blob/master/img/screenshot.png)
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot.png)
 
 Using of Quorum Maker is a two step process;
 
@@ -19,7 +19,7 @@ Run `./setup.sh` to start the configuration wizard. The script will ask a series
 > Note: Please use bash script variable naming conventions to name the project and nodes. E.g. avoid starting the names with digits or using hyphen `-` to separate words.
 
  1. **Project Name**
-	 Give a name to the project like five_nodes, sample_project etc.
+     Give a name to the project like five_nodes, sample_project etc.
  2. **Node name**
      Name the first node and this question would repeat as many nodes as you create. Please make sure to give unique names to nodes.     
  3. **Private Keys**
