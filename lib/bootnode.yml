@@ -1,0 +1,17 @@
+version: '2'
+
+networks:
+   bridge:
+
+services:
+  bootnode:
+    container_name: bootnode
+    image: syneblock/quorum
+    environment:
+      - BOOTNODE_IP=bootnode
+    working_dir: /bootnode
+    command: ["bash" , "start_bootnode.sh"]
+    volumes:
+      - ./bootnode:/bootnode        
+    networks:
+      - bridge
