@@ -10,7 +10,7 @@ Using of Quorum Maker is a two step process;
 
 > Note: The steps below are for Ubuntu 16.04. If you are using a Windows/Mac, please scroll bottom for the instructions to spin up an Ubuntu 16.04 with Vagrant and VirtualBox. After connecting the vagrant box, please follow below instructions.
 
-# Creating the node configuration for Development
+# Creating the node configuration for Development use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
 
 ![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_dev.png) 
@@ -51,7 +51,7 @@ The directory generated with the project name has a docker-compose.yml and all t
 6. The logs can be found on `<node name>/qdata/logs` directory.
 7. Press `Ctrl C` to stop the network and `docker-compose down` to remove containers.
 
-# Creating the node configuration for Production like environments
+# Creating the node configuration for multi box or cloud use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
 
 ![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod.png) 
