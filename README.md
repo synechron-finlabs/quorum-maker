@@ -14,6 +14,7 @@ Using of Quorum Maker is a two step process;
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
 
 ![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_dev.png) 
+
 Run `./setup.sh` to start the configuration wizard. The script will ask a series of questions to guide through the node configuration.
 
 > Note: Please use bash script variable naming conventions to name the project and nodes. E.g. avoid starting the names with digits or using hyphen `-` to separate words.
