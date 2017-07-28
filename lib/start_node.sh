@@ -58,7 +58,7 @@ function main(){
 
     readInputs
     
-    docker run -it -v $(pwd)/node/$line:/${PWD##*/node/}  -w /${PWD##*/node/}  \
+    docker run -d -it -v $(pwd)/node/$line:/${PWD##*/node/}  -w /${PWD##*/node/}  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort \
            $B_PORT_MAPPING -e MAIN_NODE_IP=$pMainIp -e BOOTNODE_PORT=$pBootnodePort \
            -e MAIN_C_PORT=$pCPort -e CURRENT_NODE_IP=$pCurrentIp \

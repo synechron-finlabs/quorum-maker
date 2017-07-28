@@ -159,7 +159,7 @@ function executeInit(){
         fi
 
 
-        zip -r $nodeName.zip $nodeName
+        zip -qr $nodeName.zip $nodeName
 
         rm -rf $nodeName
         
