@@ -83,7 +83,7 @@ The directory generated with the project name has all the nodes zipped to separa
 > Note: Target boxes or cloud instances should be running on Ubuntu 16.04 or higher. 
 > Important Note: The first node created is the master node in the network with bootnode and master constallation node. This needs to be started before ohter nodes.
 
-** Running master node**
+**Running master node**
 
 ![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod_start_master.png) 
 
@@ -96,7 +96,7 @@ The directory generated with the project name has all the nodes zipped to separa
 7. Enter Bootnode Port.
 8. The node will be started and a docker container hash will be returned. 
 
-** Running other nodes**
+**Running other nodes**
 
 ![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod_start_slave.png) 
 
@@ -111,7 +111,7 @@ The directory generated with the project name has all the nodes zipped to separa
 9. Enter main constellation node port. This is the port of the constallation node started in the previous section.
 8. The node will be started and a docker container hash will be returned. 
 
-** Post startup **
+**Post startup**
 
 1. Run `docker ps` and make the instances are up. Check the logs and make sure startup went well. 
 2. The logs can be found on `<node name>/qdata/logs` directory.
