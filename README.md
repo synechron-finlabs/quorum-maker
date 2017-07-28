@@ -47,9 +47,10 @@ The directory generated with the project name has a docker-compose.yml and all t
 2. You will see status as each node starts up. The first one to start is the boot node and the rest of the nodes follows.
 3. Once you see all `Starting <node name>`, the network is ready to be used. As of now, there wouldn't be status saying all nodes are up. 
 4. The RPC ports are exposed to your host machine. You can send transactions to each node using Web3 or other Qourum supported clients at `http://localhost:<port>/`. Ports are consecutively assigned to each nodes. Use the port starting with the one answered in the question 3 during the node creation. 
-5. If you wish to connect to any node, run `docker exec -it <node name> bash` and run `geth attach qdata/geth.ipc`
-6. The logs can be found on `<node name>/qdata/logs` directory.
-7. Press `Ctrl C` to stop the network and `docker-compose down` to remove containers.
+5. Use the constallation keys listed during node creation for privateFor transactions.
+6. If you wish to connect to any node, run `docker exec -it <node name> bash` and run `geth attach qdata/geth.ipc`
+7. The logs can be found on `<node name>/qdata/logs` directory.
+8. Press `Ctrl C` to stop the network and `docker-compose down` to remove containers.
 
 # Creating the node configuration for multi box or cloud use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
@@ -118,6 +119,7 @@ The directory generated with the project name has all the nodes zipped to separa
 2. The logs can be found on `<node name>/qdata/logs` directory.
 3. Make sure the nodes are connected each other successfully. Run `docker exec -it <container id> bash` and Run `geth attach qdata\geth.ipc` to connect to geth client. Run `admin.peers` inside geth console and make sure all the nodes are listed.
 4. The RPC ports are exposed to your host machine. You can send transactions to each node using Web3 or other Qourum supported clients at `http://localhost:<port>/`. Use the port starting with the one answered in the question 4 during the node startup. 
+5. Use the constallation keys listed during node creation for privateFor transactions.
 
 
 # Windows/Mac Support
