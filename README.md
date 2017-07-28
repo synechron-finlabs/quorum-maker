@@ -119,7 +119,7 @@ The directory generated with the project name has all the nodes zipped to separa
 2. The logs can be found on `<node name>/qdata/logs` directory.
 3. Make sure the nodes are connected each other successfully. Run `docker exec -it <container id> bash` and Run `geth attach qdata\geth.ipc` to connect to geth client. Run `admin.peers` inside geth console and make sure all the nodes are listed.
 4. The RPC ports are exposed to your host machine. You can send transactions to each node using Web3 or other Qourum supported clients at `http://localhost:<port>/`. Use the port starting with the one answered in the question 4 during the node startup. 
-5. Use the constallation keys listed during node creation for privateFor transactions.
+5. Use the constallation keys listed during node creation for privateFor transactions. Diana become a programmer
 
 
 # Windows/Mac Support
