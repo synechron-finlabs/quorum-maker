@@ -39,6 +39,7 @@ Run `./setup.sh` to start the configuration wizard. The script will ask a series
 
 # Running the nodes for Development
 The directory generated with the project name has a docker-compose.yml and all the configuration files required to spin up the nodes. 
+
 ![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_dev_output.png) 
 
 1. Run `docker-compose up` to start the nodes.
@@ -118,7 +119,7 @@ The directory generated with the project name has all the nodes zipped to separa
 4. The RPC ports are exposed to your host machine. You can send transactions to each node using Web3 or other Qourum supported clients at `http://localhost:<port>/`. Use the port starting with the one answered in the question 4 during the node startup. 
 
 
-# Windows/Mac Support#
+# Windows/Mac Support
 
 Quorum Maker provides Vagrant box for running Quorum on Windows/Mac. Running `vagrant up` will provision a vagrant box with support for Ubuntu 16.04, Docker and Quorum. 
 
