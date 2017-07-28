@@ -2,7 +2,6 @@
 
 J.P Morgan Quorum nodes can be setup with different roles such as block maker, voter and observer. Manually editing the configuration files and creating the node is a tedious and error prone process. Quorum Maker can create several nodes of various configurations dynamically with no or limited user input. This provides a wizard like interface with a series of questions to guide the user to create nodes. Quorum Maker can created nodes to run with docker-compose for easy use in development environment or nodes to be distributed on separate Linux boxes or cloud instances for production like environment. It also provides Vagrant scripts to spin up Ubuntu instances on Windows/Mac. 
 
-![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot.png)
 
 Using of Quorum Maker is a two step process;
 
@@ -14,6 +13,7 @@ Using of Quorum Maker is a two step process;
 # Creating the node configuration for Development
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
 
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_dev.png) 
 Run `./setup.sh` to start the configuration wizard. The script will ask a series of questions to guide through the node configuration.
 
 > Note: Please use bash script variable naming conventions to name the project and nodes. E.g. avoid starting the names with digits or using hyphen `-` to separate words.
@@ -39,6 +39,7 @@ Run `./setup.sh` to start the configuration wizard. The script will ask a series
 
 # Running the nodes for Development
 The directory generated with the project name has a docker-compose.yml and all the configuration files required to spin up the nodes. 
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_dev_output.png) 
 
 1. Run `docker-compose up` to start the nodes.
 2. You will see status as each node starts up. The first one to start is the boot node and the rest of the nodes follows.
@@ -50,6 +51,8 @@ The directory generated with the project name has a docker-compose.yml and all t
 
 # Creating the node configuration for Production like environments
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
+
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod.png) 
 
 Run `./setup.sh` to start the configuration wizard. The script will ask a series of questions to guide through the node configuration.
 
@@ -74,10 +77,15 @@ Run `./setup.sh` to start the configuration wizard. The script will ask a series
 
 # Running the nodes for Production like environments
 The directory generated with the project name has all the nodes zipped to separate files. Distribute these to target boxes or cloud instances and unzip them to be used. 
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod_output.png) 
 
 > Note: Target boxes or cloud instances should be running on Ubuntu 16.04 or higher. 
 > Important Note: The first node created is the master node in the network with bootnode and master constallation node. This needs to be started before ohter nodes.
+
 ** Running master node**
+
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod_start_master.png) 
+
 1. Unzip the node
 2. Run `./start.sh`
 3. Enter this node's IP. Use the external IP of this box or instance, if the nodes are in different network.
@@ -88,6 +96,9 @@ The directory generated with the project name has all the nodes zipped to separa
 8. The node will be started and a docker container hash will be returned. 
 
 ** Running other nodes**
+
+![Screenshot](https://github.com/synechron-finlabs/quorum-maker/blob/development/img/screenshot_prod_start_slave.png) 
+
 1. Unzip the node
 2. Run `./start.sh`
 3. Enter this node's IP. Use the external IP of this box or instance, if the nodes are in different network.
@@ -99,7 +110,7 @@ The directory generated with the project name has all the nodes zipped to separa
 9. Enter main constellation node port. This is the port of the constallation node started in the previous section.
 8. The node will be started and a docker container hash will be returned. 
 
-** Post startup
+** Post startup **
 
 1. Run `docker ps` and make the instances are up. Check the logs and make sure startup went well. 
 2. The logs can be found on `<node name>/qdata/logs` directory.
