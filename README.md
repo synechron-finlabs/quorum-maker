@@ -113,6 +113,20 @@ The directory generated with the project name has all the nodes zipped to separa
 9. Enter main constellation node port. This is the port of the constallation node started in the previous section.
 8. The node will be started and a docker container hash will be returned. 
 
+**Special Feature**
+
+The parameters entered while starting the nodes are automatically saved to a configuration file. So second time onwards no parameters are required to be entered. The default configuration file is setup.conf. Following is a sample setup.conf
+
+`
+CURRENT_IP=52.134.197.136
+RPC_PORT=3007
+WHISPER_PORT=3451
+CONSTELLATION_PORT=3892
+BOOTNODE_PORT=1089
+MASTER_IP=14.204.225.0
+MASTER_CONSTELLATION_PORT=1047
+`
+
 **Post startup**
 
 1. Run `docker ps` and make the instances are up. Check the logs and make sure startup went well. 
