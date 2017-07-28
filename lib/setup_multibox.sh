@@ -158,6 +158,9 @@ function executeInit(){
 
         fi
 
+        PATTERN="s/#NODE_NAME#/${nodeName}/g"
+        sed -i $PATTERN ${nodeName}/start.sh
+
 
         zip -qr $nodeName.zip $nodeName
 
