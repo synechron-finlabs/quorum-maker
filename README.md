@@ -8,7 +8,7 @@ Using of Quorum Maker is a two step process;
  - Creating the node configurations
  - Setting up nodes on different machines or containers
 
-> Note: The steps below are for Ubuntu 16.04. If you are using a Windows/Mac, please scroll bottom for the instructions to spin up an Ubuntu 16.04 with Vagrant and VirtualBox. After connecting the vagrant box, please follow below instructions.
+> Note: Quorum Maker is tested only on Ubuntu 16.04 and 17.04. Other Debian variants may work with slight changes to script. If you are using a Windows/Mac, please scroll bottom for the instructions to spin up an Ubuntu 16.04 with Vagrant and VirtualBox. After connecting the vagrant box, please follow below instructions.
 
 # Creating the node configuration for Development use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
