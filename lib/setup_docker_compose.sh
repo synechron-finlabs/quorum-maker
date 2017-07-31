@@ -77,7 +77,7 @@ function createDockerComposeFile(){
         PATTERN3="s/#pName#/${pName}/g"
         PWD="$(pwd)"
         PATTERN4="s:#PWD#:${PWD}:g"
-        
+
         sed $PATTERN lib/template.yml > ${pName}/setup/compose_${nodeName}.yml
 
         sed -i "$PATTERN2" ${pName}/setup/compose_${nodeName}.yml
@@ -98,8 +98,52 @@ function createDockerComposeFile(){
     
 }
 
+function createRaftDockerComposeFile(){
+    j=0
+
+    if [ -z "$pPort" ]; then
+
+        pPort="22000"
+
+    fi
+
+    cat lib/common.yml > ${pName}/.raft_docker-compose.yml
+    
+    while : ; do
+        
+        nodeName=${nodes[j]}
+        nodeName1=${nodes[0]}
+    
+        PATTERN5="s/#nodeName1#/${nodeName1}/g"   
+        PATTERN="s/#nodeName#/${nodeName}/g"
+        PATTERN2="s/#nodeport#/${pPort}/g"
+        PATTERN3="s/#pName#/${pName}/g"
+        PWD="$(pwd)"
+        PATTERN4="s:#PWD#:${PWD}:g"
+        
+        sed $PATTERN lib/raft_template.yml > ${pName}/setup/raft_compose_${nodeName}.yml
+
+        sed -i "$PATTERN2" ${pName}/setup/raft_compose_${nodeName}.yml
+        sed -i "$PATTERN3" ${pName}/setup/raft_compose_${nodeName}.yml
+        sed -i "$PATTERN4" ${pName}/setup/raft_compose_${nodeName}.yml
+        sed -i "$PATTERN5" ${pName}/setup/raft_compose_${nodeName}.yml        
+
+        cat ${pName}/setup/raft_compose_${nodeName}.yml >> ${pName}/.raft_docker-compose.yml
+
+        let "j++"
+        let "pPort++"
+        
+        if [ $i -eq $j ]; then
+            break;
+        fi
+    done
+    
+}
+
+
 function copyStartTemplate(){
 
+    PATTERN="s/#nodeName#/${nodeName}/g"
     
     sed $PATTERN lib/start_docker_template.sh > ${pName}/setup/start_${nodeName}.sh
     
@@ -127,22 +171,37 @@ function copyStartTemplate(){
     sed -i "$PATTERN" ${pName}/setup/start_${nodeName}.sh
     sed -i "$PATTERN2" ${pName}/setup/start_${nodeName}.sh
 
-    cp ${pName}/setup/start_${nodeName}.sh ${pName}/${nodeName}/start_${nodeName}.sh
-    chmod +x ${pName}/${nodeName}/start_${nodeName}.sh
-    
     if [ "$nodeName1" = "$nodeName" ]; then
         PATTERN="s/#delay#/2/g"
-        sed -i "$PATTERN" ${pName}/${nodeName}/start_${nodeName}.sh
+        sed -i "$PATTERN" ${pName}/setup/start_${nodeName}.sh
     else
         PATTERN="s/#delay#/10/g"
-        sed -i "$PATTERN" ${pName}/${nodeName}/start_${nodeName}.sh
+        sed -i "$PATTERN" ${pName}/setup/start_${nodeName}.sh
     fi
+
+    cp ${pName}/setup/start_${nodeName}.sh ${pName}/${nodeName}/start_node.sh
+    chmod +x ${pName}/${nodeName}/start_node.sh
+    
+
     cp lib/stop.sh ${pName}/${nodeName}/stop.sh
     
     chmod +x ${pName}/${nodeName}/stop.sh
 }
 
+function copyRaftStartTemplate(){
+
+    PATTERN="s/#nodeName#/${nodeName}/g"
+    sed $PATTERN lib/start_raft_docker_template.sh > ${pName}/setup/start_raft_${nodeName}.sh
+    
+    sed -i "$PATTERN2" ${pName}/setup/start_raft_${nodeName}.sh
+
+}
+
 function executeInit(){
+
+    cp lib/switch_consensus.sh ${pName}
+    chmod +x ${pName}/switch_consensus.sh
+
     j=0
     while : ; do
         
@@ -155,6 +214,12 @@ function executeInit(){
 
         cp keys/${nodeName}*.key  ${nodeName}/keys
         cp keys/${nodeName}*.pub  ${nodeName}/keys
+
+        cp ../lib/switch_consensus_node.sh ${nodeName}
+        chmod +x ${nodeName}/switch_consensus_node.sh
+        cp setup/start_raft_${nodeName}.sh ${nodeName}/qdata/start_raft_node.sh
+        chmod +x ${nodeName}/qdata/start_raft_node.sh
+        
         
         if [ -f "keys/${nodeName}BM" ]
         then
@@ -171,6 +236,7 @@ function executeInit(){
 
         cp setup/${nodeName}.conf ${nodeName}/${nodeName}.conf
         cp setup/${nodeName}.conf ${nodeName}/qdata/${nodeName}.conf
+        
         cd ..
 
         let "j++"
@@ -196,6 +262,10 @@ function createNode(){
     nodeName=$1
 
     mkdir -p $pName/$nodeName
+
+    mkdir -p $pName/${nodeName}/qdata/logs
+    mkdir -p $pName/${nodeName}/qdata/keystore
+    mkdir -p $pName/${nodeName}/keys
 
     blockMakerAddress=""
     voterAddress=""
@@ -225,6 +295,7 @@ function createNode(){
     esac
 
     copyStartTemplate
+    copyRaftStartTemplate
     
 }
 
@@ -313,14 +384,20 @@ function createBootnodeYml(){
     mkdir -p ${pName}/bootnode/qdata/logs
 
     cp lib/start_docker_bootnode.sh ${pName}/bootnode/start_bootnode.sh
-    
+
+    cat lib/common.yml > ${pName}/docker-compose.yml
+
+    cat lib/bootnode.yml >> ${pName}/docker-compose.yml
+
     PATTERN="s/#pName#/${pName}/g"
-    sed $PATTERN lib/bootnode.yml > ${pName}/docker-compose.yml
+    sed -i $PATTERN ${pName}/docker-compose.yml
 
     PWD="$(pwd)"
     PATTERN="s:#PWD#:${PWD}:g"
     sed -i $PATTERN ${pName}/docker-compose.yml
+
 }
+
 
 function main(){
 
@@ -360,6 +437,7 @@ function main(){
     
     createBootnodeYml
     createDockerComposeFile "${nodes[@]}" "${i}"
+    createRaftDockerComposeFile "${nodes[@]}" "${i}"
     generateGenesis
     executeInit "${nodes[@]}" "${i}"
 

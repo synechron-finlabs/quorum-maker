@@ -5,17 +5,11 @@
       - CORE_#nodeName#_NETWORKID=#nodeName#
       - CORE_NODE_IP=#nodeName#
       - CORE_MASTERNODE_IP=#nodeName1# 
-      - CORE_BOOTNODE=bootnode
-      - CORE_BOOTNODE_LISTENPORT=33445
     working_dir: /#nodeName#
     command: ["bash" , "start_node.sh"]
-    links: 
-      - bootnode:bootnode
     volumes:
       - ./#nodeName#:/#nodeName#
     ports:
       - #nodeport#:22000
-    depends_on:
-      - bootnode
     networks:
       - bridge
