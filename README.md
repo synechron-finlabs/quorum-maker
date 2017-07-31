@@ -52,6 +52,10 @@ The directory generated with the project name has a docker-compose.yml and all t
 7. The logs can be found on `<node name>/qdata/logs` directory.
 8. Press `Ctrl C` to stop the network and `docker-compose down` to remove containers.
 
+# Raft Consensus Support
+
+Raft is the new consensus from Quorum and is supported in Qourum Maker. After the starting the network with `docker-compose up`, open a new terminal and change to the project directory. Run `sudo ./switch_consensus.sh`. This will automatically change the `--raft` flag and generate `static-nodes.json` by connecting to each node and fetching the endoe information. Restart the network by `Ctrl + C` and `docker-compose up`.
+
 # Creating the node configuration for multi box or cloud use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*
 
