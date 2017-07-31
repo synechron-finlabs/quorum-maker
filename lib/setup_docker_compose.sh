@@ -77,13 +77,15 @@ function createDockerComposeFile(){
         PATTERN3="s/#pName#/${pName}/g"
         PWD="$(pwd)"
         PATTERN4="s:#PWD#:${PWD}:g"
+        PATTERN6="s/#docker_ip#/$((j+4))/g"
 
         sed $PATTERN lib/template.yml > ${pName}/setup/compose_${nodeName}.yml
 
         sed -i "$PATTERN2" ${pName}/setup/compose_${nodeName}.yml
         sed -i "$PATTERN3" ${pName}/setup/compose_${nodeName}.yml
         sed -i "$PATTERN4" ${pName}/setup/compose_${nodeName}.yml
-        sed -i "$PATTERN5" ${pName}/setup/compose_${nodeName}.yml        
+        sed -i "$PATTERN5" ${pName}/setup/compose_${nodeName}.yml
+        sed -i "$PATTERN6" ${pName}/setup/compose_${nodeName}.yml        
 
         cat ${pName}/setup/compose_${nodeName}.yml >> ${pName}/docker-compose.yml
 
@@ -118,6 +120,7 @@ function createRaftDockerComposeFile(){
         PATTERN="s/#nodeName#/${nodeName}/g"
         PATTERN2="s/#nodeport#/${pPort}/g"
         PATTERN3="s/#pName#/${pName}/g"
+        PATTERN6="s/#docker_ip#/$((j+4))/g"
         PWD="$(pwd)"
         PATTERN4="s:#PWD#:${PWD}:g"
         
@@ -126,7 +129,8 @@ function createRaftDockerComposeFile(){
         sed -i "$PATTERN2" ${pName}/setup/raft_compose_${nodeName}.yml
         sed -i "$PATTERN3" ${pName}/setup/raft_compose_${nodeName}.yml
         sed -i "$PATTERN4" ${pName}/setup/raft_compose_${nodeName}.yml
-        sed -i "$PATTERN5" ${pName}/setup/raft_compose_${nodeName}.yml        
+        sed -i "$PATTERN5" ${pName}/setup/raft_compose_${nodeName}.yml
+        sed -i "$PATTERN6" ${pName}/setup/raft_compose_${nodeName}.yml        
 
         cat ${pName}/setup/raft_compose_${nodeName}.yml >> ${pName}/.raft_docker-compose.yml
 

@@ -5,7 +5,7 @@ set -e
 CORE_NODE_IP="$(dig +short $CORE_NODE_IP)"
 CORE_MASTERNODE_IP="$(dig +short $CORE_MASTERNODE_IP)"
 
-GLOBAL_ARGS="--raft --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum"
+GLOBAL_ARGS="--raft --rpc --rpcaddr 0.0.0.0 --nodiscover --verbosity 6 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum"
 
 cp qdata/#nodeName#.conf .
 
@@ -20,5 +20,5 @@ constellation-node #nodeName#.conf 2> qdata/logs/constellation_#nodeName#.log &
 sleep 1
 
 echo "[*] Starting #nodeName# node"
-PRIVATE_CONFIG=#nodeName#.conf nohup geth --datadir qdata $GLOBAL_ARGS --rpcport 22000 --port 21000 2>qdata/logs/#nodeName#.log
+PRIVATE_CONFIG=#nodeName#.conf geth --datadir qdata $GLOBAL_ARGS --rpcport 22000 --port 21000 2>qdata/logs/#nodeName#.log 
 

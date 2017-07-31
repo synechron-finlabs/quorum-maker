@@ -12,4 +12,6 @@
     ports:
       - #nodeport#:22000
     networks:
-      - bridge
+      vpcbr:
+        ipv4_address: 10.50.0.#docker_ip#
+

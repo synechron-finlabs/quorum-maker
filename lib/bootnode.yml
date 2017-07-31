@@ -8,4 +8,5 @@
     volumes:
       - ./bootnode:/bootnode        
     networks:
-      - bridge
+      vpcbr:
+        ipv4_address: 10.50.0.2

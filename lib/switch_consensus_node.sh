@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function switchToRaft(){
-    peerlist=$(curl -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":74}' localhost:22000)
+    peerlist=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":74}' localhost:22000)
 
     i=0
 
@@ -15,21 +15,21 @@ function switchToRaft(){
     j=0
     comma=","
 
-    echo [ > qdata/static-nodes.json
-           while read -r line ; do
+    echo "[" > qdata/static-nodes.json
+    while read -r line ; do
 
-               echo "\"enode://"${ids[j]}"@""$(echo $line | cut -c17-)"\", >> qdata/static-nodes.json
-               let "j++"
-               
-           done < <(echo $peerlist | grep -o 'remoteAddress\":\"[^\"]*')
+        echo "\"enode://"${ids[j]}"@""$(echo $line | cut -c17-)"\", >> qdata/static-nodes.json
+        let "j++"
+        
+    done < <(echo $peerlist | grep -o 'remoteAddress\":\"[^\"]*')
 
-           nodeInfo=$(curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":74}' localhost:22000)
+    nodeInfo=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":74}' localhost:22000)
 
-           myNode=$(echo $nodeInfo | grep -o '\"enode\":\"[^\"]*' | cut -c10-)
+    myNode=$(echo $nodeInfo | grep -o '\"enode\":\"[^\"]*' | cut -c10-)
 
-           echo \"$myNode\" >> qdata/static-nodes.json
+    echo \"$myNode\" >> qdata/static-nodes.json
 
-           echo ] >> qdata/static-nodes.json
+    echo "]" >> qdata/static-nodes.json
 
     mv start_node.sh qdata
     cp qdata/start_raft_node.sh start_node.sh
