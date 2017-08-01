@@ -185,6 +185,7 @@ function copyStartTemplate(){
 
     cp ${pName}/setup/start_${nodeName}.sh ${pName}/${nodeName}/start_node.sh
     chmod +x ${pName}/${nodeName}/start_node.sh
+    cp ${pName}/${nodeName}/start_node.sh ${pName}/${nodeName}/qdata/start_qc_node.sh
     
 
     cp lib/stop.sh ${pName}/${nodeName}/stop.sh
@@ -237,6 +238,7 @@ function executeInit(){
         fi
 
         geth --datadir ${nodeName}/qdata init genesis.json
+        cp genesis.json ${nodeName}/genesis.json
 
         cp setup/${nodeName}.conf ${nodeName}/${nodeName}.conf
         cp setup/${nodeName}.conf ${nodeName}/qdata/${nodeName}.conf
