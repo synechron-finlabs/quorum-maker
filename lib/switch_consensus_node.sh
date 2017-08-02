@@ -2,7 +2,10 @@
 
 
 function switchToRaft(){
-    peerlist=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":74}' localhost:22000)
+
+    echo "[" > qdata/static-nodes.json
+
+        peerlist=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":74}' localhost:22000)
 
     i=0
 
@@ -19,16 +22,36 @@ function switchToRaft(){
     echo "[" > qdata/static-nodes.json
     while read -r line ; do
 
-        echo "\"enode://"${ids[j]}"@""$(echo $line | grep -o '.*:' | cut -c17-)21000"\", >> qdata/static-nodes.json
+        enodes[j]="\"enode://"${ids[j]}"@""$(echo $line | grep -o '.*:' | cut -c17-)21000?discport=0"\"
+        
         let "j++"
         
     done < <(echo $peerlist | grep -o 'remoteAddress\":\"[^\"]*')
 
     nodeInfo=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":74}' localhost:22000)
 
-    myNode=$(echo $nodeInfo | grep -o '\"enode\":\"[^\"]*' | cut -c10-)
+    myNode=$(echo $nodeInfo | grep -o '\"id\":\"[^\"]*' | cut -c7-)
+    LOCAL_NODE_IP="$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')"
+    
+    enodes[j]="\"enode://"$myNode"@"$LOCAL_NODE_IP":21000?discport=0"\"
 
-    echo \"$myNode\" >> qdata/static-nodes.json
+    let "j++"
+
+
+    IFS=$'\n' sorted=($(sort <<<"${enodes[*]}"))
+    unset IFS
+
+    k=0
+    comma=","
+    while [ $k -lt $j ]
+    do
+        if [[ $(( k + 1 )) == $j ]]; then
+            comma=""
+        fi
+        echo ${sorted[k]}$comma >> qdata/static-nodes.json
+        let "k++"
+    done
+
 
     echo "]" >> qdata/static-nodes.json
 
@@ -56,13 +79,14 @@ function cleanDirectories(){
     rm -rf qdata
     mkdir qdata
     mv keystore qdata/        
-    geth --datadir qdata init genesis.json
-    cp nodekey qdata/geth/
 
+    geth --datadir qdata init genesis.json
+    mkdir qdata/geth
+    cp nodekey qdata/geth/
     cp *.conf qdata
     [[ -e  static-nodes.json ]] && mv static-nodes.json qdata
-    cp -f start_qc_node.sh qdata
-    cp -f start_raft_node.sh qdata
+    mv -f start_qc_node.sh qdata
+    mv -f start_raft_node.sh qdata
     
     mkdir qdata/logs
     echo "Cleaning directories... Done"
