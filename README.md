@@ -22,7 +22,7 @@ Run `./setup.sh` to start the configuration wizard. The script will ask a series
  1. **Docker-Compose Support**
      Answer yes or y to create nodes to work with docker-compose. This is the easiest way to set up nodes if you are  experimenting with Quorum or planning to use Quorum only for local development. 
  2. **Project Name**
-     Give a name to the project like five_nodes, sample_project etc.
+     Give a name to the project like five_nodes, sample_project etc. 
  3. **Start Port Number**
      This is the RPC port to send transactions. Each node you would create will have a port sequentially incremented, starting with the number provided in response to this question. Eg. first node will have 22000, the second will have 22001 and so on. 
  4. **Node name**
