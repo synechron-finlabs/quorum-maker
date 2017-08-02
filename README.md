@@ -8,7 +8,7 @@ Synechorn's Quorum Maker has a two-step user process;
  - Creating the node configurations
  - Setting up nodes on different machines or containers
 
-> Note: The steps below are for Ubuntu 16.04. If you are using a Windows/Mac, please scroll to the bottom for the instructions to spin up an Ubuntu 16.04 with Vagrant and VirtualBox. After connecting the vagrant box, please follow the below instructions.
+> Note: Quorum Maker is tested only on Ubuntu 16.04 and 17.04. Other Debian variants may work with slight changes to script. If you are using a Windows/Mac, please scroll bottom for the instructions to spin up an Ubuntu 16.04 with Vagrant and VirtualBox. After connecting the vagrant box, please follow below instructions.
 
 # Creating the node configuration for Development use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. The rest of the tools required to run Quorum Maker are available in the docker image.*
@@ -51,6 +51,10 @@ The directory generated with the project name has a docker-compose.yml and all t
 6. If you wish to connect to any node, run `docker exec -it <node name> bash` and run `geth attach qdata/geth.ipc`
 7. The logs can be found on `<node name>/qdata/logs` directory.
 8. Press `Ctrl C` to stop the network and `docker-compose down` to remove containers.
+
+# Raft Consensus Support
+
+Raft is the new consensus from Quorum and is supported in Qourum Maker. After the starting the network with `docker-compose up`, open a new terminal and change to the project directory. Run `sudo ./switch_consensus.sh`. This will automatically change the `--raft` flag and generate `static-nodes.json` by connecting to each node and fetching the endoe information. Restart the network by `Ctrl + C` and `docker-compose up`.
 
 # Creating the node configuration for multi box or cloud use
 *The only prerequisite for Quorum Maker is Ubuntu 16.04. The script can automatically install docker and docker-compose if not available. Rest of the tools required to run quorum maker is available in the docker image*

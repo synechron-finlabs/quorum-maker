@@ -1,9 +1,3 @@
-version: '2'
-
-networks:
-   bridge:
-
-services:
   bootnode:
     container_name: bootnode
     image: syneblock/quorum
@@ -14,4 +8,5 @@ services:
     volumes:
       - ./bootnode:/bootnode        
     networks:
-      - bridge
+      vpcbr:
+        ipv4_address: 10.50.0.2
