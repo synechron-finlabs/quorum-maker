@@ -60,9 +60,11 @@ function copyConfTemplate(){
 function createDockerComposeFile(){
     j=0
 
-    if [ -z "$pPort" ]; then
+    tmpPort=$pPort
+    
+    if [ -z "$tmpPort" ]; then
 
-        pPort="22000"
+        tmpPort="22000"
 
     fi
 
@@ -73,7 +75,7 @@ function createDockerComposeFile(){
     
         PATTERN5="s/#nodeName1#/${nodeName1}/g"   
         PATTERN="s/#nodeName#/${nodeName}/g"
-        PATTERN2="s/#nodeport#/${pPort}/g"
+        PATTERN2="s/#nodeport#/${tmpPort}/g"
         PATTERN3="s/#pName#/${pName}/g"
         PWD="$(pwd)"
         PATTERN4="s:#PWD#:${PWD}:g"
@@ -91,7 +93,7 @@ function createDockerComposeFile(){
 
 
         let "j++"
-        let "pPort++"
+        let "tmpPort++"
         
         if [ $i -eq $j ]; then
             break;
@@ -103,9 +105,11 @@ function createDockerComposeFile(){
 function createRaftDockerComposeFile(){
     j=0
 
-    if [ -z "$pPort" ]; then
+    tmpPort=$pPort
+    
+    if [ -z "$tmpPort" ]; then
 
-        pPort="22000"
+        tmpPort="22000"
 
     fi
 
@@ -118,7 +122,7 @@ function createRaftDockerComposeFile(){
     
         PATTERN5="s/#nodeName1#/${nodeName1}/g"   
         PATTERN="s/#nodeName#/${nodeName}/g"
-        PATTERN2="s/#nodeport#/${pPort}/g"
+        PATTERN2="s/#nodeport#/${tmpPort}/g"
         PATTERN3="s/#pName#/${pName}/g"
         PATTERN6="s/#docker_ip#/$((j+4))/g"
         PWD="$(pwd)"
@@ -135,7 +139,7 @@ function createRaftDockerComposeFile(){
         cat ${pName}/setup/raft_compose_${nodeName}.yml >> ${pName}/.raft_docker-compose.yml
 
         let "j++"
-        let "pPort++"
+        let "tmpPort++"
         
         if [ $i -eq $j ]; then
             break;
@@ -207,6 +211,9 @@ function executeInit(){
     cp lib/switch_consensus.sh ${pName}
     chmod +x ${pName}/switch_consensus.sh
 
+    cp lib/reset_chain.sh ${pName}
+    chmod +x ${pName}/reset_chain.sh
+
     j=0
     while : ; do
         
@@ -222,6 +229,10 @@ function executeInit(){
 
         cp ../lib/switch_consensus_node.sh ${nodeName}
         chmod +x ${nodeName}/switch_consensus_node.sh
+
+        cp ../lib/reset_chain_node.sh ${nodeName}
+        chmod +x ${nodeName}/reset_chain_node.sh
+
         cp setup/start_raft_${nodeName}.sh ${nodeName}/qdata/start_raft_node.sh
         chmod +x ${nodeName}/qdata/start_raft_node.sh
         
