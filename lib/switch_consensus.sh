@@ -8,7 +8,7 @@ fi
 for file in */; do
 
     if [ ${file%?} != "bootnode" ]; then
-        docker exec -it ${file%?} ./switch_consensus_node.sh
+        docker exec -itd ${file%?} ./switch_consensus_node.sh
     fi
 
 done
