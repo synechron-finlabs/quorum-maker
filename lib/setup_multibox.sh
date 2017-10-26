@@ -212,7 +212,7 @@ function copyStartTemplate(){
         voterPattern="--voteaccount \""$voterAddress"\" --votepassword \"\""
     fi
 
-n    PATTERN="s/#voterPattern#/${voterPattern}/g"
+    PATTERN="s/#voterPattern#/${voterPattern}/g"
 
     sed -i "$PATTERN" ${pName}/setup/start_${nodeName}.sh
 
