@@ -10,8 +10,6 @@ GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --rpc --rpcaddr 0.0.0.0 --rp
 
 echo "[*] Starting Constellation node" > qdata/logs/constellation_node1.log
 
-#cp qdata/node1.conf .
-
 PATTERN="s/CORE_NODE_IP/${CORE_NODE_IP}/g"
 
 sed -i "$PATTERN" node1.conf

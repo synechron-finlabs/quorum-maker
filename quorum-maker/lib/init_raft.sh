@@ -4,8 +4,6 @@ set -e
 
 echo "[*] Cleaning up temporary data directories"
 rm -rf qdata/
-#rm -f start_node1.sh
-#rm -f node1.conf
 
 echo "[*] Configuring node1 node"
 mkdir -p qdata/logs
@@ -22,8 +20,6 @@ fi
 geth --datadir qdata init genesis.json
 
 echo "[*] Updating configuration files"
-#cp ./start_raft1.sh start_raft.sh
-#cp ./nodeTest.conf node1.conf
 
 THIS_IP="$(ifconfig enp2s0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')"
 PATTERN="s/#node1_ip#/$THIS_IP/g"
