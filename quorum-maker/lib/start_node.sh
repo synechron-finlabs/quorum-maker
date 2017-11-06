@@ -1,11 +1,12 @@
 #!/bin/bash
 set -u
 set -e
+NETID=87234
 
 mkdir -p qdata/logs
 LOCAL_NODE_IP="$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')"
 
-GLOBAL_ARGS="--raft --nodiscover --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum"
+GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum"
 
 echo "[*] Starting Constellation node" > qdata/logs/constellation_#nodeName#.log
 
