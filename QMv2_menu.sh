@@ -4,30 +4,31 @@
 flagmain=true
 while  ("${flagmain}" = true) 
 do
-	echo -e 'i)Enter m to Create Master Node\nii)Enter j to Join Network\niii)Enter r to Remove Node\niv)Enter s to Setup Development/Test network\nv)Enter stop to return to console'
-	read pro
-	case $pro in
-		m)
+	echo -e 'Please select an option:\n1) Create Master Node\n2) Join Network\n3) Remove Node\n4) Setup Development/Test Network\n5) Exit'
+	printf 'option: '
+	read option
+	case $option in
+		1)
 			./create_master_node.sh &
 			PID1=$!
 			wait $PID1
 			;;
-		j)
+		2)
 			./join_network.sh &
 			PID1=$!
 			wait $PID1
 			;;
-		r)
+		3)
 			./remove_node.sh &
 			PID1=$!
 			wait $PID1
 			;; 
-		s)
+		4)
 			./setup_network.sh &
 			PID1=$!
 			wait $PID1
 			;;
-		stop)
+		5)
 			flagmain=false
 			;;
 		*)
