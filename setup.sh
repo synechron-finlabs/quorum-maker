@@ -9,22 +9,22 @@ do
 	read option
 	case $option in
 		1)
-			./create_master_node.sh &
+			./lib/create_master_node.sh &
 			PID1=$!
 			wait $PID1
 			;;
 		2)
-			./join_network.sh &
+			./lib/join_network.sh &
 			PID1=$!
 			wait $PID1
 			;;
 		3)
-			./remove_node.sh &
+			./lib/remove_node.sh &
 			PID1=$!
 			wait $PID1
 			;; 
 		4)
-			./setup_network.sh &
+			./lib/setup_network.sh &
 			PID1=$!
 			wait $PID1
 			;;
