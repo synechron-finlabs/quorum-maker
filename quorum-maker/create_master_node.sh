@@ -1,5 +1,6 @@
 #!/bin/bash
  
+ #create node configuration file
  function copyConfTemplate(){
      PATTERN="s/#mNode#/${mNode}/g"
      sed $PATTERN lib/template.conf > ${mNode}/node/${mNode}.conf
@@ -9,6 +10,7 @@
 
  }
 
+#function to generate keyPair for node
  function generateKeyPair(){
     echo "Generating public and private keys for " ${mNode}", Please enter password or leave blank"
     constellation-node --generatekeys=${mNode}
@@ -20,7 +22,7 @@
     
  }
 
-
+#function to create node initialization script
 function createInitNodeScript(){
     cat lib/init.sh > ${mNode}/init.sh
 
@@ -35,6 +37,7 @@ function createInitNodeScript(){
     chmod +x ${mNode}/init.sh
 }
 
+#function to create start node script with --raft flag
 function copyStartTemplate(){
     NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
     PATTERN="s|#network_Id_value#|${NET_ID}|g"
@@ -46,8 +49,8 @@ function copyStartTemplate(){
     chmod +x ${mNode}/node/start_${mNode}.sh
 }
 
+#function to generate enode and create static-nodes.json file
 function generateEnode(){
-    
     bootnode -genkey nodekey
     nodekey=$(cat nodekey)
 	bootnode -nodekey nodekey 2>enode.txt &
@@ -64,10 +67,16 @@ function generateEnode(){
     fi
     
     cp nodekey ${mNode}/node/qdata/geth/.
+
+    PATTERN="s|#eNode#|${Enode}|g"
+    cat lib/static-nodes_template.json > ${mNode}/node/qdata/static-nodes.json
+    sed -i $PATTERN ${mNode}/node/qdata/static-nodes.json
+
     rm enode.txt
     rm nodekey
 }
 
+#function to create node accout and append it into genesis.json file
 function createAccount(){
     mAccountAddress="$(geth --datadir datadir --password lib/passwords.txt account new)"
     re="\{([^}]+)\}"
