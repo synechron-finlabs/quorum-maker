@@ -40,7 +40,7 @@ function main(){
     let bPort=0
 
     if [ -z "$1" ]; then
-        FILE=Setup.conf
+        FILE=setup.conf
     else
         FILE=$1
     fi
