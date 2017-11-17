@@ -47,10 +47,6 @@ function copyStartTemplate(){
     PATTERN="s/#mNode#/${mNode}/g"
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     chmod +x ${mNode}/node/start_${mNode}.sh
-
-     PATTERN1="s|15|${NET_ID}|g"
-     cat lib/genesis_template.json >> ${mNode}/node/genesis.json
-     sed -i $PATTERN1 ${mNode}/node/genesis.json
 }
 
 #function to generate enode and create static-nodes.json file
