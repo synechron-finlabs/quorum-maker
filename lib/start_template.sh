@@ -1,9 +1,9 @@
 #append values in Setup.conf file 
-echo 'CURRENT_IP='$CURRENT_NODE_IP > ../Setup.conf
-echo 'RPC_PORT='$R_PORT >> ../Setup.conf
-echo 'WHISPER_PORT='$W_PORT >> ../Setup.conf
-echo 'CONSTELLATION_PORT='$C_PORT >> ../Setup.conf
-echo 'MASTER_JAVA_PORT='$MJ_PORT >>  ../Setup.conf
+echo 'CURRENT_IP='$CURRENT_NODE_IP > ../setup.conf
+echo 'RPC_PORT='$R_PORT >> ../setup.conf
+echo 'WHISPER_PORT='$W_PORT >> ../setup.conf
+echo 'CONSTELLATION_PORT='$C_PORT >> ../setup.conf
+echo 'MASTER_JAVA_PORT='$MJ_PORT >>  ../setup.conf
 
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum"
 
