@@ -1,3 +1,9 @@
+#!/bin/bash
+set -u
+set -e
+NETID=#networkId#
+RAFTID=#raftId#
+
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum"
 
 echo "[*] Starting Constellation node" > qdata/logs/constellation_#sNode#.log

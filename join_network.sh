@@ -49,7 +49,7 @@ function generateEnode(){
  #create node configuration file
  function copyConfTemplate(){
     PATTERN="s/#sNode#/${sNode}/g"
-    sed $PATTERN lib/template.conf > ${sNode}/node/${sNode}.conf
+    sed $PATTERN lib/slave/template.conf > ${sNode}/node/${sNode}.conf
 
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#C_PORT#/${cPort}/g"
@@ -75,7 +75,7 @@ function generateEnode(){
 
 #function to create node accout and append it into genesis.json file
 function createAccount(){
-    sAccountAddress="$(geth --datadir datadir --password lib/passwords.txt account new)"
+    sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new)"
     re="\{([^}]+)\}"
     if [[ $sAccountAddress =~ $re ]];
     then
@@ -88,7 +88,7 @@ function createAccount(){
 
 #function to create node initialization script
 function createInitNodeScript(){
-    cat lib/init.sh > ${sNode}/init.sh
+    cat lib/slave/init_slave.sh > ${sNode}/init.sh
 
     START_CMD="start_$sNode.sh"
 
@@ -103,9 +103,8 @@ function createInitNodeScript(){
 
 # function to create start node script with --raft flag
 function copyStartTemplate(){
-    cat lib/start_template_common.sh > ${sNode}/node/start_${sNode}.sh
+    cat lib/slave/start_template_slave.sh > ${sNode}/node/start_${sNode}.sh
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    cat lib/start_template.sh >> ${sNode}/node/start_${sNode}.sh
     PATTERN="s/#sNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN1="s/#raftId#/$RAFTV/g"
@@ -131,19 +130,19 @@ function javaJoinNode(){
     sed -i 's/"{ "config"/{ "config"/g' input.json
     sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input.json
     sed -i 's/,/,\n/g' input.json
-    cat input.json | jq '.raftID' > lib/raft.txt
-    cat input.json | jq '.netId' > lib/net.txt
-    sed -i 's/"//g' lib/raft.txt
-    sed -i 's/"//g' lib/net.txt
-    RAFTV=$(cat lib/raft.txt)
-    NETV=$(cat lib/net.txt)
+    cat input.json | jq '.raftID' > lib/slave/raft.txt
+    cat input.json | jq '.netId' > lib/slave/net.txt
+    sed -i 's/"//g' lib/slave/raft.txt
+    sed -i 's/"//g' lib/slave/net.txt
+    RAFTV=$(cat lib/slave/raft.txt)
+    NETV=$(cat lib/slave/net.txt)
     raftID=$(grep -F -m 1 'raftID' input.json)
     raftIDV=$(echo $raftID | tr -dc '0-9')
     genesis=$(jq '.genesis' input.json)
-    echo $genesis > ${sNode}/genesis.json
+    echo $genesis > ${sNode}/node/genesis.json
     rm -rf input.json
-    rm -rf lib/raft.txt
-    rm -rf lib/net.txt      
+    rm -rf lib/slave/raft.txt
+    rm -rf lib/slave/net.txt      
 }
 
 # execute init script
