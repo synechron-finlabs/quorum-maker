@@ -140,8 +140,8 @@ function javaJoinNode(){
     raftIDV=$(echo $raftID | tr -dc '0-9')
     genesis=$(jq '.genesis' input.json)
     echo $genesis > ${sNode}/node/genesis.json
-    #rm -rf input.json
-    #rm -rf lib/slave/raft.txt
+    rm -rf input.json
+    rm -rf lib/slave/raft.txt
     rm -rf lib/slave/net.txt      
 }
 
