@@ -9,12 +9,12 @@ do
 	read option
 	case $option in
 		1)
-			./lib/create_master_node.sh &
+			./create_master_node.sh &
 			PID1=$!
 			wait $PID1
 			;;
 		2)
-			./lib/join_network.sh &
+			./join_network.sh &
 			PID1=$!
 			wait $PID1
 			;;
