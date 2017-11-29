@@ -123,7 +123,6 @@ function createAccount(){
     cat lib/master/genesis_template.json >> ${mNode}/node/genesis.json
     sed -i $PATTERN ${mNode}/node/genesis.json
     sed -i $PATTERN1 ${mNode}/node/genesis.json
-
 }
 
 # execute init script
@@ -136,7 +135,7 @@ function executeInit(){
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $mjPort:$mjPort\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \

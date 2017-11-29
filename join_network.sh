@@ -124,8 +124,9 @@ function javaJoinNode(){
        "enode":"'$1'",
        "accountAddress":"'$2'"
     }')
+
+    echo $response
     echo $response > input.json
-    sed -i 's/\\n//g' input.json
     sed -i 's/\\//g' input.json
     sed -i 's/"{ "config"/{ "config"/g' input.json
     sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input.json
