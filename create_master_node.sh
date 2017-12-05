@@ -69,6 +69,8 @@ function copyStartTemplate(){
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     PATTERN="s/#mNode#/${mNode}/g"
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
+    PATTERN="s/#raftPort#/${raPort}/g"
+    sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     chmod +x ${mNode}/node/start_${mNode}.sh
 }
 
@@ -116,13 +118,12 @@ function createAccount(){
         mAccountAddress="0x"${BASH_REMATCH[1]};
     fi
     cp datadir/keystore/* ${mNode}/node/qdata/keystore/${mNode}key
-
-    rm -rf datadir
     PATTERN="s|#mNodeAddress#|${mAccountAddress}|g"
     PATTERN1="s|15|${NET_ID}|g"
     cat lib/master/genesis_template.json >> ${mNode}/node/genesis.json
     sed -i $PATTERN ${mNode}/node/genesis.json
     sed -i $PATTERN1 ${mNode}/node/genesis.json
+    rm -rf datadir
 }
 
 # execute init script
@@ -143,6 +144,7 @@ function executeStart(){
            -e MJ_PORT=$mjPort \
            syneblock/quorum-master:quorum2.0.0 ./start_${mNode}.sh
 }
+
 
 function main(){    
     read -p $'\e[1;32mPlease enter master node name: \e[0m' mNode 

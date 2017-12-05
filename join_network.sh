@@ -5,7 +5,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node\'s RPC Port: \e[0m' rPort
     read -p $'\e[1;32mPlease enter this node\'s Network Listening Port: \e[0m' wPort
     read -p $'\e[1;32mPlease enter this node\'s Constellation Port: \e[0m' cPort
-    read -p $'\e[1;35mPlease enter this node raft port: \e[0m' rPort
+    read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
@@ -16,7 +16,7 @@ function readInputs(){
     echo 'RPC_PORT='$rPort >> ${sNode}/setup.conf
     echo 'WHISPER_PORT='$wPort >> ${sNode}/setup.conf
     echo 'CONSTELLATION_PORT='$cPort >> ${sNode}/setup.conf
-    echo 'RAFT_PORT='$rPort >> ${sNode}/setup.conf
+    echo 'RAFT_PORT='$raPort >> ${sNode}/setup.conf
     echo 'MASTER_IP='$pMainIp >> ${sNode}/setup.conf
     echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
@@ -39,8 +39,9 @@ function generateEnode(){
     fi
 
     Enode1=$Enode$pCurrentIp
-    port=?raftport=$rPort
-    EnodeV=$Enode1:$wPort$port
+    dPort='?discport=0&'
+    port=raftport=$raPort
+    EnodeV=$Enode1:$wPort$dPort$port
     cp nodekey ${sNode}/node/qdata/geth/.
     rm enode.txt
     rm nodekey
@@ -82,7 +83,7 @@ function createAccount(){
         sAccountAddress="0x"${BASH_REMATCH[1]};
     fi
     mv datadir/keystore/* ${sNode}/node/qdata/keystore/${sNode}key
-    rm -rf datadir
+   rm -rf datadir
 }
 
 
@@ -111,6 +112,8 @@ function copyStartTemplate(){
     sed -i $PATTERN1 ${sNode}/node/start_${sNode}.sh
     PATTERN2="s/#networkId#/$NETV/g"
     sed -i $PATTERN2 ${sNode}/node/start_${sNode}.sh
+    PATTERN="s/#raftPort#/${raPort}/g"
+    sed -i $PATTERN ${mNode}/node/start_${sNode}.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 }
 
@@ -125,7 +128,6 @@ function javaJoinNode(){
        "accountAddress":"'$2'"
     }')
 
-    echo $response
     echo $response > input.json
     sed -i 's/\\//g' input.json
     sed -i 's/"{ "config"/{ "config"/g' input.json
@@ -143,7 +145,8 @@ function javaJoinNode(){
     echo $genesis > ${sNode}/node/genesis.json
     rm -rf input.json
     rm -rf lib/slave/raft.txt
-    rm -rf lib/slave/net.txt      
+    rm -rf lib/slave/net.txt    
+
 }
 
 # execute init script
@@ -156,11 +159,11 @@ function executeInit(){
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp  -p $cPort:$cPort \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
-           -e C_PORT=$cPort $B_PORT_VAR\
+           -e C_PORT=$cPort \
            syneblock/quorum-master:quorum2.0.0 ./start_${sNode}.sh
 }
 

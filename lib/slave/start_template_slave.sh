@@ -12,7 +12,7 @@ constellation-node #sNode#.conf 2>> qdata/logs/constellation_#sNode#.log &
 sleep 1
 
 echo "[*] Starting #sNode# node" >> qdata/logs/#sNode#.log
-echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --rpcport "$R_PORT "--port "$W_PORT "--nat extip:"$CURRENT_NODE_IP>> qdata/logs/#sNode#.log
+echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport #raftPort# --rpcport "$R_PORT "--port "$W_PORT "--nat extip:"$CURRENT_NODE_IP>> qdata/logs/#sNode#.log
 
-PRIVATE_CONFIG=#sNode#.conf geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/logs/#sNode#.log 
+PRIVATE_CONFIG=#sNode#.conf geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport #raftPort# --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/logs/#sNode#.log 
 
