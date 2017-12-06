@@ -140,7 +140,7 @@ function executeStart(){
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
-           -e C_PORT=$cPort $B_PORT_VAR\
+           -e C_PORT=$cPort \
            -e MJ_PORT=$mjPort \
            syneblock/quorum-master:quorum2.0.0 ./start_${mNode}.sh
 }
@@ -163,4 +163,4 @@ function main(){
     executeInit
     executeStart
 }
-main
+mainrPort
