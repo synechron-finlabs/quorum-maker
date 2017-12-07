@@ -159,7 +159,7 @@ function executeInit(){
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp  -p $cPort:$cPort \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
