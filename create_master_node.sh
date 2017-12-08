@@ -1,11 +1,11 @@
 #!/bin/bash
  
 function readInputs(){  
-    read -p $'\e[1;31mPlease enter this node\' IP Address: \e[0m' pCurrentIp
-    read -p $'\e[1;32mPlease enter this node\'s RPC Port: \e[0m' rPort
-    read -p $'\e[1;32mPlease enter this node\'s Network Listening Port: \e[0m' wPort
-    read -p $'\e[1;32mPlease enter this node\'s Constellation Port: \e[0m' cPort
-    read -p $'\e[1;32mPlease enter this node\'s raft port: \e[0m' raPort
+    read -p $'\e[1;31mPlease enter this node IP Address: \e[0m' pCurrentIp
+    read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
+    read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
+    read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
+    read -p $'\e[1;32mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
     #append values in Setup.conf file 
@@ -141,7 +141,7 @@ function executeStart(){
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
-           -e MJ_PORT=$mjPort \
+	   -e RA_PORT=$raPort \
            syneblock/quorum-master:quorum2.0.0 ./start_${mNode}.sh
 }
 
