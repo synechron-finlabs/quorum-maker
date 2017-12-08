@@ -7,10 +7,11 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
-    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' mjThisPort	
+    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' mjThisPort  
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
     url=http://${pMainIp}:${mjPort}/joinNetwork
+    urlG=http://${pMainIp}:${mjPort}/sendGenesis
 
     #append values in setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ${sNode}/setup.conf
@@ -23,20 +24,21 @@ function readInputs(){
     echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
 
+
 #function to generate enode and create static-nodes.json file
 function generateEnode(){
     bootnode -genkey nodekey
     nodekey=$(cat nodekey)
-	bootnode -nodekey nodekey 2>enode.txt &
-	pid=$!
-	sleep 5
-	kill -9 $pid
-	wait $pid 2> /dev/null
-	re="enode:.*@"
-	enode=$(cat enode.txt)
+    bootnode -nodekey nodekey 2>enode.txt &
+    pid=$!
+    sleep 5
+    kill -9 $pid
+    wait $pid 2> /dev/null
+    re="enode:.*@"
+    enode=$(cat enode.txt)
     
     if [[ $enode =~ $re ]];
-    	then
+        then
         Enode=${BASH_REMATCH[0]};
     fi
 
@@ -60,6 +62,7 @@ function generateEnode(){
     rm nodekey
 }
 
+
  #create node configuration file
  function copyConfTemplate(){
     PATTERN="s/#sNode#/${sNode}/g"
@@ -75,19 +78,7 @@ function generateEnode(){
     sNode1=${nodes[0]}
  }
 
-#function to generate keyPair for node
- function generateKeyPair(){
-    echo "Generating public and private keys for " ${sNode}", Please enter password or leave blank"
-    constellation-node --generatekeys=${sNode}
-
-    echo "Generating public and private backup keys for " ${sNode}", Please enter password or leave blank"
-    constellation-node --generatekeys=${sNode}a	
-
-    mv ${sNode}*.*  ${sNode}/node/keys/.
-    
- }
-
-#function to create node accout and append it into genesis.json file
+ #function to create node accout and append it into genesis.json file
 function createAccount(){
     sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new)"
     re="\{([^}]+)\}"
@@ -100,7 +91,20 @@ function createAccount(){
 }
 
 
-#function to create node initialization script
+#function to generate keyPair for node
+ function generateKeyPair(){
+    echo "Generating public and private keys for " ${sNode}", Please enter password or leave blank"
+    constellation-node --generatekeys=${sNode}
+
+    echo "Generating public and private backup keys for " ${sNode}", Please enter password or leave blank"
+    constellation-node --generatekeys=${sNode}a
+
+    mv ${sNode}*.*  ${sNode}/node/keys/.
+    
+ }
+
+
+ #function to create node initialization script
 function createInitNodeScript(){
     cat lib/slave/init_slave.sh > ${sNode}/init.sh
 
@@ -115,18 +119,27 @@ function createInitNodeScript(){
     chmod +x ${sNode}/init.sh
 }
 
-# function to create start node script with --raft flag
-function copyStartTemplate(){
-    cat lib/slave/start_template_slave.sh > ${sNode}/node/start_${sNode}.sh
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/#sNode#/${sNode}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN1="s/#raftId#/$RAFTV/g"
-    sed -i $PATTERN1 ${sNode}/node/start_${sNode}.sh
-    PATTERN2="s/#networkId#/$NETV/g"
-    sed -i $PATTERN2 ${sNode}/node/start_${sNode}.sh
-    chmod +x ${sNode}/node/start_${sNode}.sh
+
+
+
+# Function to send post call to java endpoint getGenesis 
+function javaGetGenesis(){
+    response=$(curl -X GET $1)
+    echo $response > input1.json
+    sed -i 's/\\//g' input1.json
+    sed -i 's/"{ "config"/{ "config"/g' input1.json
+    sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input1.json
+    sed -i 's/,/,\n/g' input1.json
+    cat input1.json | jq '.netId' > lib/slave/net1.txt
+    sed -i 's/"//g' lib/slave/net1.txt
+    NETV=$(cat lib/slave/net1.txt)
+    genesis=$(jq '.genesis' input1.json)
+    echo $genesis > ${sNode}/node/genesis.json
+    #rm -rf input1.json
+    
+
 }
+
 
 
 # Function to send post call to java endpoint joinNode 
@@ -145,20 +158,51 @@ function javaJoinNode(){
     sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input.json
     sed -i 's/,/,\n/g' input.json
     cat input.json | jq '.raftID' > lib/slave/raft.txt
-    cat input.json | jq '.netId' > lib/slave/net.txt
+    #cat input.json | jq '.netId' > lib/slave/net.txt
     sed -i 's/"//g' lib/slave/raft.txt
-    sed -i 's/"//g' lib/slave/net.txt
+    #sed -i 's/"//g' lib/slave/net.txt
     RAFTV=$(cat lib/slave/raft.txt)
-    NETV=$(cat lib/slave/net.txt)
+    #NETV=$(cat lib/slave/net.txt)
     raftID=$(grep -F -m 1 'raftID' input.json)
     raftIDV=$(echo $raftID | tr -dc '0-9')
-    genesis=$(jq '.genesis' input.json)
-    echo $genesis > ${sNode}/node/genesis.json
-    rm -rf input.json
-    rm -rf lib/slave/raft.txt
-    rm -rf lib/slave/net.txt    
+    #genesis=$(jq '.genesis' input.json)
+    #echo $genesis > ${sNode}/node/genesis.json
+    #rm -rf input.json
+    #rm -rf lib/slave/raft.txt
+    #rm -rf lib/slave/net.txt    
 
 }
+
+# function to create start node script without --raftJoinExisting flag
+function copyStartTemplateG(){
+    cat lib/slave/start_template_slaveG.sh > ${sNode}/node/start_${sNode}.sh
+    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
+    PATTERN="s/#sNode#/${sNode}/g"
+    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
+    PATTERN1="s/#raftId#/$RAFTV/g"
+    sed -i $PATTERN1 ${sNode}/node/start_${sNode}.sh
+    PATTERN2="s/#networkId#/$NETV/g"
+    sed -i $PATTERN2 ${sNode}/node/start_${sNode}.sh
+    chmod +x ${sNode}/node/start_${sNode}.sh
+}
+
+
+
+
+# function to create start node script with --raft flag
+function copyStartTemplate(){
+    rm -rf ${sNode}/node/start_${sNode}.sh
+    cat lib/slave/start_template_slave.sh > ${sNode}/node/start_${sNode}.sh
+    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
+    PATTERN="s/#sNode#/${sNode}/g"
+    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
+    PATTERN1="s/#raftId#/$RAFTV/g"
+    sed -i $PATTERN1 ${sNode}/node/start_${sNode}.sh
+    PATTERN2="s/#networkId#/$NETV/g"
+    sed -i $PATTERN2 ${sNode}/node/start_${sNode}.sh
+    chmod +x ${sNode}/node/start_${sNode}.sh
+}
+
 
 # execute init script
 function executeInit(){
@@ -166,6 +210,8 @@ function executeInit(){
     ./init.sh
    
 }
+
+
 
 function executeStart(){
     #docker command to run node inside docker
@@ -179,23 +225,45 @@ function executeStart(){
            syneblock/quorum-master:quorum2.0.0 ./start_${sNode}.sh
 }
 
+
+function stopDocker(){
+    sleep 10
+    echo $sNode > mini
+    check=$(cat mini| cut -c1-5)
+    sudo docker ps | grep $check > name
+    nodename=$(awk 'END {print $NF}' name)
+    psId=$(sudo docker inspect --format="{{.Id}}" $nodename)
+    sudo docker rm -f $psId
+    sleep 5
+}
+
+
 function main(){    
     read -p $'\e[1;32mPlease enter slave node name: \e[0m' sNode 
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
-
     readInputs
     generateEnode
     copyConfTemplate
     createAccount
     generateKeyPair
     createInitNodeScript
-    javaJoinNode $EnodeV $sAccountAddress $url
-    copyStartTemplate
+    javaGetGenesis $urlG
+    copyStartTemplateG
     executeInit
     executeStart
-
+    echo $EnodeV 
+    echo $sAccountAddress 
+    echo $url
+    cd ..
+    javaJoinNode $EnodeV $sAccountAddress $url
+    stopDocker
+    copyStartTemplate
+    cd ${sNode}
+    executeStart
 }
+
 main
+    

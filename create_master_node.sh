@@ -115,7 +115,7 @@ function createAccount(){
     re="\{([^}]+)\}"
     if [[ $mAccountAddress =~ $re ]];
     then
-        mAccountAddress="0x"${BASH_REMATCH[1]};
+        mAccountAddress=${BASH_REMATCH[1]};
     fi
     cp datadir/keystore/* ${mNode}/node/qdata/keystore/${mNode}key
     PATTERN="s|#mNodeAddress#|${mAccountAddress}|g"
