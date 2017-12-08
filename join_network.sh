@@ -7,7 +7,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
-    read -p $'\e[1;33mPlease enter this node IP Address: \e[0m' mjThisPort	
+    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' mjThisPort	
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
     url=http://${pMainIp}:${mjPort}/joinNetwork
@@ -44,6 +44,18 @@ function generateEnode(){
     port=?raftport=$rPort
     EnodeV=$Enode1:$wPort$port
     cp nodekey ${sNode}/node/qdata/geth/.
+
+    cat lib/master/static-nodes_template.json > ${sNode}/node/qdata/static-nodes.json
+    PATTERN="s|#eNode#|${Enode}|g"
+    sed -i $PATTERN ${sNode}/node/qdata/static-nodes.json
+
+    PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
+    PATTERN2="s/#W_PORT#/${wPort}/g"
+    PATTERN3="s/#raftPprt#/${raPort}/g"
+
+    sed -i "$PATTERN1" ${sNode}/node/qdata/static-nodes.json
+    sed -i "$PATTERN2" ${sNode}/node/qdata/static-nodes.json
+    sed -i "$PATTERN3" ${sNode}/node/qdata/static-nodes.json
     rm enode.txt
     rm nodekey
 }
@@ -60,7 +72,7 @@ function generateEnode(){
     sed -i "$PATTERN2" ${sNode}/node/${sNode}.conf
     PATTERN="/"
     otherNodeUrl=""
-    mNode1=${nodes[0]}
+    sNode1=${nodes[0]}
  }
 
 #function to generate keyPair for node
@@ -69,7 +81,7 @@ function generateEnode(){
     constellation-node --generatekeys=${sNode}
 
     echo "Generating public and private backup keys for " ${sNode}", Please enter password or leave blank"
-    constellation-node --generatekeys=${sNode}a
+    constellation-node --generatekeys=${sNode}a	
 
     mv ${sNode}*.*  ${sNode}/node/keys/.
     
