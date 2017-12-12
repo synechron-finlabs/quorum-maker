@@ -7,7 +7,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
-    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' tjPort  
+    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' mjThisPort  
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
     url=http://${pMainIp}:${mjPort}/joinNetwork
@@ -20,7 +20,7 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ${sNode}/setup.conf
     echo 'RAFT_PORT='$raPort >> ${sNode}/setup.conf
     echo 'MASTER_IP='$pMainIp >> ${sNode}/setup.conf
-    echo 'THIS_NODE_MASTER_JAVA_PORT='$tjPort >> ${sNode}/setup.conf
+    echo 'THIS_NODE_MASTER_JAVA_PORT='$mjThisPort >> ${sNode}/setup.conf
     echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
 
@@ -131,14 +131,13 @@ function javaGetGenesis(){
     sed -i 's/"{ "config"/{ "config"/g' input1.json
     sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input1.json
     sed -i 's/,/,\n/g' input1.json
+    sed -i 's/ //g' input1.json
     cat input1.json | jq '.netId' > lib/slave/net1.txt
     sed -i 's/"//g' lib/slave/net1.txt
     NETV=$(cat lib/slave/net1.txt)
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
-    #rm -rf input1.json
-    
-
+    rm -rf input1.json
 }
 
 
@@ -154,23 +153,16 @@ function javaJoinNode(){
     }')
 
     echo $response > input.json
-    sed -i 's/\\//g' input.json
-    sed -i 's/"{ "config"/{ "config"/g' input.json
-    sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input.json
-    sed -i 's/,/,\n/g' input.json
     cat input.json | jq '.raftID' > lib/slave/raft.txt
-    #cat input.json | jq '.netId' > lib/slave/net.txt
     sed -i 's/"//g' lib/slave/raft.txt
-    #sed -i 's/"//g' lib/slave/net.txt
     RAFTV=$(cat lib/slave/raft.txt)
-    #NETV=$(cat lib/slave/net.txt)
     raftID=$(grep -F -m 1 'raftID' input.json)
+    echo $raftID
     raftIDV=$(echo $raftID | tr -dc '0-9')
-    #genesis=$(jq '.genesis' input.json)
-    #echo $genesis > ${sNode}/node/genesis.json
-    #rm -rf input.json
-    #rm -rf lib/slave/raft.txt
-    #rm -rf lib/slave/net.txt    
+    echo $raftIDV
+    rm -rf input.json
+    rm -rf lib/slave/raft.txt
+    rm -rf lib/slave/net.txt    
 
 }
 
@@ -202,7 +194,6 @@ function copyStartTemplate(){
     chmod +x ${sNode}/node/start_${sNode}.sh
 }
 
-
 # execute init script
 function executeInit(){
     cd ${sNode}
@@ -211,11 +202,10 @@ function executeInit(){
 }
 
 
-
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:$tjPort\
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjThisPort:$mjThisPort\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -228,7 +218,7 @@ function executeStart(){
 function stopDocker(){
     sleep 10
     echo $sNode > mini
-    check=$(cat mini| cut -c1-5)
+    check=$(cat mini| cut -c1-6)
     sudo docker ps | grep $check > name
     nodename=$(awk 'END {print $NF}' name)
     psId=$(sudo docker inspect --format="{{.Id}}" $nodename)
@@ -254,6 +244,7 @@ function main(){
     executeInit
     executeStart
     cd ..
+    sleep 45
     javaJoinNode $EnodeV $sAccountAddress $url
     stopDocker
     copyStartTemplate
