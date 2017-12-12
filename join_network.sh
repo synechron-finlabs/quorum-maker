@@ -7,7 +7,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
-    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' mjThisPort  
+    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' tjPort  
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
     url=http://${pMainIp}:${mjPort}/joinNetwork
@@ -20,7 +20,7 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ${sNode}/setup.conf
     echo 'RAFT_PORT='$raPort >> ${sNode}/setup.conf
     echo 'MASTER_IP='$pMainIp >> ${sNode}/setup.conf
-    echo 'THIS_NODE_MASTER_JAVA_PORT='$mjThisPort >> ${sNode}/setup.conf
+    echo 'THIS_NODE_MASTER_JAVA_PORT='$tjPort >> ${sNode}/setup.conf
     echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
 
@@ -43,8 +43,9 @@ function generateEnode(){
     fi
 
     Enode1=$Enode$pCurrentIp
-    port=?raftport=$rPort
-    EnodeV=$Enode1:$wPort$port
+    disc='?discport=0&'
+    port=raftport=$raPort
+    EnodeV=$Enode1:$wPort$disc$port
     cp nodekey ${sNode}/node/qdata/geth/.
 
     cat lib/master/static-nodes_template.json > ${sNode}/node/qdata/static-nodes.json
@@ -176,7 +177,6 @@ function javaJoinNode(){
 # function to create start node script without --raftJoinExisting flag
 function copyStartTemplateG(){
     cat lib/slave/start_template_slaveG.sh > ${sNode}/node/start_${sNode}.sh
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN="s/#sNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN1="s/#raftId#/$RAFTV/g"
@@ -193,7 +193,6 @@ function copyStartTemplateG(){
 function copyStartTemplate(){
     rm -rf ${sNode}/node/start_${sNode}.sh
     cat lib/slave/start_template_slave.sh > ${sNode}/node/start_${sNode}.sh
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN="s/#sNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN1="s/#raftId#/$RAFTV/g"
@@ -216,7 +215,7 @@ function executeInit(){
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjThisPort:$mjThisPort\
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:$tjPort\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -254,9 +253,6 @@ function main(){
     copyStartTemplateG
     executeInit
     executeStart
-    echo $EnodeV 
-    echo $sAccountAddress 
-    echo $url
     cd ..
     javaJoinNode $EnodeV $sAccountAddress $url
     stopDocker
