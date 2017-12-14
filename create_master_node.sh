@@ -174,7 +174,7 @@ function main(){
     createAccount
     executeInit
     executeStart
-    #javaService
+    javaService
     
 }
 main
