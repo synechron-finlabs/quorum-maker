@@ -7,7 +7,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
-    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' mjThisPort  
+    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' tjPort  
     read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
     url=http://${pMainIp}:${mjPort}/joinNetwork
@@ -20,7 +20,7 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ${sNode}/setup.conf
     echo 'RAFT_PORT='$raPort >> ${sNode}/setup.conf
     echo 'MASTER_IP='$pMainIp >> ${sNode}/setup.conf
-    echo 'THIS_NODE_MASTER_JAVA_PORT='$mjThisPort >> ${sNode}/setup.conf
+    echo 'THIS_NODE_MASTER_JAVA_PORT='$tjPort >> ${sNode}/setup.conf
     echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
 
@@ -71,9 +71,13 @@ function generateEnode(){
 
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#C_PORT#/${cPort}/g"
+    PATTERN3="s/#MAIN_NODE_IP#/${pMainIp}/g"
+    PATTERN4="s/#M_C_PORT#/${MCONSTV}/g"
 
     sed -i "$PATTERN1" ${sNode}/node/${sNode}.conf
     sed -i "$PATTERN2" ${sNode}/node/${sNode}.conf
+    sed -i "$PATTERN3" ${sNode}/node/${sNode}.conf
+    sed -i "$PATTERN4" ${sNode}/node/${sNode}.conf
     PATTERN="/"
     otherNodeUrl=""
     sNode1=${nodes[0]}
@@ -135,15 +139,21 @@ function javaGetGenesis(){
     cat input1.json | jq '.netId' > lib/slave/net1.txt
     sed -i 's/"//g' lib/slave/net1.txt
     NETV=$(cat lib/slave/net1.txt)
+    cat input1.json | jq '.constellationPort' > lib/slave/const.txt
+    sed -i 's/"//g' lib/slave/const.txt
+    MCONSTV=$(cat lib/slave/const.txt)
+    echo 'MASTER_CONSTELLATION_PORT='$MCONSTV >>  ${sNode}/setup.conf
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
-    rm -rf input1.json
+    #rm -rf input1.json
 }
 
 
 
 # Function to send post call to java endpoint joinNode 
 function javaJoinNode(){
+    cd ..
+    sleep 10
     response=$(curl -X POST \
     $3 \
     -H "content-type: application/json" \
@@ -157,10 +167,8 @@ function javaJoinNode(){
     sed -i 's/"//g' lib/slave/raft.txt
     RAFTV=$(cat lib/slave/raft.txt)
     raftID=$(grep -F -m 1 'raftID' input.json)
-    echo $raftID
     raftIDV=$(echo $raftID | tr -dc '0-9')
-    echo $raftIDV
-    rm -rf input.json
+    #rm -rf input.json
     rm -rf lib/slave/raft.txt
     rm -rf lib/slave/net.txt    
 
@@ -196,6 +204,9 @@ function copyStartTemplate(){
 
 # execute init script
 function executeInit(){
+    #path to run java service jar inside docker
+    cat lib/slave/java_service.sh > ${sNode}/node/java_service.sh
+    chmod +x ${sNode}/node/java_service.sh
     cd ${sNode}
     ./init.sh
    
@@ -205,20 +216,29 @@ function executeInit(){
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjThisPort:$mjThisPort\
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
-           syneblock/quorum-master:quorum2.0.0 ./start_${sNode}.sh
+           syneblock/quorum-master:quorum2.0.0 ./start_${sNode}.sh 
+#> sDockerHash.txt
 }
 
+function javaService(){
+	dockerH=$(cat sDockerHash.txt)
+	echo $dockerH
+	rm -f sDockerHash.txt
+	sudo docker exec -d -it $dockerH bash ./java_service.sh
+	sleep 10 
+	rm -f java_service.sh
+}
 
 function stopDocker(){
-    sleep 10
+    sleep 5
     echo $sNode > mini
-    check=$(cat mini| cut -c1-6)
+    check=$(cat mini| cut -c1-9)
     sudo docker ps | grep $check > name
     nodename=$(awk 'END {print $NF}' name)
     psId=$(sudo docker inspect --format="{{.Id}}" $nodename)
@@ -235,22 +255,20 @@ function main(){
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
     readInputs
     generateEnode
-    copyConfTemplate
     createAccount
     generateKeyPair
     createInitNodeScript
     javaGetGenesis $urlG
+    copyConfTemplate
     copyStartTemplateG
     executeInit
     executeStart
-    cd ..
-    sleep 45
     javaJoinNode $EnodeV $sAccountAddress $url
     stopDocker
     copyStartTemplate
     cd ${sNode}
     executeStart
+    #javaService
 }
-
 main
     

@@ -15,10 +15,10 @@ do
 			./join_network.sh
 			;;
 		3)
-			./lib/remove_node.sh
+			./remove_node.sh
 			;; 
 		4)
-			./lib/setup_network.sh
+			./setup_network.sh
 			;;
 		5)
 			flagmain=false

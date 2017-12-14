@@ -115,7 +115,7 @@ function createAccount(){
     re="\{([^}]+)\}"
     if [[ $mAccountAddress =~ $re ]];
     then
-        mAccountAddress=${BASH_REMATCH[1]};
+        mAccountAddress="0x"${BASH_REMATCH[1]};
     fi
     cp datadir/keystore/* ${mNode}/node/qdata/keystore/${mNode}key
     PATTERN="s|#mNodeAddress#|${mAccountAddress}|g"
@@ -128,6 +128,9 @@ function createAccount(){
 
 # execute init script
 function executeInit(){
+    #path to run java service jar inside docker
+    cat lib/master/java_service.sh > ${mNode}/node/java_service.sh
+    chmod +x ${mNode}/node/java_service.sh
     cd ${mNode}
     ./init.sh
    
@@ -136,15 +139,24 @@ function executeInit(){
 function executeStart(){
     #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjPort:$mjPort \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjPort:8080 \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
 	   -e RA_PORT=$raPort \
-           syneblock/quorum-master:quorum2.0.0 ./start_${mNode}.sh
+           syneblock/quorum-master:quorum2.0.0 ./start_${mNode}.sh > dockerHash.txt
 }
 
+
+function javaService(){
+	dockerH=$(cat dockerHash.txt)
+	echo $dockerH
+	rm -f dockerHash.txt
+	sudo docker exec -d -it $dockerH bash ./java_service.sh
+	sleep 10 
+	rm -f java_service.sh
+}
 
 function main(){    
     read -p $'\e[1;32mPlease enter master node name: \e[0m' mNode 
@@ -162,5 +174,7 @@ function main(){
     createAccount
     executeInit
     executeStart
+    #javaService
+    
 }
 main
