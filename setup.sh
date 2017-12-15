@@ -9,10 +9,10 @@ do
 	read option
 	case $option in
 		1)
-			./create_master_node.sh
+			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} syneblock/quorum-master:quorum2.0.0 lib/create_master_node.sh
 			;;
 		2)
-			./join_network.sh
+			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} syneblock/quorum-master:quorum2.0.0 lib/join_network.sh
 			;;
 		3)
 			./remove_node.sh
