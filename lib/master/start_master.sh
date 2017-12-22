@@ -45,7 +45,7 @@ function startNode(){
 function javaService(){
 	dockerH=$(cat dockerHash.txt)
 	echo $dockerH
-	rm -f dockerHash.txt
+	#rm -f dockerHash.txt
 	sudo docker exec -d -it $dockerH bash ./java_service.sh
 	sleep 10 
 	rm -f node/java_service.sh

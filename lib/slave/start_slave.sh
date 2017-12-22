@@ -34,29 +34,29 @@ function startNodetemplate(){
     rm -rf node/start_#nodename#.sh
     NODE=#nodename#
     NET=#netv#
-    cat lib/slave/start_template_slave.sh > node/start_#nodename#.sh
-    PATTERN="s/#sNode#/$NODE/g"
-    sed -i $PATTERN node/start_#nodename#.sh
-    PATTERN1="s/#raftId#/$raftIDV/g"
-    sed -i $PATTERN1 node/start_#nodename#.sh
-    PATTERN2="s/#netv#/$NET/g"
-    sed -i $PATTERN2 node/start_#nodename#.sh
 
+    cat lib/slave/start_template_slave.sh > ./${sNode}/node/start_#nodename#.sh
+    PATTERN="s/#sNode#/$NODE/g"
+    sed -i $PATTERN ./${sNode}/node/start_#nodename#.sh
+    PATTERN1="s/#raftId#/$raftIDV/g"
+    sed -i $PATTERN1 ./${sNode}/node/start_#nodename#.sh
+    PATTERN2="s/#networkId#/$NET/g"
+    sed -i $PATTERN2 ./${sNode}/node/start_#nodename#.sh
     PATTERN="s/#raftPort#/${raPort}/g"
-    sed -i $PATTERN node/start_#nodename#.sh
-    chmod +x node/start_#nodename#.sh
+    sed -i $PATTERN ./${sNode}/node/start_#nodename#.sh
    
-    chmod +x node/start_#nodename#.sh
+    chmod +x ./${sNode}/node/start_#nodename#.sh
 
 }
 
 
 function nodeConf(){
-    MIANIP=#pMainIp#
+    MAINIP=#pMainIp#
     MCONSTV=#mConstellation#
+
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#C_PORT#/${cPort}/g"
-    PATTERN3="s/#MAIN_NODE_IP#/$MIANIP/g"
+    PATTERN3="s/#MAIN_NODE_IP#/$MAINIP/g"
     PATTERN4="s/#M_C_PORT#/${MCONSTV}/g"
 
     sed -i "$PATTERN1" node/#nodename#.conf
@@ -65,15 +65,24 @@ function nodeConf(){
     sed -i "$PATTERN4" node/#nodename#.conf
 }
 
+function createEnode(){
+    echo "createEnode function "
+    enode1=#eNode#
+    disc='?discport=0&raftport='
+    echo "raPort" $raPort
+    enode=$enode1$pCurrentIp:$wPort$disc$raPort
+    echo "enode...."$enode
+}
 
 # Function to send post call to java endpoint joinNode 
 function javaJoinNode(){
-    enode=#enode#
+    echo "in javajoinnode...."
+    enode1=#eNode#
     add=#accountAdd#
     cd ..
     sleep 10
     response=$(curl -X POST \
-    $3 \
+    $2 \
     -H "content-type: application/json" \
     -d '{
        "enode":"'$1'",
@@ -86,12 +95,15 @@ function javaJoinNode(){
     RAFTV=$(cat raft.txt)
     raftID=$(grep -F -m 1 'raftID' input.json)
     raftIDV=$(echo $raftID | tr -dc '0-9')
+
     #rm -f input.json
     #rm -f raft.txt    
 
 }
 
 function startNode(){
+
+    cd ${sNode}
 #docker command to run node inside docker
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
@@ -104,16 +116,19 @@ function startNode(){
 }
 
 function stopDocker(){
-    dockerH=$(cat sDockerHash.txt)
+    dockerH=$(cat ${sNode}/sDockerHash.txt)
     echo $dockerH
     sudo docker rm -f $dockerH
     sleep 5
 }
 
 function main(){
+
+        sNode=$(cat ../nodeName.txt)
 	readInputs
 	staticNode
 	nodeConf
+        createEnode
         startNode
         javaJoinNode $enode $add $url
 	echo $url
@@ -122,8 +137,5 @@ function main(){
         stopDocker
         startNodetemplate
 	startNode
-	
-
-	
 }
 main

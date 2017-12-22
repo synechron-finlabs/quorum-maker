@@ -4,11 +4,11 @@ function readInputs(){
 
 	read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
 	read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
-
+        #read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pCurrentIp 
 	urlG=http://${pMainIp}:${mjPort}/sendGenesis
 
 	echo 'MASTER_IP='$pMainIp > ${sNode}/setup.conf
-        echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
+        echo 'MASTER_JAVA_PORT='$mjPort >  ${sNode}/setup.conf
 }
 
 #function to generate enode and create static-nodes.json file
@@ -28,19 +28,16 @@ function generateEnode(){
         Enode=${BASH_REMATCH[0]};
     fi
 
-    Enode1=$Enode$pCurrentIp
-    disc='?discport=0&'
-    port=raftport=$raPort
-    EnodeV=$Enode1:$wPort$disc$port
+    Enode1=$Enode
+    echo "eNODE" $Enode1
     cp nodekey ${sNode}/node/qdata/geth/.
 
     cat lib/master/static-nodes_template.json > ${sNode}/node/qdata/static-nodes.json
     PATTERN="s|#eNode#|${Enode}|g"
     sed -i $PATTERN ${sNode}/node/qdata/static-nodes.json
     
-
-    rm enode.txt
-    rm nodekey
+    #rm enode.txt
+    #rm nodekey
 }
 
 
@@ -113,18 +110,15 @@ function copyStartTemplateG(){
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#netv#/$NETV/g"
     sed -i $PATTERN ${sNode}/start.sh
-    
     PATTERN="s/#pMainIp#/$pMainIp/g"
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#mjavaPort#/$mjPort/g"
     sed -i $PATTERN ${sNode}/start.sh
-
     PATTERN="s/#accountAdd#/$sAccountAddress/g"
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#mConstellation#/$MCONSTV/g"
     sed -i $PATTERN ${sNode}/start.sh
-
-    PATTERN="s|#eNode#|${EnodeV}|g"
+    PATTERN="s|#eNode#|${Enode}|g"
     sed -i $PATTERN ${sNode}/start.sh
 
     chmod +x ${sNode}/start.sh
@@ -149,8 +143,9 @@ function javaGetGenesis(){
     echo 'MASTER_CONSTELLATION_PORT='$MCONSTV >>  ${sNode}/setup.conf
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
-    rm -f input1.json
-    rm -f net1.txt
+
+    #rm -f input1.json
+    #rm -f net1.txt
 }
 
 
@@ -179,6 +174,7 @@ function stopDocker(){
 
 function main(){    
     read -p $'\e[1;32mPlease enter slave node name: \e[0m' sNode 
+    echo $sNode > nodeName.txt
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
     mkdir -p ${sNode}/node/qdata
