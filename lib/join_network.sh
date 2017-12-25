@@ -4,11 +4,11 @@ function readInputs(){
 
 	read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
 	read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
-        #read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pCurrentIp 
+
 	urlG=http://${pMainIp}:${mjPort}/sendGenesis
 
 	echo 'MASTER_IP='$pMainIp > ${sNode}/setup.conf
-        echo 'MASTER_JAVA_PORT='$mjPort >  ${sNode}/setup.conf
+        echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
 
 #function to generate enode and create static-nodes.json file
@@ -27,17 +27,14 @@ function generateEnode(){
         then
         Enode=${BASH_REMATCH[0]};
     fi
-
-    Enode1=$Enode
-    echo "eNODE" $Enode1
     cp nodekey ${sNode}/node/qdata/geth/.
 
     cat lib/master/static-nodes_template.json > ${sNode}/node/qdata/static-nodes.json
     PATTERN="s|#eNode#|${Enode}|g"
     sed -i $PATTERN ${sNode}/node/qdata/static-nodes.json
     
-    #rm enode.txt
-    #rm nodekey
+    rm enode.txt
+    rm nodekey
 }
 
 
@@ -80,15 +77,6 @@ function createAccount(){
  #function to create node initialization script
 function createInitNodeScript(){
     cat lib/slave/init_slave.sh > ${sNode}/init.sh
-
-    START_CMD="start_$sNode.sh"
-
-    PATTERN="s/#start_cmd#/${START_CMD}/g"
-    sed -i $PATTERN ${sNode}/init.sh
-
-    PATTERN="s/#sNode#/${sNode}/g"
-    sed -i $PATTERN ${sNode}/init.sh
-
     chmod +x ${sNode}/init.sh
 }
 
@@ -143,17 +131,14 @@ function javaGetGenesis(){
     echo 'MASTER_CONSTELLATION_PORT='$MCONSTV >>  ${sNode}/setup.conf
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
-
-    #rm -f input1.json
-    #rm -f net1.txt
+    rm -f input1.json
+    rm -f net1.txt
 }
 
 
 # execute init script
 function executeInit(){
     #path to run java service jar inside docker
-    cat lib/slave/java_service.sh > ${sNode}/node/java_service.sh
-    chmod +x ${sNode}/node/java_service.sh
     cd ${sNode}
     ./init.sh
    

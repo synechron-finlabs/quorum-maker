@@ -29,29 +29,80 @@ function staticNode(){
     sed -i "$PATTERN3" node/qdata/static-nodes.json
 }
 
+
+function startNodetemplate(){
+    
+    net=#netv#
+    rm -rf node/start_#nodename#.sh
+
+    cat lib/slave/start_template_slave.sh > ./#nodename#/node/start_#nodename#.sh
+    PATTERN="s/#sNode#/$node/g"
+    sed -i $PATTERN ./#nodename#/node/start_#nodename#.sh
+    PATTERN1="s/#raftId#/$raftIDV/g"
+    sed -i $PATTERN1 ./#nodename#/node/start_#nodename#.sh
+    PATTERN2="s/#networkId#/$net/g"
+    sed -i $PATTERN2 ./#nodename#/node/start_#nodename#.sh
+    PATTERN="s/#raftPort#/${raPort}/g"
+    sed -i $PATTERN ./#nodename#/node/start_#nodename#.sh
+   
+    chmod +x ./#nodename#/node/start_#nodename#.sh
+
+}
+
+
 function nodeConf(){
     MAINIP=#pMainIp#
-    mConstV=#mConstellation#
+    MCONSTV=#mConstellation#
 
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#C_PORT#/${cPort}/g"
     PATTERN3="s/#MAIN_NODE_IP#/$MAINIP/g"
-    PATTERN4="s/#M_C_PORT#/${mConstV}/g"
+    PATTERN4="s/#M_C_PORT#/${MCONSTV}/g"
 
-    sed -i "$PATTERN1" node/${node}.conf
-    sed -i "$PATTERN2" node/${node}.conf
-    sed -i "$PATTERN3" node/${node}.conf
-    sed -i "$PATTERN4" node/${node}.conf
+    sed -i "$PATTERN1" node/#nodename#.conf
+    sed -i "$PATTERN2" node/#nodename#.conf
+    sed -i "$PATTERN3" node/#nodename#.conf
+    sed -i "$PATTERN4" node/#nodename#.conf
 }
 
 function createEnode(){
+    echo "createEnode function "
     enode1=#eNode#
     disc='?discport=0&raftport='
+    echo "raPort" $raPort
     enode=$enode1$pCurrentIp:$wPort$disc$raPort
+}
+
+# Function to send post call to java endpoint joinNode 
+function javaJoinNode(){
+    echo "in javajoinnode...."
+    enode1=#eNode#
+    add=#accountAdd#
+    cd ..
+    sleep 10
+    response=$(curl -X POST \
+    $2 \
+    -H "content-type: application/json" \
+    -d '{
+       "enode":"'$1'",
+       "accountAddress":"'$2'"
+    }')
+
+    echo $response > input.json
+    cat input.json | jq '.raftID' > raft.txt
+    sed -i 's/"//g' raft.txt
+    RAFTV=$(cat raft.txt)
+    raftID=$(grep -F -m 1 'raftID' input.json)
+    raftIDV=$(echo $raftID | tr -dc '0-9')
+
+    #rm -f input.json
+    #rm -f raft.txt    
+
 }
 
 function startNode(){
 
+   # cd #nodename#
 #docker command to up the slave node
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
@@ -63,32 +114,6 @@ function startNode(){
            syneblock/quorum-master:quorum2.0.0 ./#start_cmd# > sDockerHash.txt
 }
 
-# Function to send post call to java endpoint joinNode 
-function javaJoinNode(){
-    echo "in javajoinnode...."
-    enode1=#eNode#
-    add=#accountAdd#
-    sleep 10
-    response=$(curl -X POST \
-    $2 \
-    -H "content-type: application/json" \
-    -d '{
-       "enode":"'$1'"
-    }')
-
-    echo $response > input.json
-    cat input.json | jq '.raftID' > raft.txt
-    sed -i 's/"//g' raft.txt
-    RAFTV=$(cat raft.txt)
-    raftID=$(grep -F -m 1 'raftID' input.json)
-    raftIDV=$(echo $raftID | tr -dc '0-9')
-    rm -f input.json
-    rm -f raft.txt    
-
-}
-
-
-
 function stopDocker(){
     dockerH=$(cat sDockerHash.txt)
     echo $dockerH
@@ -96,32 +121,10 @@ function stopDocker(){
     sleep 5
 }
 
-function startNodetemplate(){
-    
-    net=#netv#
-    rm -rf node/start_${node}.sh
-    cd ..
-    cat lib/slave/java_service.sh > ./${node}/node/java_service.sh
-    chmod +x ./${node}/node/java_service.sh
-    cat lib/slave/start_template_slave.sh > ./${node}/node/start_${node}.sh
-    PATTERN="s/#sNode#/$node/g"
-    sed -i $PATTERN ./${node}/node/start_${node}.sh
-    PATTERN1="s/#raftId#/$raftIDV/g"
-    sed -i $PATTERN1 ./${node}/node/start_${node}.sh
-    PATTERN2="s/#networkId#/$net/g"
-    sed -i $PATTERN2 ./${node}/node/start_${node}.sh
-    PATTERN="s/#raftPort#/${raPort}/g"
-    sed -i $PATTERN ./${node}/node/start_${node}.sh
-   
-    chmod +x ./${node}/node/start_${node}.sh
-    cd ${node}
-
-}
-
 function javaService(){
 	dockerH=$(cat sDockerHash.txt)
 	echo $dockerH
-	rm -f sDockerHash.txt
+	#rm -f dockerHash.txt
 	sudo docker exec -d -it $dockerH bash ./java_service.sh
 	sleep 10 
 	rm -f node/java_service.sh
@@ -130,15 +133,15 @@ function javaService(){
 
 function main(){
         node=#nodename#
-
-        
-        readInputs
-
+	readInputs
 	staticNode
 	nodeConf
         createEnode
         startNode
-        javaJoinNode $enode $url
+        javaJoinNode $enode $add $url
+	echo $url
+	echo $enode
+	echo $add
         stopDocker
         startNodetemplate
 	startNode

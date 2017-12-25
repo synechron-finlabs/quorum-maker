@@ -25,15 +25,6 @@
 #function to create node initialization script
 function createInitNodeScript(){
     cat lib/master/init_master.sh > ${mNode}/init.sh
-
-    START_CMD="start_$mNode.sh"
-
-    PATTERN="s/#start_cmd#/${START_CMD}/g"
-    sed -i $PATTERN ${mNode}/init.sh
-
-    PATTERN="s/#mNode#/${mNode}/g"
-    sed -i $PATTERN ${mNode}/init.sh
-
     chmod +x ${mNode}/init.sh
 }
 
@@ -46,6 +37,7 @@ function copyStartTemplate(){
     PATTERN="s/#mNode#/${mNode}/g"
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     chmod +x ${mNode}/node/start_${mNode}.sh
+
     cat lib/master/start_master.sh > ${mNode}/start.sh
     START_CMD="start_${mNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
@@ -100,10 +92,9 @@ function createAccount(){
 
 # execute init script
 function executeInit(){
-    #path to run java service jar inside docker
-    cat lib/master/java_service.sh > ${mNode}/node/java_service.sh
-    chmod +x ${mNode}/node/java_service.sh
     cd ${mNode}
+    cat lib/master/java_service.sh > node/java_service.sh
+    chmod +x node/java_service.sh
     ./init.sh
    
 }
