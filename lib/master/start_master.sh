@@ -68,12 +68,12 @@ function javaService(){
     cat lib/master/java_service.sh > #nodename#/node/java_service.sh
     chmod +x ${mNode}/node/java_service.sh
     cd #nodename#
-    dockerH=$(cat dockerHash.txt)
-    echo $dockerH
-    rm -f dockerHash.txt
-    sudo docker exec -d -it $dockerH bash ./java_service.sh
-    sleep 5 
-    rm -f node/java_service.sh
+	dockerH=$(cat dockerHash.txt)
+	echo $dockerH
+	rm -f dockerHash.txt
+	sudo docker exec -d -it $dockerH bash ./java_service.sh
+	sleep 5 
+	rm -f node/java_service.sh
 }
 
 function main(){
