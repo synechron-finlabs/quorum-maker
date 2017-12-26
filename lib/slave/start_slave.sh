@@ -53,7 +53,7 @@ function createEnode(){
 function startNode(){
 
 #docker command to up the slave node
-    docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
+    docker run -d -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
@@ -91,7 +91,6 @@ function javaJoinNode(){
 
 function stopDocker(){
     dockerH=$(cat sDockerHash.txt)
-    echo $dockerH
     sudo docker rm -f $dockerH
     sleep 5
 }
