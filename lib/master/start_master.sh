@@ -18,6 +18,27 @@ function readInputs(){
 
 }
 
+function readFromFile(){
+    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
+    pCurrentIp=$var
+
+    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
+    rPort=$var
+    
+    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
+    wPort=$var
+    
+    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
+    cPort=$var
+    
+    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
+    raPort=$var
+    
+    var="$(grep -F -m 1 'MASTER_JAVA_PORT=' $1)"; var="${var#*=}"
+    mjPort=$var
+    
+}
+
 function staticNode(){
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#W_PORT#/${wPort}/g"
@@ -43,28 +64,42 @@ function startNode(){
 }
 
 function javaService(){
-	dockerH=$(cat dockerHash.txt)
-	echo $dockerH
-	rm -f dockerHash.txt
-	sudo docker exec -d -it $dockerH bash ./java_service.sh
-	sleep 10 
-	rm -f node/java_service.sh
+    cd ..
+    cat lib/master/java_service.sh > #nodename#/node/java_service.sh
+    chmod +x ${mNode}/node/java_service.sh
+    cd #nodename#
+    dockerH=$(cat dockerHash.txt)
+    echo $dockerH
+    rm -f dockerHash.txt
+    sudo docker exec -d -it $dockerH bash ./java_service.sh
+    sleep 5 
+    rm -f node/java_service.sh
 }
 
 function main(){
 
-     readInputs
+    if [ -z "$1" ]; then
+        FILE=setup.conf
+    else
+        FILE=$1
+    fi
+
+    if [ -f $FILE ]; then
+        readFromFile $FILE
+    else
+        readInputs
+    fi
+
      staticNode
      nodeConf
      startNode
-
-     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
+     docker run -d -it --name #nodename# -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjPort:8080 \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
-	   -e RA_PORT=$raPort \
+	       -e RA_PORT=$raPort \
            syneblock/quorum-master:quorum2.0.0 ./#start_cmd# > dockerHash.txt
      javaService
      
