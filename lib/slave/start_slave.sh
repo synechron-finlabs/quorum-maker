@@ -65,7 +65,7 @@ function startNode(){
 
 # Function to send post call to java endpoint joinNode 
 function javaJoinNode(){
-    echo "in javajoinnode...."
+    echo "Fetching RaftId..."
     enode1=#eNode#
     add=#accountAdd#
     sleep 10
@@ -97,7 +97,6 @@ function stopDocker(){
 }
 
 function startNodetemplate(){
-    
     net=#netv#
     rm -rf node/start_${node}.sh
     cd ..
@@ -130,10 +129,7 @@ function javaService(){
 
 function main(){
         node=#nodename#
-
-        
         readInputs
-
 	staticNode
 	nodeConf
         createEnode

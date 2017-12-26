@@ -119,7 +119,7 @@ function javaGetGenesis(){
     echo $response > input1.json
     sed -i 's/\\//g' input1.json
     sed -i 's/"{ "config"/{ "config"/g' input1.json
-    sed -i 's/"timestamp" : "0x00"}"/"timestamp" : "0x00"}/g' input1.json
+    sed -i 's/}"/}/g' input1.json
     sed -i 's/,/,\n/g' input1.json
     sed -i 's/ //g' input1.json
     cat input1.json | jq '.netId' > lib/slave/net1.txt
