@@ -92,9 +92,10 @@ function createAccount(){
 
 # execute init script
 function executeInit(){
+    #path to run java service jar inside docker
+    cat lib/master/java_service.sh > ${mNode}/node/java_service.sh
+    chmod +x ${mNode}/node/java_service.sh
     cd ${mNode}
-    cat lib/master/java_service.sh > node/java_service.sh
-    chmod +x node/java_service.sh
     ./init.sh
    
 }

@@ -129,6 +129,7 @@ function javaGetGenesis(){
     sed -i 's/"//g' lib/slave/const.txt
     MCONSTV=$(cat lib/slave/const.txt)
     echo 'MASTER_CONSTELLATION_PORT='$MCONSTV >>  ${sNode}/setup.conf
+    echo $MCONSTV
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
     rm -f input1.json
@@ -138,7 +139,6 @@ function javaGetGenesis(){
 
 # execute init script
 function executeInit(){
-    #path to run java service jar inside docker
     cd ${sNode}
     ./init.sh
    
