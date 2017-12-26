@@ -93,8 +93,6 @@ function createAccount(){
 # execute init script
 function executeInit(){
     cd ${mNode}
-    cat lib/master/java_service.sh > node/java_service.sh
-    chmod +x node/java_service.sh
     ./init.sh
    
 }

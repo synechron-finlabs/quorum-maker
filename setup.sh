@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Menu system for launching appropriate scripts based on user choice
+sudo usermod -aG docker $USER
 flagmain=true
 while  ("${flagmain}" = true) 
 do

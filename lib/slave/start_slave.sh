@@ -8,13 +8,13 @@ function readInputs(){
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' tjPort  
     
-    #append values in setup.conf file 
+    #append values in setup.conf file
+    echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf 
     echo 'CURRENT_IP='$pCurrentIp >> ./setup.conf
     echo 'RPC_PORT='$rPort >> ./setup.conf
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
-    echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
-    echo 'THIS_NODE_MASTER_JAVA_PORT='$tjPort >> ./setup.conf
+    echo 'THIS_NODE_JAVA_PORT='$tjPort >> ./setup.conf
     
     url=http://#pMainIp#:#mjavaPort#/joinNetwork
 }
@@ -53,7 +53,7 @@ function createEnode(){
 function startNode(){
 
 #docker command to up the slave node
-    docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home/node  \
+    docker run -d -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
@@ -65,7 +65,7 @@ function startNode(){
 
 # Function to send post call to java endpoint joinNode 
 function javaJoinNode(){
-    echo "in javajoinnode...."
+    echo "Fetching RaftId..."
     enode1=#eNode#
     add=#accountAdd#
     sleep 10
@@ -91,13 +91,11 @@ function javaJoinNode(){
 
 function stopDocker(){
     dockerH=$(cat sDockerHash.txt)
-    echo $dockerH
     sudo docker rm -f $dockerH
     sleep 5
 }
 
 function startNodetemplate(){
-    
     net=#netv#
     rm -rf node/start_${node}.sh
     cd ..
@@ -130,10 +128,7 @@ function javaService(){
 
 function main(){
         node=#nodename#
-
-        
         readInputs
-
 	staticNode
 	nodeConf
         createEnode
