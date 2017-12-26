@@ -133,7 +133,8 @@ function javaGetGenesis(){
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
     rm -f input1.json
-    rm -f net1.txt
+    rm -f lib/slave/net1.txt
+    rm -rf lib/slave/const.txt
 }
 
 
