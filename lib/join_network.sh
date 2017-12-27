@@ -6,6 +6,7 @@ function readInputs(){
 	read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
 
 	urlG=http://${pMainIp}:${mjPort}/sendGenesis
+    urlJ=http://${pMainIp}:${mjPort}/joinNetwork
 
 	echo 'MASTER_IP='$pMainIp > ${sNode}/setup.conf
         echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
@@ -86,30 +87,45 @@ function copyStartTemplateG(){
     PATTERN="s/#sNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
 
-    PATTERN2="s/#networkId#/$NETV/g"
+    PATTERN2="s/#networkId#/${NETV}/g"
     sed -i $PATTERN2 ${sNode}/node/start_${sNode}.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 
     cat lib/slave/start_slave.sh > ${sNode}/start.sh
+    cat lib/slave/start_slave_docker.sh > ${sNode}/start_docker.sh
     START_CMD="start_${sNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
     sed -i $PATTERN ${sNode}/start.sh
+    sed -i $PATTERN ${sNode}/start_docker.sh
     PATTERN="s/#nodename#/${sNode}/g"
     sed -i $PATTERN ${sNode}/start.sh
+    sed -i $PATTERN ${sNode}/start_docker.sh
     PATTERN="s/#netv#/$NETV/g"
     sed -i $PATTERN ${sNode}/start.sh
+    sed -i $PATTERN ${sNode}/start_docker.sh
     PATTERN="s/#pMainIp#/$pMainIp/g"
     sed -i $PATTERN ${sNode}/start.sh
+    sed -i $PATTERN ${sNode}/start_docker.sh
     PATTERN="s/#mjavaPort#/$mjPort/g"
-    sed -i $PATTERN ${sNode}/start.sh
+    sed -i $PATTERN ${sNode}/start_docker.sh
     PATTERN="s/#accountAdd#/$sAccountAddress/g"
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#mConstellation#/$MCONSTV/g"
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s|#eNode#|${Enode}|g"
     sed -i $PATTERN ${sNode}/start.sh
+    PATTERN="s|#url#|${urlJ}|g"
+    sed -i $PATTERN ${sNode}/start.sh
+
+    cat lib/slave/start_template_slave.sh > ${sNode}/node/start_${sNode}_final.sh   
+
+    PATTERN2="s/#networkId#/${NETV}/g"
+    sed -i $PATTERN2 ${sNode}/node/start_${sNode}_final.sh
+    chmod +x ${sNode}/node/start_${sNode}_final.sh
+
 
     chmod +x ${sNode}/start.sh
+    chmod +x ${sNode}/start_docker.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 }
 

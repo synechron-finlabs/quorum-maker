@@ -66,7 +66,7 @@ function startNode(){
 function javaService(){
     cd ..
     cat lib/master/java_service.sh > #nodename#/node/java_service.sh
-    chmod +x ${mNode}/node/java_service.sh
+    chmod +x #nodename#/node/java_service.sh
     cd #nodename#
 	dockerH=$(cat dockerHash.txt)
 	echo $dockerH
@@ -100,7 +100,7 @@ function main(){
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
 	       -e RA_PORT=$raPort \
-           syneblock/quorum-master:quorum2.0.0 ./#start_cmd# > dockerHash.txt
+           quorum-maker2.0 ./#start_cmd# > dockerHash.txt
      javaService
      
 	
