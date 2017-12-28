@@ -57,7 +57,6 @@ function javaJoinNode(){
     
     rm -f start_${node}.sh
     mv start_${node}_final.sh start_${node}.sh
-    echo "moved final raft start.sh"
     PATTERN1="s/#raftId#/$raftIDV/g"
     sed -i $PATTERN1 start_${node}.sh
     PATTERN="s/#sNode#/${node}/g"
@@ -65,13 +64,6 @@ function javaJoinNode(){
     rm -f input.json
     rm -f raft.txt    
 
-}
-
-function javaService(){
-	./java_service.sh
-    echo "inside java jar"
-	sleep 10 
-	rm -f java_service.sh
 }
 
 function main(){
@@ -85,6 +77,5 @@ function main(){
     createEnode
     startNode
     javaJoinNode $enode $url
-     #javaService
 }
 main

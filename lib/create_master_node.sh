@@ -44,6 +44,8 @@ function copyStartTemplate(){
     sed -i $PATTERN ${mNode}/start.sh
     PATTERN="s/#nodename#/${mNode}/g"
     sed -i $PATTERN ${mNode}/start.sh
+    PATTERN="s/#netid#/${NET_ID}/g"
+    sed -i $PATTERN ${mNode}/start.sh
     chmod +x ${mNode}/start.sh
 }
 

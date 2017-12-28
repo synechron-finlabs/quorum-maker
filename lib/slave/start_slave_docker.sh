@@ -54,7 +54,6 @@ function copyJavaService(){
 }
 
 function startNodetemplate(){
-    
     net=#netv#
     cd ..
     chmod +x ./${node}/node/start_${node}.sh

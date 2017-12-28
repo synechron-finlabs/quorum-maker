@@ -15,6 +15,8 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
     echo 'MASTER_JAVA_PORT='$mjPort >>  ./setup.conf
+    echo 'NETWORK_ID='$net >>  ./setup.conf
+    echo 'RAFT_ID='1 >>  ./setup.conf
 
 }
 
@@ -77,7 +79,7 @@ function javaService(){
 }
 
 function main(){
-
+    net=#netid#
     if [ -z "$1" ]; then
         FILE=setup.conf
     else
