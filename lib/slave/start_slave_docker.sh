@@ -23,15 +23,15 @@ function readInputs(){
 
 #docker command to up the slave node
 function startNodeforRaftPrep(){
-    echo "starting raft prep"
-    docker run -d -it --name $node -v $(pwd):/home  -w /${PWD##*}/home  \
+    echo "starting raft"
+    docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
-           quorum-maker2.0 ./start.sh > sDockerHash.txt
+           syneblock/quorum-master:quorum2.0.0 ./start.sh > sDockerHash.txt
 }
 
 function startNode(){
@@ -43,7 +43,7 @@ function startNode(){
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
-           quorum-maker2.0 ./start_${node}.sh > sDockerHash.txt
+           syneblock/quorum-master:quorum2.0.0 ./start_${node}.sh > sDockerHash.txt
 }
 
 function copyJavaService(){
@@ -57,17 +57,6 @@ function startNodetemplate(){
     
     net=#netv#
     cd ..
-    #rm -rf /home/node/start_${node}.sh
-    #cat lib/slave/start_template_slave.sh > ./${node}/node/start_${node}.sh
-    #PATTERN1="s/#raftId#/$raftIDV/g"
-    #sed -i $PATTERN1 ./${node}/node/start_${node}.sh
-    #PATTERN="s/#sNode#/${node}/g"
-    #sed -i $PATTERN ./${node}/node/start_${node}.sh
-    #PATTERN2="s/#networkId#/$net/g"
-    #sed -i $PATTERN2 ./${node}/node/start_${node}.sh
-    #PATTERN="s/#raftPort#/${RA_PORT}/g"
-    #sed -i $PATTERN ./${node}/node/start_${node}.sh
-   
     chmod +x ./${node}/node/start_${node}.sh
     cd ${node}
 

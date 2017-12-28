@@ -41,19 +41,14 @@ function startNode(){
 # Function to send post call to java endpoint joinNode 
 function javaJoinNode(){
     echo "Fetching RaftId..."
-    #enode1=#eNode#
-    #add=#accountAdd#
     sleep 10
-    #response=$(curl -X POST \
     curl -X POST \
     ${url} \
     -H "content-type: application/json" \
     -d '{
        "enode":"'${enode}'"
     }' > input.json
-    #}')
 
-    #echo $response > input.json
     cat input.json | jq '.raftID' > raft.txt
     sed -i 's/"//g' raft.txt
     RAFTV=$(cat raft.txt)
@@ -74,6 +69,7 @@ function javaJoinNode(){
 
 function javaService(){
 	./java_service.sh
+    echo "inside java jar"
 	sleep 10 
 	rm -f java_service.sh
 }
@@ -89,6 +85,6 @@ function main(){
     createEnode
     startNode
     javaJoinNode $enode $url
-    javaService
+     #javaService
 }
 main

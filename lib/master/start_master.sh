@@ -100,7 +100,7 @@ function main(){
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
 	       -e RA_PORT=$raPort \
-           quorum-maker2.0 ./#start_cmd# > dockerHash.txt
+           syneblock/quorum-master:quorum2.0.0 ./#start_cmd# > dockerHash.txt
      javaService
      
 	
