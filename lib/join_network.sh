@@ -8,8 +8,6 @@ function readInputs(){
 	urlG=http://${pMainIp}:${mjPort}/sendGenesis
     urlJ=http://${pMainIp}:${mjPort}/joinNetwork
 
-	echo 'MASTER_IP='$pMainIp > ${sNode}/setup.conf
-        echo 'MASTER_JAVA_PORT='$mjPort >>  ${sNode}/setup.conf
 }
 
 #function to generate enode and create static-nodes.json file

@@ -9,16 +9,45 @@ function readInputs(){
     read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' tjPort  
     
     #append values in setup.conf file
-    echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf 
     echo 'CURRENT_IP='$pCurrentIp >> ./setup.conf
     echo 'RPC_PORT='$rPort >> ./setup.conf
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
+    echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf 
     echo 'RAFT_PORT='$raPort >> ./setup.conf
     echo 'THIS_NODE_JAVA_PORT='$tjPort >> ./setup.conf
+    echo 'MASTER_IP='$mainIp > ${sNode}/setup.conf
+    echo 'MASTER_JAVA_PORT='$mJavaPort >>  ${sNode}/setup.conf
     
-    url=http://#pMainIp#:#mjavaPort#/joinNetwork
+    url=http://$mainIp:$mJavaPort/joinNetwork
     PATTERN="s|#url#|${url}|g"
     sed -i $PATTERN start.sh
+}
+
+function readFromFile(){
+    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
+    pCurrentIp=$var
+
+    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
+    rPort=$var
+    
+    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
+    wPort=$var
+    
+    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
+    cPort=$var
+    
+    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
+    raPort=$var
+    
+    var="$(grep -F -m 1 'THIS_NODE_JAVA_PORT=' $1)"; var="${var#*=}"
+    tjPort=$var
+
+    var="$(grep -F -m 1 'MASTER_IP=' $1)"; var="${var#*=}"
+    mainIp=$var
+
+    var="$(grep -F -m 1 'MASTER_JAVA_PORT=' $1)"; var="${var#*=}"
+    mJavaPort=$var
+    
 }
 
 #docker command to up the slave node
@@ -70,6 +99,19 @@ function stopDocker(){
 
 function main(){
     node=#nodename#
+    mainIp=#pMainIp#
+    mJavaPort=#mjavaPort#
+    #if [ -z "$1" ]; then
+    #    FILE=setup.conf
+    #else
+    #    FILE=$1
+    #fi
+
+    #if [ -f $FILE ]; then
+    #    readFromFile $FILE
+    #else
+    #    readInputs
+    #fi
     readInputs
     copyJavaService
     startNodeforRaftPrep
