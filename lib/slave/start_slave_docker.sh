@@ -52,7 +52,6 @@ function readFromFile(){
 
 #docker command to up the slave node
 function startNodeforRaftPrep(){
-    echo "starting raft"
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
@@ -64,7 +63,7 @@ function startNodeforRaftPrep(){
 }
 
 function startNode(){
-    
+    echo "joining node"
     docker run -d -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
