@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Menu system for launching appropriate scripts based on user choice
+
 flagmain=true
 while  ("${flagmain}" = true) 
 do
@@ -9,16 +10,16 @@ do
 	read option
 	case $option in
 		1)
-			./create_master_node.sh &
+			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} syneblock/quorum-master:quorum2.0.0 lib/create_master_node.sh
 			;;
 		2)
-			./join_network.sh &
+			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} syneblock/quorum-master:quorum2.0.0 lib/join_network.sh
 			;;
 		3)
-			./lib/remove_node.sh &
+			./remove_node.sh
 			;; 
 		4)
-			./lib/setup_network.sh &
+			./setup_network.sh
 			;;
 		5)
 			flagmain=false
