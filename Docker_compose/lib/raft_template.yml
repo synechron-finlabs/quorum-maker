@@ -1,0 +1,18 @@
+  #nodeName#:
+    container_name: #nodeName#
+    image: raft-docker-compose:latest
+    environment:
+      - CORE_#nodeName#_NETWORKID=#nodeName#
+      - CORE_NODE_IP=#nodeName#
+      - CORE_MASTERNODE_IP=#nodeName1# 
+    working_dir: /#nodeName#
+    command: ["bash" , "start_node.sh"]
+    volumes:
+      - ./#nodeName#:/#nodeName#
+    ports:
+      - #nodeport#:22000
+      #- #raport#:#raport#
+    networks:
+      vpcbr:
+        ipv4_address: 10.50.0.#docker_ip#
+
