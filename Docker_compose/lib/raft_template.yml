@@ -1,0 +1,17 @@
+  #nodeName#:
+    container_name: #nodeName#
+    image: syneblock/quorum-master:quorum2.0.0
+    environment:
+      - CORE_#nodeName#_NETWORKID=#nodeName#
+      - CORE_NODE_IP=#nodeName#
+      - CORE_MASTERNODE_IP=#nodeName1# 
+    working_dir: /#nodeName#
+    command: ["bash" , "start_node.sh"]
+    volumes:
+      - ./#nodeName#:/#nodeName#
+    ports:
+      - #nodeport#:22000
+    networks:
+      vpcbr:
+        ipv4_address: 10.50.0.#docker_ip#
+
