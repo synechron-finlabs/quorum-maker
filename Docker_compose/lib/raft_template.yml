@@ -1,6 +1,6 @@
   #nodeName#:
     container_name: #nodeName#
-    image: raft-docker-compose:latest
+    image: syneblock/quorum-master:quorum2.0.0
     environment:
       - CORE_#nodeName#_NETWORKID=#nodeName#
       - CORE_NODE_IP=#nodeName#
