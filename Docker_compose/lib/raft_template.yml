@@ -11,7 +11,6 @@
       - ./#nodeName#:/#nodeName#
     ports:
       - #nodeport#:22000
-      #- #raport#:#raport#
     networks:
       vpcbr:
         ipv4_address: 10.50.0.#docker_ip#
