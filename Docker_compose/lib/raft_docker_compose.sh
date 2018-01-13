@@ -161,7 +161,6 @@ function createNode(){
     sed -i $PATTERN ${pName}/${nodeName}/genesis.json
 
     cp ${pName}/${nodeName}/genesis.json ${pName}/genesis.json
-    #rm -rf datadir
 
     copyRaftStartTemplate 
 }
@@ -184,21 +183,15 @@ function generateEnode(){
     while [ $i -lt $max ]
     do
   
-        bootnode -genkey nodekey  2>enode.txt &
-        nodekey=$(cat nodekey)
-        pid=$!
-	    sleep 2
-	    kill -9 $pid
-	    wait $pid 2> /dev/null
-
-        bootnode -nodekey nodekey 2>enode.txt &
-        pid=$!
-	    sleep 2
-	    kill -9 $pid
-	    wait $pid 2> /dev/null
-	 
-        re="enode:.*@"
-	    enode=$(cat enode.txt)
+        bootnode -genkey nodekey
+    	nodekey=$(cat nodekey)
+	bootnode -nodekey nodekey 2>enode.txt &
+	pid=$!
+	sleep 5
+	kill -9 $pid
+	wait $pid 2> /dev/null
+	re="enode:.*@"
+	enode=$(cat enode.txt)
     
         if [[ $enode =~ $re ]];then
 
@@ -254,9 +247,10 @@ function generateEnode(){
         true $(( i++ ))
     done
     echo "copied static json file"
-    rm -rf Enode.txt
-    rm -rf Address.txt
-    echo "File deleted"
+    rm enode.txt
+    rm nodekey
+    rm Enode.txt
+    rm Address.txt
 
 }
 function displayPublicAddress(){
@@ -320,7 +314,7 @@ function main(){
     echo -e '\e[1;32mSuccessfully created project:\e[0m' $pName
     
     displayPublicAddress
-    #cleanup    
+    cleanup    
 }
 
 main
