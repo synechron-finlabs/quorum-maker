@@ -63,7 +63,6 @@ function startNodeforRaftPrep(){
 }
 
 function startNode(){
-    echo "joining node"
     docker run -d -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
            -e CURRENT_NODE_IP=$pCurrentIp \
@@ -72,6 +71,7 @@ function startNode(){
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
            syneblock/quorum-master:quorum2.0.0 ./start_${node}.sh > sDockerHash.txt
+	   rm -f sDockerHash.txt
 }
 
 function copyJavaService(){
@@ -93,6 +93,7 @@ function stopDocker(){
     dockerH=$(cat sDockerHash.txt)
     sleep 20
     sudo docker rm -f $dockerH
+    rm -f sDockerHash.txt
     sleep 5
 }
 
@@ -116,6 +117,14 @@ function main(){
     startNodeforRaftPrep
     stopDocker
     startNodetemplate
-	startNode
+    startNode
+    publickey=$(cat node/keys/$node.pub)
+     echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
+     echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
+     echo -e '-------------------------------------------------------------------------------------'
+     echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
+     echo -e '-------------------------------------------------------------------------------------'
+     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.'
+     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$tjPort '\e[1;32mfor NodeManager port'
 }
 main

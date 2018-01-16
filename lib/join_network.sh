@@ -2,12 +2,13 @@
  
 function readInputs(){
 
-	read -p $'\e[1;33mPlease enter main node IP Address: \e[0m' pMainIp
-	read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
+	read -p $'\e[1;31mPlease enter main node IP Address: \e[0m' pMainIp
+	read -p $'\e[1;33mPlease enter main java endpoint port: \e[0m' mjPort
 
 	urlG=http://${pMainIp}:${mjPort}/sendGenesis
-    urlJ=http://${pMainIp}:${mjPort}/joinNetwork
-
+   	urlJ=http://${pMainIp}:${mjPort}/joinNetwork
+ 	urln=http://${pMainIp}:${mjPort}/nodeDetails
+    	urlp=http://${pMainIp}:${mjPort}/peerDetails
 }
 
 #function to generate enode and create static-nodes.json file
@@ -143,7 +144,6 @@ function javaGetGenesis(){
     sed -i 's/"//g' lib/slave/const.txt
     MCONSTV=$(cat lib/slave/const.txt)
     echo 'MASTER_CONSTELLATION_PORT='$MCONSTV >>  ${sNode}/setup.conf
-    echo $MCONSTV
     genesis=$(jq '.genesis' input1.json)
     echo $genesis > ${sNode}/node/genesis.json
     rm -f input1.json
@@ -151,6 +151,17 @@ function javaGetGenesis(){
     rm -rf lib/slave/const.txt
 }
 
+function nodeDetails(){
+    response=$(curl -X GET $1)
+    echo $response > inputNode.json
+    rm -rf inputNode.json
+}
+
+function peerDetails(){
+    response=$(curl -X GET $1)
+    echo $response > inputPeer.json
+    rm -rf inputPeer.json
+}
 
 # execute init script
 function executeInit(){
@@ -174,7 +185,7 @@ function stopDocker(){
 
 function main(){    
     read -p $'\e[1;32mPlease enter slave node name: \e[0m' sNode 
-    echo $sNode > nodeName.txt
+    echo $sNode > nodeName
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
     mkdir -p ${sNode}/node/qdata
@@ -185,6 +196,8 @@ function main(){
     generateKeyPair
     createInitNodeScript
     javaGetGenesis $urlG
+    nodeDetails $urln
+    peerDetails $urlp
     copyConfTemplate
     copyStartTemplateG
     executeInit

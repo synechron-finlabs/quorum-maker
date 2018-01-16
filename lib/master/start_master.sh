@@ -5,8 +5,8 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
     read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
-    read -p $'\e[1;32mPlease enter this node raft port: \e[0m' raPort
-    read -p $'\e[1;35mPlease enter main java endpoint port: \e[0m' mjPort
+    read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
+    read -p $'\e[1;93mPlease enter main java endpoint port: \e[0m' mjPort
 
     #append values in Setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ./setup.conf
@@ -65,21 +65,16 @@ function startNode(){
     chmod +x node/start_#nodename#.sh
 }
 
-function javaService(){
+function copyJavaService(){
     cd ..
     cat lib/master/java_service.sh > #nodename#/node/java_service.sh
     chmod +x #nodename#/node/java_service.sh
     cd #nodename#
-	dockerH=$(cat dockerHash.txt)
-	echo $dockerH
-	rm -f dockerHash.txt
-	sudo docker exec -d -it $dockerH bash ./java_service.sh
-	sleep 5 
-	rm -f node/java_service.sh
 }
 
 function main(){
     net=#netid#
+     nodeNome=#nodename#
     if [ -z "$1" ]; then
         FILE=setup.conf
     else
@@ -95,6 +90,7 @@ function main(){
      staticNode
      nodeConf
      startNode
+     copyJavaService
      docker run -d -it --name #nodename# -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mjPort:8080 \
            -e CURRENT_NODE_IP=$pCurrentIp \
@@ -103,9 +99,15 @@ function main(){
            -e C_PORT=$cPort \
 	       -e RA_PORT=$raPort \
            syneblock/quorum-master:quorum2.0.0 ./#start_cmd# > dockerHash.txt
-     javaService
-     
-	
+     rm -f dockerHash.txt
+     publickey=$(cat node/keys/#nodename#.pub)
+     echo -e '\e[1;32mSuccessfully created and started \e[0m'$nodeNome
+     echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
+     echo -e '----------------------------------------------------------------------------------------'
+     echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
+     echo -e '----------------------------------------------------------------------------------------'
+     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.'
+     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$mjPort '\e[1;32mfor NodeManager port'
 	
 }
 main
