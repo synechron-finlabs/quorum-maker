@@ -25,5 +25,5 @@ echo "Installing Quorum Image"
 
 service docker restart
 sleep 5
-sudo docker pull syneblock/quorum
+sudo docker pull syneblock/istanbul:latest
 

@@ -8,7 +8,7 @@ function copyConfTemplate(){
     nodeName1=${nodes[0]}
     PATTERN2="s/#nodeName1#/${nodeName1}/g"
 
-    sed $PATTERN lib/template_docker.conf > ${pName}/setup/${nodeName}1.conf
+    sed $PATTERN lib/qourum.conf > ${pName}/setup/${nodeName}1.conf
     sed $PATTERN2 ${pName}/setup/${nodeName}1.conf > ${pName}/setup/${nodeName}.conf
     cp ${pName}/setup/${nodeName}.conf ${pName}/${nodeName}/qdata/${nodeName}.conf
 }
@@ -41,7 +41,7 @@ function createRaftDockerComposeFile(){
         PWD="$(pwd)"
         PATTERN4="s:#PWD#:${PWD}:g"
         
-        sed $PATTERN lib/raft_template.yml > ${pName}/setup/raft_compose_${nodeName}.yml
+        sed $PATTERN lib/docker_compose.yml > ${pName}/setup/raft_compose_${nodeName}.yml
 
         sed -i "$PATTERN2" ${pName}/setup/raft_compose_${nodeName}.yml
         sed -i "$PATTERN3" ${pName}/setup/raft_compose_${nodeName}.yml
@@ -67,7 +67,7 @@ function createRaftDockerComposeFile(){
 function copyRaftStartTemplate(){
 
     PATTERN="s/#nodeName#/${nodeName}/g"
-    sed $PATTERN lib/start_raft_docker_template.sh > ${pName}/setup/start_raft_${nodeName}.sh
+    sed $PATTERN lib/start_raft.sh > ${pName}/setup/start_raft_${nodeName}.sh
     sed -i "$PATTERN2" ${pName}/setup/start_raft_${nodeName}.sh
 
     cp ${pName}/setup/start_raft_${nodeName}.sh ${pName}/${nodeName}/start_node.sh
@@ -147,23 +147,51 @@ function createNode(){
 
     nodeAccountAddress="$(geth --datadir ${pName}/datadir --password lib/passwords.txt account new)"
     re="\{([^}]+)\}"
+
     if [[ $nodeAccountAddress =~ $re ]]; then
 
-        nodeAccountAddress=${BASH_REMATCH[1]};
+        nodeAccountAddress="0x"${BASH_REMATCH[1]};
     fi
 
+    createGenesis
+
     mv ${pName}/datadir/keystore/* ${pName}/${nodeName}/qdata/keystore/${nodeName}key
-
-    PATTERN="s|#nodeNameAddress#|${nodeAccountAddress}|g"
-
-    cat lib/genesis.json >> ${pName}/${nodeName}/genesis.json
-
-    sed -i $PATTERN ${pName}/${nodeName}/genesis.json
-
-    cp ${pName}/${nodeName}/genesis.json ${pName}/genesis.json
-    #rm -rf datadir
+   
+    cat accountAddress.txt > ${pName}/genesis.json
+    cat lib/genesis.json >> ${pName}/genesis.json
 
     copyRaftStartTemplate 
+    rm accountAddress.txt
+}
+
+function createGenesis(){
+
+        if [ $max == 1 ]; then
+
+		echo "{" >AccountAddresss.txt
+		echo ""'"alloc"'": {"  >>AccountAddresss.txt
+                echo '"'$nodeAccountAddress'": {' >>AccountAddresss.txt
+	        echo '"balance": "1000000000000000000000000000"' >>AccountAddresss.txt
+		echo "}}," >>AccountAddresss.txt
+                cat AccountAddresss.txt  >accountAddress.txt
+
+	else
+		if [ $i == 0 ]; then
+			echo "{" >AccountAddresss.txt
+		        echo ""'"alloc"'": {"  >>AccountAddresss.txt
+			echo  '"'$nodeAccountAddress'": {' >>AccountAddresss.txt
+			echo '"balance": "1000000000000000000000000000"' >>AccountAddresss.txt
+			echo "}," >>AccountAddresss.txt
+
+		elif [ $i -lt $max ] ;then
+			echo  '"'$nodeAccountAddress'": {' >>AccountAddresss.txt
+			echo '"balance": "1000000000000000000000000000"' >>AccountAddresss.txt
+			echo "}," >>AccountAddresss.txt
+		fi
+		sed '$ s/.$/},/' AccountAddresss.txt >accountAddress.txt
+                rm AccountAddresss.txt  
+	fi 
+
 }
 
 function cleanup(){
@@ -171,12 +199,12 @@ function cleanup(){
     rm -rf ${pName}/datadir
     rm -rf ${pName}/keys
     rm -rf ${pName}/setup
-    rm -f ${pName}/genesis.json
     
 }
 
 function generateEnode(){
 
+    echo ""
     echo "Generating Enodes...." 
     i=0
     j=0
@@ -184,21 +212,15 @@ function generateEnode(){
     while [ $i -lt $max ]
     do
   
-        bootnode -genkey nodekey  2>enode.txt &
-        nodekey=$(cat nodekey)
-        pid=$!
-	    sleep 2
-	    kill -9 $pid
-	    wait $pid 2> /dev/null
-
-        bootnode -nodekey nodekey 2>enode.txt &
-        pid=$!
-	    sleep 2
-	    kill -9 $pid
-	    wait $pid 2> /dev/null
-	 
-        re="enode:.*@"
-	    enode=$(cat enode.txt)
+        bootnode -genkey nodekey
+    	nodekey=$(cat nodekey)
+	bootnode -nodekey nodekey 2>enode.txt &
+	pid=$!
+	sleep 5
+	kill -9 $pid
+	wait $pid 2> /dev/null
+	re="enode:.*@"
+	enode=$(cat enode.txt)
     
         if [[ $enode =~ $re ]];then
 
@@ -230,8 +252,8 @@ function generateEnode(){
 
             if [ $i == 0 ]; then
 
-	            echo "["  > Enode.txt
-            echo ""'"'""$Enode$LOCAL_NODE_IP:"21000?discport=0&raftport=50400"""'"'"""," >> Enode.txt
+	    	echo "["  > Enode.txt
+            	echo ""'"'""$Enode$LOCAL_NODE_IP:"21000?discport=0&raftport=50400"""'"'"""," >> Enode.txt
 
             elif [ $i -lt $max ] ;then
             
@@ -253,10 +275,11 @@ function generateEnode(){
         cat Address.txt > ${pName}/${nodeName}/qdata/static-nodes.json
         true $(( i++ ))
     done
-    echo "copied static json file"
-    rm -rf Enode.txt
-    rm -rf Address.txt
-    echo "File deleted"
+
+    rm enode.txt
+    rm nodekey
+    rm Enode.txt
+    rm Address.txt
 
 }
 function displayPublicAddress(){
@@ -289,6 +312,7 @@ function main(){
     count=0;
 
     chown -R $username:$username .
+    echo ""
     read -p $'\e[1;33mPlease enter a project name: \e[0m' pName
     read -p $'\e[1;34mPlease enter the start port number [Default:22000]: \e[0m' pPort
      
@@ -299,7 +323,7 @@ function main(){
 
     i=0
     
-    read -p $'\e[1;33mPlease enter a node count: \e[0m' count
+    read -p $'\e[1;32mPlease enter a node count: \e[0m' count
 
     max=$count
     while [ $i -lt $max ]
@@ -320,7 +344,7 @@ function main(){
     echo -e '\e[1;32mSuccessfully created project:\e[0m' $pName
     
     displayPublicAddress
-    #cleanup    
+    cleanup    
 }
 
 main
