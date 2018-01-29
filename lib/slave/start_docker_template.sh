@@ -118,13 +118,13 @@ function main(){
     stopDocker
     startNodetemplate
     publickey=$(cat node/keys/$node.pub)
-     echo -e '************************************************************************************************************************'
      echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
      echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
+     echo -e '-------------------------------------------------------------------------------------'
      echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
+     echo -e '-------------------------------------------------------------------------------------'
      echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.\e[0m'
      echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$tgoPort '\e[1;32mfor NodeManager port.\e[0m'
-     echo -e '************************************************************************************************************************'
     startNode
 }
 main

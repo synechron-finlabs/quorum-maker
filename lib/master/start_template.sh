@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#read inputs from console
 function readInputs(){   
     read -p $'\e[1;31mPlease enter this node IP Address: \e[0m' pCurrentIp
     read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
@@ -9,7 +8,7 @@ function readInputs(){
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;93mPlease enter node manager port: \e[0m' mgoPort
 
-    #append values in setup.conf file 
+    #append values in Setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ./setup.conf
     echo 'RPC_PORT='$rPort >> ./setup.conf
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
@@ -42,7 +41,6 @@ function readFromFile(){
     
 }
 
-#function to create static node
 function staticNode(){
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#W_PORT#/${wPort}/g"
@@ -53,7 +51,6 @@ function staticNode(){
     sed -i "$PATTERN3" node/qdata/static-nodes.json
 }
 
-#function to replace values in node configuration file
 function nodeConf(){
     PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
     PATTERN2="s/#C_PORT#/${cPort}/g"
@@ -62,14 +59,12 @@ function nodeConf(){
     sed -i "$PATTERN2" node/#nodename#.conf
 }
 
-# copy raft port 
 function copyRaft(){
     PATTERN="s/#raftPort#/${raPort}/g"
     sed -i $PATTERN node/start_#nodename#.sh
     chmod +x node/start_#nodename#.sh
 }
 
-# function to copy go service template
 function copyGoService(){
     cd ..
     cat lib/master/go_service_template.sh > #nodename#/node/go_service.sh
@@ -77,7 +72,6 @@ function copyGoService(){
     cd #nodename#
 }
 
-# docker command to strat a node
 function startNode(){
     docker run -it --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
            -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:8000 \
@@ -104,6 +98,7 @@ function main(){
     else
         readInputs
     fi
+
      staticNode
      nodeConf
      copyRaft

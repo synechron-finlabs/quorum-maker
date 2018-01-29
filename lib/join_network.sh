@@ -8,6 +8,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
 
 	urlG=http://${pMainIp}:${mgoPort}/genesis
+   	urlJ=http://${pMainIp}:${mgoPort}/peer
 }
 
 #function to generate enode and create static-nodes.json file
@@ -130,13 +131,13 @@ function goGetGenesis(){
     pending="Pending user response"
     rejected="Access denied"
     response=$(curl -X POST \
-    --max-time 60 ${urlG} \
+    ${urlG} \
     -H "content-type: application/json" \
     -d '{
        "enode-id":"'${Enode1}'"
        "ip-address":"'${pMainIp}'"
     }')
-   if [ "$response" = "$pending" ]
+    if [ "$response" = "$pending" ]
     then 
         echo "Previous request to Join Network is still pending. Please try later. Program exiting" 
         exit 0
@@ -168,7 +169,6 @@ function goGetGenesis(){
     rm -f lib/slave/net1.txt
     rm -rf lib/slave/const.txt
     fi
-
 }
 
 function stopDocker(){
@@ -186,7 +186,6 @@ function stopDocker(){
 function executeInit(){
     cd ${sNode}
     ./init.sh
-   
 }
 
 function main(){    

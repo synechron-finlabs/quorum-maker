@@ -41,11 +41,11 @@ function startNode(){
 # Function to send post call to go endpoint joinNode 
 function goJoinNode(){
     echo "Fetching RaftId..."
+    sleep 10
     pending="Pending user response"
     rejected="Access denied"
-    sleep 10
     response=$(curl -X POST \
-    --max-time 60 ${url} \
+    ${url} \
     -H "content-type: application/json" \
     -d '{
        "enode-id":"'${enode}'"
@@ -64,6 +64,7 @@ function goJoinNode(){
         exit 0
     else
     echo $response > input.json
+
     cat input.json | jq '.raftID' > raft.txt
     sed -i 's/"//g' raft.txt
     RAFTV=$(cat raft.txt)
@@ -76,8 +77,10 @@ function goJoinNode(){
     sed -i $PATTERN1 start_${node}.sh
     PATTERN="s/#sNode#/${node}/g"
     sed -i $PATTERN start_${node}.sh
-    rm -f input.json
+    #rm -f input.json
     rm -f raft.txt    
+    fi
+
 }
 
 function main(){

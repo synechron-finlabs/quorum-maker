@@ -14,3 +14,4 @@ mv nodekey node/qdata/geth/
 mv static-nodes.json node/qdata/
 cd node/
 geth --datadir qdata init genesis.json
+
