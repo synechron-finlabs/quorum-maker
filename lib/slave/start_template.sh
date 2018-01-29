@@ -38,16 +38,32 @@ function startNode(){
     ./#start_cmd#
 }
 
-# Function to send post call to java endpoint joinNode 
-function javaJoinNode(){
+# Function to send post call to go endpoint joinNode 
+function goJoinNode(){
     echo "Fetching RaftId..."
     sleep 10
-    curl -X POST \
+    pending="Pending user response"
+    rejected="Access denied"
+    response=$(curl -X POST \
     ${url} \
     -H "content-type: application/json" \
     -d '{
-       "enode":"'${enode}'"
-    }' > input.json
+       "enode-id":"'${enode}'"
+    }') 
+    if [ "$response" = "$pending" ]
+    then 
+        echo "Previous request to Join Network is still pending. Please try later. Program exiting" 
+        exit 0
+    elif [ "$response" = "$rejected" ]
+    then
+        echo "Request to Join Network was rejected. Program exiting"
+        exit 0
+    elif [ "$response" = "" ]
+    then
+        echo "Waited too long for approval from Master node. Please try later. Program exiting"
+        exit 0
+    else
+    echo $response > input.json
 
     cat input.json | jq '.raftID' > raft.txt
     sed -i 's/"//g' raft.txt
@@ -61,8 +77,9 @@ function javaJoinNode(){
     sed -i $PATTERN1 start_${node}.sh
     PATTERN="s/#sNode#/${node}/g"
     sed -i $PATTERN start_${node}.sh
-    rm -f input.json
+    #rm -f input.json
     rm -f raft.txt    
+    fi
 
 }
 
@@ -76,6 +93,6 @@ function main(){
 	nodeConf
     createEnode
     startNode
-    javaJoinNode $enode $url
+    goJoinNode $enode $url
 }
 main
