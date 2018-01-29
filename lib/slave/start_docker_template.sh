@@ -3,10 +3,8 @@
 function readInputs(){  
     read -p $'\e[1;31mPlease enter this node IP Address: \e[0m' pCurrentIp
     read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
-    read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
-    read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
-    read -p $'\e[1;33mPlease enter this node java endpoint Port: \e[0m' tjPort  
+    read -p $'\e[1;33mPlease enter node manager Port: \e[0m' tgoPort  
     
     #append values in setup.conf file
     echo 'CURRENT_IP='$pCurrentIp >> ./setup.conf
@@ -14,11 +12,11 @@ function readInputs(){
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf 
     echo 'RAFT_PORT='$raPort >> ./setup.conf
-    echo 'THIS_NODE_JAVA_PORT='$tjPort >> ./setup.conf
+    echo 'THIS_NODEMANAGER_PORT='$tgoPort >> ./setup.conf
     echo 'MASTER_IP='$mainIp > ${sNode}/setup.conf
-    echo 'MASTER_JAVA_PORT='$mJavaPort >>  ${sNode}/setup.conf
+    echo 'NODEMANAGER_PORT='$mgoPort >>  ${sNode}/setup.conf
     
-    url=http://$mainIp:$mJavaPort/joinNetwork
+    url=http://$mainIp:$mgoPort/peer
     PATTERN="s|#url#|${url}|g"
     sed -i $PATTERN start.sh
 }
@@ -39,45 +37,44 @@ function readFromFile(){
     var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
     raPort=$var
     
-    var="$(grep -F -m 1 'THIS_NODE_JAVA_PORT=' $1)"; var="${var#*=}"
-    tjPort=$var
+    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
+    tgoPort=$var
 
     var="$(grep -F -m 1 'MASTER_IP=' $1)"; var="${var#*=}"
     mainIp=$var
 
-    var="$(grep -F -m 1 'MASTER_JAVA_PORT=' $1)"; var="${var#*=}"
-    mJavaPort=$var
+    var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
+    mgoPort=$var
     
 }
 
 #docker command to up the slave node
 function startNodeforRaftPrep(){
     docker run -d -it -v $(pwd):/home  -w /${PWD##*}/home  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:8000\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
-           syneblock/quorum-master:quorum2.0.0 ./start.sh > sDockerHash.txt
+           $dockerImage ./start.sh > sDockerHash.txt
 }
 
 function startNode(){
-    docker run -d -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tjPort:8080\
+    docker run -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:8000\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
-           syneblock/quorum-master:quorum2.0.0 ./start_${node}.sh > sDockerHash.txt
-	   rm -f sDockerHash.txt
+           $dockerImage ./start_${node}.sh
 }
 
-function copyJavaService(){
+function copyGoService(){
     cd ..
-    cat lib/slave/java_service.sh > ./${node}/node/java_service.sh
-    chmod +x ./${node}/node/java_service.sh
+    cat lib/slave/go_service_template.sh > ./${node}/node/go_service.sh
+    chmod +x ./${node}/node/go_service.sh
     cd ${node}
 }
 
@@ -98,9 +95,12 @@ function stopDocker(){
 }
 
 function main(){
+    dockerImage=syneblock/quorum-master:Go2.0
     node=#nodename#
     mainIp=#pMainIp#
-    mJavaPort=#mjavaPort#
+    mgoPort=#mgoPort#
+    raPort=#raftPort#
+    wPort=#wisPort#
     #if [ -z "$1" ]; then
     #    FILE=setup.conf
     #else
@@ -113,18 +113,18 @@ function main(){
     #    readInputs
     #fi
     readInputs
-    copyJavaService
+    copyGoService
     startNodeforRaftPrep
     stopDocker
     startNodetemplate
-    startNode
     publickey=$(cat node/keys/$node.pub)
+     echo -e '************************************************************************************************************************'
      echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
      echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
-     echo -e '-------------------------------------------------------------------------------------'
      echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
-     echo -e '-------------------------------------------------------------------------------------'
-     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.'
-     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$tjPort '\e[1;32mfor NodeManager port'
+     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.\e[0m'
+     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$tgoPort '\e[1;32mfor NodeManager port.\e[0m'
+     echo -e '************************************************************************************************************************'
+    startNode
 }
 main

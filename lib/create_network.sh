@@ -4,10 +4,6 @@
  function copyConfTemplate(){
     PATTERN="s/#mNode#/${mNode}/g"
     sed $PATTERN lib/master/template.conf > ${mNode}/node/${mNode}.conf
-    PATTERN="/"
-    otherNodeUrl=""
-    mNode1=${nodes[0]}
-
  }
 
 #function to generate keyPair for node
@@ -24,7 +20,7 @@
 
 #function to create node initialization script
 function createInitNodeScript(){
-    cat lib/master/init_master.sh > ${mNode}/init.sh
+    cat lib/master/init_template.sh > ${mNode}/init.sh
     chmod +x ${mNode}/init.sh
 }
 
@@ -32,13 +28,13 @@ function createInitNodeScript(){
 function copyStartTemplate(){
     NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
     PATTERN="s|#network_Id_value#|${NET_ID}|g"
-    cat lib/master/start_template_master.sh > ${mNode}/node/start_${mNode}.sh
+    cat lib/master/start_quorum_template.sh > ${mNode}/node/start_${mNode}.sh
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     PATTERN="s/#mNode#/${mNode}/g"
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     chmod +x ${mNode}/node/start_${mNode}.sh
 
-    cat lib/master/start_master.sh > ${mNode}/start.sh
+    cat lib/master/start_template.sh > ${mNode}/start.sh
     START_CMD="start_${mNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
     sed -i $PATTERN ${mNode}/start.sh
