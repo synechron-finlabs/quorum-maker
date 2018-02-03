@@ -1,6 +1,6 @@
   #nodeName#:
     container_name: #nodeName#
-    image: syneblock/istanbul:latest
+    image: syneblock/quorum-maker:2.0
     environment:
       - CORE_#nodeName#_NETWORKID=#nodeName#
       - CORE_NODE_IP=#nodeName#

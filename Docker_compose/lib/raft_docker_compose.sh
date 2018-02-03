@@ -161,35 +161,35 @@ function createNode(){
     cat lib/genesis.json >> ${pName}/genesis.json
 
     copyRaftStartTemplate 
-    rm accountAddress.txt
+    
 }
 
 function createGenesis(){
 
         if [ $max == 1 ]; then
 
-		echo "{" >AccountAddresss.txt
-		echo ""'"alloc"'": {"  >>AccountAddresss.txt
-                echo '"'$nodeAccountAddress'": {' >>AccountAddresss.txt
-	        echo '"balance": "1000000000000000000000000000"' >>AccountAddresss.txt
-		echo "}}," >>AccountAddresss.txt
-                cat AccountAddresss.txt  >accountAddress.txt
+		echo "{" >AccountAddress.txt
+		echo ""'"alloc"'": {"  >>AccountAddress.txt
+                echo '"'$nodeAccountAddress'": {' >>AccountAddress.txt
+	        echo '"balance": "1000000000000000000000000000"' >>AccountAddress.txt
+		echo "}}," >>AccountAddress.txt
+                cat AccountAddress.txt  >accountAddress.txt
 
 	else
 		if [ $i == 0 ]; then
-			echo "{" >AccountAddresss.txt
-		        echo ""'"alloc"'": {"  >>AccountAddresss.txt
-			echo  '"'$nodeAccountAddress'": {' >>AccountAddresss.txt
-			echo '"balance": "1000000000000000000000000000"' >>AccountAddresss.txt
-			echo "}," >>AccountAddresss.txt
+			echo "{" >AccountAddress.txt
+		        echo ""'"alloc"'": {"  >>AccountAddress.txt
+			echo  '"'$nodeAccountAddress'": {' >>AccountAddress.txt
+			echo '"balance": "1000000000000000000000000000"' >>AccountAddress.txt
+			echo "}," >>AccountAddress.txt
 
 		elif [ $i -lt $max ] ;then
-			echo  '"'$nodeAccountAddress'": {' >>AccountAddresss.txt
-			echo '"balance": "1000000000000000000000000000"' >>AccountAddresss.txt
-			echo "}," >>AccountAddresss.txt
+			echo  '"'$nodeAccountAddress'": {' >>AccountAddress.txt
+			echo '"balance": "1000000000000000000000000000"' >>AccountAddress.txt
+			echo "}," >>AccountAddress.txt
 		fi
-		sed '$ s/.$/},/' AccountAddresss.txt >accountAddress.txt
-                rm AccountAddresss.txt  
+		sed '$ s/.$/},/' AccountAddress.txt >accountAddress.txt
+                 
 	fi 
 
 }
@@ -199,7 +199,12 @@ function cleanup(){
     rm -rf ${pName}/datadir
     rm -rf ${pName}/keys
     rm -rf ${pName}/setup
-    
+    rm accountAddress.txt
+    rm AccountAddress.txt
+    rm enode.txt
+    rm nodekey
+    rm Enode.txt
+    rm Address.txt
 }
 
 function generateEnode(){
@@ -275,11 +280,6 @@ function generateEnode(){
         cat Address.txt > ${pName}/${nodeName}/qdata/static-nodes.json
         true $(( i++ ))
     done
-
-    rm enode.txt
-    rm nodekey
-    rm Enode.txt
-    rm Address.txt
 
 }
 function displayPublicAddress(){

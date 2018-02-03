@@ -42,7 +42,7 @@ function main(){
 
     init
 
-    docker run -it -v $(pwd)/$line:/${PWD##*/}  -w /${PWD##*/} syneblock/istanbul:latest lib/setup.sh
+    docker run -it -v $(pwd)/$line:/${PWD##*/}  -w /${PWD##*/} syneblock/quorum-maker:2.0 lib/setup.sh
 }
 
 main
