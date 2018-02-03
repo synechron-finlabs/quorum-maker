@@ -161,8 +161,6 @@ function createNode(){
     cat lib/genesis.json >> ${pName}/genesis.json
 
     copyRaftStartTemplate 
-    rm accountAddress.txt
-    rm AccountAddress.txt
     
 }
 
@@ -201,7 +199,12 @@ function cleanup(){
     rm -rf ${pName}/datadir
     rm -rf ${pName}/keys
     rm -rf ${pName}/setup
-    
+    rm accountAddress.txt
+    rm AccountAddress.txt
+    rm enode.txt
+    rm nodekey
+    rm Enode.txt
+    rm Address.txt
 }
 
 function generateEnode(){
@@ -277,11 +280,6 @@ function generateEnode(){
         cat Address.txt > ${pName}/${nodeName}/qdata/static-nodes.json
         true $(( i++ ))
     done
-
-    rm enode.txt
-    rm nodekey
-    rm Enode.txt
-    rm Address.txt
 
 }
 function displayPublicAddress(){
