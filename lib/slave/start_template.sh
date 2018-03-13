@@ -1,98 +1,140 @@
 #!/bin/bash
-function staticNode(){
-    echo "in static node"
-    PATTERN1="s/#CURRENT_IP#/${CURRENT_NODE_IP}/g"
-    PATTERN2="s/#W_PORT#/${W_PORT}/g"
-    PATTERN3="s/#raftPprt#/${RA_PORT}/g"
 
-    sed -i "$PATTERN1" /home/node/qdata/static-nodes.json
-    sed -i "$PATTERN2" /home/node/qdata/static-nodes.json
-    sed -i "$PATTERN3" /home/node/qdata/static-nodes.json
+# create setup configurations
+function createSetupConf(){  
+
+    #append values in setup.conf file
+    echo 'CURRENT_IP='$pCurrentIp > ./setup.conf
+    echo 'RPC_PORT='$rPort >> ./setup.conf
+    echo 'WHISPER_PORT='$wPort >> ./setup.conf
+    echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf 
+    echo 'RAFT_PORT='$raPort >> ./setup.conf
+    echo 'THIS_NODEMANAGER_PORT='$tgoPort >> ./setup.conf
+    echo 'MASTER_IP='$pMainIp >> ./setup.conf
+    echo 'NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
+
+   	url=http://${pMainIp}:${mgoPort}/peer
 }
 
+function readFromFile(){
+    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
+    pCurrentIp=$var
+
+    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
+    rPort=$var
+    
+    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
+    wPort=$var
+    
+    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
+    cPort=$var
+    
+    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
+    raPort=$var
+    
+    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
+    tgoPort=$var
+
+    var="$(grep -F -m 1 'MASTER_IP=' $1)"; var="${var#*=}"
+    mainIp=$var
+
+    var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
+    mgoPort=$var 
+}
+
+# create node configuration
 function nodeConf(){
-    echo "in nodeconf"
-    MAINIP=#pMainIp#
+    cd node
     mConstV=#mConstellation#
 
-    PATTERN1="s/#CURRENT_IP#/${CURRENT_NODE_IP}/g"
-    PATTERN2="s/#C_PORT#/${C_PORT}/g"
-    PATTERN3="s/#MAIN_NODE_IP#/$MAINIP/g"
+    PATTERN1="s/#CURRENT_IP#/$pCurrentIp/g"
+    PATTERN2="s/#C_PORT#/$cPort/g"
+    PATTERN3="s/#MAIN_NODE_IP#/$pMainIp/g"
     PATTERN4="s/#M_C_PORT#/${mConstV}/g"
 
-    sed -i "$PATTERN1" /home/node/${node}.conf
-    sed -i "$PATTERN2" /home/node/${node}.conf
-    sed -i "$PATTERN3" /home/node/${node}.conf
-    sed -i "$PATTERN4" /home/node/${node}.conf
+    sed -i "$PATTERN1" ${node}.conf
+    sed -i "$PATTERN2" ${node}.conf
+    sed -i "$PATTERN3" ${node}.conf
+    sed -i "$PATTERN4" ${node}.conf
+    
 }
 
 function createEnode(){
-    echo "in create enode"
-    enode1=#eNode#
-    disc='?discport=0&raftport='
-    enode=$enode1$CURRENT_NODE_IP:$W_PORT$disc$RA_PORT
-}
-
-function startNode(){
-    echo "start node"
-    ./#start_cmd#
+    enode=$(cat enode1.txt)
 }
 
 # Function to send post call to go endpoint joinNode 
 function goJoinNode(){
     echo "Fetching RaftId..."
     sleep 10
-    pending="Pending user response"
-    rejected="Access denied"
     response=$(curl -X POST \
-    ${url} \
+    --max-time 310 ${url} \
     -H "content-type: application/json" \
     -d '{
-       "enode-id":"'${enode}'"
+       "enode-id":"'${enode}'",
+       "ip-address":"'${pCurrentIp}'"
     }') 
-    if [ "$response" = "$pending" ]
-    then 
-        echo "Previous request to Join Network is still pending. Please try later. Program exiting" 
-        exit 0
-    elif [ "$response" = "$rejected" ]
-    then
-        echo "Request to Join Network was rejected. Program exiting"
-        exit 0
-    elif [ "$response" = "" ]
-    then
-        echo "Waited too long for approval from Master node. Please try later. Program exiting"
-        exit 0
-    else
-    echo $response > input.json
-
-    cat input.json | jq '.raftID' > raft.txt
-    sed -i 's/"//g' raft.txt
-    RAFTV=$(cat raft.txt)
-    raftID=$(grep -F -m 1 'raftID' input.json)
-    raftIDV=$(echo $raftID | tr -dc '0-9')
-    
-    rm -f start_${node}.sh
-    mv start_${node}_final.sh start_${node}.sh
-    PATTERN1="s/#raftId#/$raftIDV/g"
-    sed -i $PATTERN1 start_${node}.sh
-    PATTERN="s/#sNode#/${node}/g"
+    echo $response > input.txt
+    RAFTV=$(cat input.txt)
+    PATTERN="s/#raftId#/$RAFTV/g"
     sed -i $PATTERN start_${node}.sh
-    #rm -f input.json
-    rm -f raft.txt    
-    fi
+    rm -f input.txt
+    rm -f enode1.txt
+    cd ..
+}
 
+# copy node Service File to run service inside docker
+function copyGoService(){
+    cd ..
+    cat lib/slave/nodemanager_template.sh > #nodename#/node/nodemanager.sh
+    PATTERN="s/#nrpcPort#/${rPort}/g"
+    sed -i $PATTERN #nodename#/node/nodemanager.sh
+    PATTERN="s/#servicePort#/${tgoPort}/g"
+    sed -i $PATTERN #nodename#/node/nodemanager.sh
+    chmod +x #nodename#/node/nodemanager.sh
+    cd #nodename#
+}
+
+# docker command to join th network 
+function startNode(){
+    docker run -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort\
+           -e CURRENT_NODE_IP=$pCurrentIp \
+           -e R_PORT=$rPort \
+           -e W_PORT=$wPort \
+           -e C_PORT=$cPort \
+           -e RA_PORT=$raPort \
+           $dockerImage ./#start_cmd#
 }
 
 function main(){
+    dockerImage=syneblock/quorum-maker:2.0
     node=#nodename#
-    url=#url#
-    echo ${node}
-    echo ${url}
-    cd node
-	staticNode
+    pMainIp=#pmainip#
+    pCurrentIp=#pCurrentIp#
+    rPort=#rpcPort#
+    cPort=#constPort#
+    tgoPort=#tgoPort#
+    wPort=#wisport#
+    raPort=#raftPort#
+    mgoPort=#mgoPort#
+    createSetupConf
 	nodeConf
     createEnode
+    goJoinNode
+    copyGoService
+    publickey=$(cat node/keys/$node.pub)
+
+    echo -e '****************************************************************************************************************'
+
+    echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
+    echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
+    echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
+    echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.\e[0m'
+    echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$tgoPort '\e[1;32mfor NodeManager port.\e[0m'
+
+    echo -e '****************************************************************************************************************'
+
     startNode
-    goJoinNode $enode $url
 }
 main

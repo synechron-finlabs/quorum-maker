@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Menu system for launching appropriate scripts based on user choice
-dockerImage=syneblock/quorum-master:Go2.0
+dockerImage=syneblock/quorum-maker:2.0
 	flagmain=true
 	echo -e "\e[1;93mPlease select an option:\e[1;32m\n1) Create Network\e[1;35m\n2) Join Network\e[1;94m\n3) Remove Node\e[1;96m\n4) Setup Development/Test Network\e[1;39m\n5) Exit"
 	printf 'option: '
@@ -19,7 +19,7 @@ dockerImage=syneblock/quorum-master:Go2.0
 			JoinNodeName=$(cat nodeName)
 			cd $JoinNodeName
 			rm -f ../nodeName
-			sudo ./start_docker.sh
+			sudo ./start.sh
 			;;
 		3)
 			./remove_node.sh

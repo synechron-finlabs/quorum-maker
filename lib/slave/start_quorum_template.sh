@@ -3,6 +3,8 @@ set -u
 set -e
 NETID=#networkId#
 RAFTID=#raftId#
+echo 'NETWORK_ID='$NETID >> ../setup.conf
+echo 'RAFT_ID='$RAFTID >>  ../setup.conf
 
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID  --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft --emitcheckpoints"
 
@@ -16,4 +18,4 @@ echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport $RA_PORT 
 
 PRIVATE_CONFIG=#sNode#.conf geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/logs/#sNode#.log &
 echo "inside go service"
-./go_service.sh
+./nodemanager.sh

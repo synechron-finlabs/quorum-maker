@@ -1,7 +1,7 @@
 #!/bin/bash
 set -u
 set -e
-
+sleep 5
 CORE_NODE_IP="$(dig +short $CORE_NODE_IP)"
 CORE_MASTERNODE_IP="$(dig +short $CORE_MASTERNODE_IP)"
 
@@ -17,7 +17,7 @@ sed -i "$PATTERN2" #nodeName#.conf
 
 echo "[*] Starting Constellation on #nodeName#"
 constellation-node #nodeName#.conf 2> qdata/logs/constellation_#nodeName#.log &
-sleep 1
+sleep 5
 echo "[*] Started Constellation on #nodeName#"
 
 

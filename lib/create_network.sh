@@ -9,14 +9,14 @@
 #function to generate keyPair for node
  function generateKeyPair(){
     echo "Generating public and private keys for " ${mNode}", Please enter password or leave blank"
-    constellation-node --generatekeys=${mNode}
+    echo -ne "\n" | constellation-node --generatekeys=${mNode}
 
     echo "Generating public and private backup keys for " ${mNode}", Please enter password or leave blank"
-    constellation-node --generatekeys=${mNode}a
+    echo -ne "\n" | constellation-node --generatekeys=${mNode}a
 
     mv ${mNode}*.*  ${mNode}/node/keys/.
     
- }
+}
 
 #function to create node initialization script
 function createInitNodeScript(){
@@ -92,7 +92,6 @@ function createAccount(){
 function executeInit(){
     cd ${mNode}
     ./init.sh
-   
 }
 
 function main(){    
