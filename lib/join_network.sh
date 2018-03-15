@@ -2,7 +2,7 @@
 
 function readInputs(){  
     read -p $'\e[1;31mPlease enter main node IP Address: \e[0m' pMainIp
-	read -p $'\e[1;33mPlease enter node manager port: \e[0m' mgoPort
+	read -p $'\e[1;33mPlease enter server node manager port: \e[0m' mgoPort
     read -p $'\e[1;31mPlease enter this node IP Address: \e[0m' pCurrentIp
     read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
     read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
