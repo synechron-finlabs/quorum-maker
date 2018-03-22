@@ -108,7 +108,7 @@ function startNode(){
 }
 
 function main(){
-    dockerImage=syneblock/quorum-maker:2.0
+    dockerImage=syneblock/quorum-maker:2.0.1
     node=#nodename#
     pMainIp=#pmainip#
     pCurrentIp=#pCurrentIp#
