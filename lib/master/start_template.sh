@@ -95,7 +95,7 @@ function startNode(){
 }
 
 function main(){
-    dockerImage=syneblock/quorum-maker:2.0
+    dockerImage=syneblock/quorum-maker:2.0.1
     net=#netid#
     nodeName=#nodename#
     if [ -z "$1" ]; then
