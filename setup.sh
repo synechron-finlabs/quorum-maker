@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Menu system for launching appropriate scripts based on user choice
-dockerImage=syneblock/quorum-maker:2.0.1
+dockerImage=syneblock/quorum-maker:2.0.2
 	flagmain=true
 	echo -e "\e[1;93mPlease select an option:\e[1;32m\n1) Create Network\e[1;35m\n2) Join Network\e[1;94m\n3) Remove Node\e[1;96m\n4) Setup Development/Test Network\e[1;39m\n5) Exit"
 	printf 'option: '

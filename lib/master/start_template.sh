@@ -19,6 +19,16 @@ function readInputs(){
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf
 
+    PATTERN="s/r_Port/${rPort}/g"
+    sed -i $PATTERN node/start_${nodeName}.sh
+    PATTERN="s/w_Port/${wPort}/g"
+    sed -i $PATTERN node/start_${nodeName}.sh
+    PATTERN="s/nodeIp/${pCurrentIp}/g"
+    sed -i $PATTERN node/start_${nodeName}.sh
+    PATTERN="s/ra_Port/${raPort}/g"
+    sed -i $PATTERN node/start_${nodeName}.sh
+    PATTERN="s/nm_Port/${mgoPort}/g"
+    sed -i $PATTERN node/start_${nodeName}.sh
 }
 
 # if setup.conf available read from file to create a network
@@ -95,7 +105,7 @@ function startNode(){
 }
 
 function main(){
-    dockerImage=syneblock/quorum-maker:2.0.1
+    dockerImage=syneblock/quorum-maker:2.0.2
     net=#netid#
     nodeName=#nodename#
     if [ -z "$1" ]; then
@@ -118,7 +128,7 @@ function main(){
 
      echo -e '****************************************************************************************************************'
 
-     echo -e '\e[1;32mSuccessfully created and started \e[0m'$nodeNome
+     echo -e '\e[1;32mSuccessfully created and started \e[0m'$nodeName
      echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
      echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
      echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.\e[0m'
