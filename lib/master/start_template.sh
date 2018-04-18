@@ -25,8 +25,6 @@ function readInputs(){
     sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/nodeIp/${pCurrentIp}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
-    PATTERN="s/ra_Port/${raPort}/g"
-    sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/nm_Port/${mgoPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
 }

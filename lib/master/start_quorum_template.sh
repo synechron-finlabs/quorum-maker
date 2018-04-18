@@ -3,7 +3,6 @@ set -u
 set -e
 NETID=#network_Id_value#
 RA_PORT=#raftPort#
-RA_PORT=ra_Port
 R_PORT=r_Port
 W_PORT=w_Port
 CURRENT_NODE_IP=nodeIp
