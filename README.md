@@ -1,3 +1,5 @@
+> **We are working on the new release that would have a lot more features to take development on Quorum to next level. Due to an architecture overhaul and additional components, the development is going on in a different repository that is not public yet. We are hoping to open it up by end of this month.**
+
 # Quorum Maker
 
 Synechron's Quorum Maker is a tool that allows users to pre-configure the nodes that are needed to build a Quorum network. Quorum supports multiple consensus algorithm and different roles for node. Manually editing  configuration files and creating nodes can be a tedious and error-prone process. Quorum Maker can create several nodes of various configurations dynamically with no or limited user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to run with docker-compose for easy use in development environments or nodes to be distributed on separate Linux boxes or cloud instances for a production environment. It also provides Vagrant scripts to spin up Ubuntu instances on Windows/Mac. 
