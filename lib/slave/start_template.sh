@@ -12,6 +12,9 @@ function createSetupConf(){
     echo 'THIS_NODEMANAGER_PORT='$tgoPort >> ./setup.conf
     echo 'MASTER_IP='$pMainIp >> ./setup.conf
     echo 'NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
+    echo 'LOG_PORT='$logPort >>  ./setup.conf
+    echo 'NODENAME='$node >> ./setup.conf
+    echo 'ROLE='$role >> ./setup.conf
 
    	url=http://${pMainIp}:${mgoPort}/peer
 }
@@ -39,7 +42,19 @@ function readFromFile(){
     mainIp=$var
 
     var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    mgoPort=$var 
+    mgoPort=$var
+
+    var="$(grep -F -m 1 'LOG_PORT=' $1)"; var="${var#*=}"
+    logPort=$var
+
+    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
+    node=$var
+
+    var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
+    publickey=$var
+
+    var="$(grep -F -m 1 'ROLE=' $1)"; var="${var#*=}"
+    role=$var
 }
 
 # create node configuration
@@ -74,13 +89,16 @@ function goJoinNode(){
        "enode-id":"'${enode}'",
        "ip-address":"'${pCurrentIp}'"
     }') 
-    echo $response > input.txt
-    RAFTV=$(cat input.txt)
-    PATTERN="s/#raftId#/$RAFTV/g"
-    sed -i $PATTERN start_${node}.sh
-    rm -f input.txt
-    rm -f enode1.txt
-    cd ..
+response=$(echo $response | tr -d \")
+echo $response > input.txt
+RAFTV=$(awk -F':' '{ print $1 }' input.txt)
+contractAdd=$(awk -F':' '{ print $2 }' input.txt)
+echo 'CONTRACT_ADD='$contractAdd >> ../setup.conf
+PATTERN="s/#raftId#/$RAFTV/g"
+sed -i $PATTERN start_${node}.sh
+rm -f input.txt
+rm -f enode1.txt
+cd ..
 }
 
 # copy node Service File to run service inside docker
@@ -91,6 +109,8 @@ function copyGoService(){
     sed -i $PATTERN #nodename#/node/nodemanager.sh
     PATTERN="s/#servicePort#/${tgoPort}/g"
     sed -i $PATTERN #nodename#/node/nodemanager.sh
+    PATTERN="s/#logport#/${logPort}/g"
+    sed -i $PATTERN #nodename#/node/nodemanager.sh
     chmod +x #nodename#/node/nodemanager.sh
     cd #nodename#
 }
@@ -98,7 +118,7 @@ function copyGoService(){
 # docker command to join th network 
 function startNode(){
     docker run -it --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort\
+           -p $logPort:$logPort -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -108,7 +128,7 @@ function startNode(){
 }
 
 function main(){
-    dockerImage=syneblock/quorum-maker:2.0.2
+    dockerImage=syneblock/quorum-maker:2.0.2_6
     node=#nodename#
     pMainIp=#pmainip#
     pCurrentIp=#pCurrentIp#
@@ -118,12 +138,15 @@ function main(){
     wPort=#wisport#
     raPort=#raftPort#
     mgoPort=#mgoPort#
+    logPort=#logPort#
+    role=#role#
     createSetupConf
 	nodeConf
     createEnode
     goJoinNode
     copyGoService
     publickey=$(cat node/keys/$node.pub)
+    echo 'PUBKEY='$publickey >> ./setup.conf
 
     echo -e '****************************************************************************************************************'
 

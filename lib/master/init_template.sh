@@ -5,7 +5,8 @@ cp -r node/qdata/keystore .
 cp node/qdata/geth/nodekey .
 cp node/qdata/static-nodes.json .
 rm -rf node/qdata
-mkdir -p node/qdata/logs
+mkdir -p node/qdata/gethLogs
+mkdir -p node/qdata/constellationLogs
 
 # echo "[*] Configuring slave node"
 mkdir -p node/qdata/{keystore,geth}

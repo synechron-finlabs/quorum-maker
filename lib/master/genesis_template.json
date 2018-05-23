@@ -2,9 +2,8 @@
   "config": {
         "chainId": 20,
         "homesteadBlock": 0,
-        "eip155Block": null,
-        "eip158Block": null,
-        "isQuorum": true
+        "eip155Block": 0,
+        "eip158Block": 0
     },
   "alloc"      : {"#mNodeAddress#": {
       "balance": "1000000000000000000000000000"

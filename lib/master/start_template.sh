@@ -8,6 +8,8 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
     read -p $'\e[1;93mPlease enter node manager port: \e[0m' mgoPort
+    read -p $'\e[1;93mPlease enter log explorer port: \e[0m' logPort
+    read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role
 
     #append values in Setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ./setup.conf
@@ -16,14 +18,20 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
     echo 'NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
+    echo 'LOG_PORT='$logPort >>  ./setup.conf
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf
+    echo 'NODENAME='$nodeName >> ./setup.conf
+    echo 'ROLE='$role >> ./setup.conf
+    echo 'CONTRACT_ADD=' >> ./setup.conf
 
     PATTERN="s/r_Port/${rPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/w_Port/${wPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/nodeIp/${pCurrentIp}/g"
+    sed -i $PATTERN node/start_${nodeName}.sh
+    PATTERN="s/ra_Port/${raPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/nm_Port/${mgoPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
@@ -48,7 +56,18 @@ function readFromFile(){
     
     var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
     mgoPort=$var
+
+    var="$(grep -F -m 1 'LOG_PORT=' $1)"; var="${var#*=}"
+    logPort=$var
     
+    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
+    nodeName=$var
+
+    var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
+    publickey=$var
+
+    var="$(grep -F -m 1 'ROLE=' $1)"; var="${var#*=}"
+    role=$var
 }
 
 # static node to create network 
@@ -86,6 +105,8 @@ function copyGoService(){
     sed -i $PATTERN #nodename#/node/nodemanager.sh
     PATTERN="s/#servicePort#/${mgoPort}/g"
     sed -i $PATTERN #nodename#/node/nodemanager.sh
+    PATTERN="s/#logPort#/${logPort}/g"
+    sed -i $PATTERN #nodename#/node/nodemanager.sh
     chmod +x #nodename#/node/nodemanager.sh
     cd #nodename#
 }
@@ -93,7 +114,7 @@ function copyGoService(){
 # docker command to create a network
 function startNode(){
     docker run -it --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:$mgoPort \
+          -p $logPort:$logPort -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:$mgoPort \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -103,7 +124,7 @@ function startNode(){
 }
 
 function main(){
-    dockerImage=syneblock/quorum-maker:2.0.2
+    dockerImage=syneblock/quorum-maker:2.0.2_6
     net=#netid#
     nodeName=#nodename#
     if [ -z "$1" ]; then
@@ -123,6 +144,7 @@ function main(){
      copyRaft
      copyGoService
      publickey=$(cat node/keys/$nodeName.pub)
+     echo 'PUBKEY='$publickey >> ./setup.conf
 
      echo -e '****************************************************************************************************************'
 

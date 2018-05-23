@@ -8,7 +8,9 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
     read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
     read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
-    read -p $'\e[1;33mPlease enter node manager Port: \e[0m' tgoPort      
+    read -p $'\e[1;33mPlease enter node manager Port: \e[0m' tgoPort 
+    read -p $'\e[1;93mPlease enter log explorer port: \e[0m' logPort
+    read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role     
 
     urlG=http://${pMainIp}:${mgoPort}/genesis
 }
@@ -111,6 +113,10 @@ function copyStartTemplate(){
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#pCurrentIp#/${pCurrentIp}/g"
     sed -i $PATTERN ${sNode}/start.sh
+    PATTERN="s/#logPort#/${logPort}/g"
+    sed -i $PATTERN ${sNode}/start.sh
+    PATTERN="s/#role#/${role}/g"
+    sed -i $PATTERN ${sNode}/start.sh
     chmod +x ${sNode}/start.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 }
@@ -125,7 +131,8 @@ function goGetGenesis(){
     -H "content-type: application/json" \
     -d '{
        "enode-id":"'${Enode1}'",
-       "ip-address":"'${pCurrentIp}'"
+       "ip-address":"'${pCurrentIp}'",
+       "nodename":"'${sNode}'"
     }')
     if [ "$response" = "$pending" ]
     then 
