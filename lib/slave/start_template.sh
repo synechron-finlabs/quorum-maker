@@ -15,7 +15,8 @@ function createSetupConf(){
     echo 'LOG_PORT='$logPort >>  ./setup.conf
     echo 'NODENAME='$node >> ./setup.conf
     echo 'ROLE='$role >> ./setup.conf
-
+    echo 'REGISTERED=' >> ./setup.conf
+    
    	url=http://${pMainIp}:${mgoPort}/peer
 }
 
