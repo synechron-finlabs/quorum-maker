@@ -22,7 +22,6 @@ echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport $RA_PORT 
 
 PRIVATE_CONFIG=qdata/master.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/#mNode#.log &
 
-echo "inside go service"
 process=$(ps -ef | grep $NODE_MANAGER_PORT |grep NodeManagerGo| awk '{print $2}')
 if [  -z "$process" ]; then
 ./nodemanager.sh
