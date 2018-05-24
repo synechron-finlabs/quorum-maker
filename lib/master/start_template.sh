@@ -24,7 +24,7 @@ function readInputs(){
     echo 'NODENAME='$nodeName >> ./setup.conf
     echo 'ROLE='$role >> ./setup.conf
     echo 'CONTRACT_ADD=' >> ./setup.conf
-
+    echo 'REGISTERED=' >> ./setup.conf
     PATTERN="s/r_Port/${rPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/w_Port/${wPort}/g"
