@@ -81,7 +81,7 @@ function createEnode(){
 
 # Function to send post call to go endpoint joinNode 
 function goJoinNode(){
-    echo "Fetching RaftId..."
+    echo "Waiting for approval from "${pMainIp}
     sleep 10
     response=$(curl -X POST \
     --max-time 310 ${url} \
@@ -148,14 +148,16 @@ function main(){
     copyGoService
     publickey=$(cat node/keys/$node.pub)
     echo 'PUBKEY='$publickey >> ./setup.conf
+    uiPort="http://localhost:"$logPort"/dashboard"
 
     echo -e '****************************************************************************************************************'
 
     echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
-    echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
+    echo -e '\e[1;32mYou can send transactions to \e[0m'$pCurrentIp:$rPort
     echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
-    echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.\e[0m'
-    echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$tgoPort '\e[1;32mfor NodeManager port.\e[0m'
+    echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiPort
+    echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and choose option to run Join Network\e[0m'
+    echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Existing Node IP and \e[0m'$tgoPort '\e[1;32mfor Node Manager port\e[0m'
 
     echo -e '****************************************************************************************************************'
 

@@ -95,7 +95,7 @@ function executeInit(){
 }
 
 function main(){    
-    read -p $'\e[1;32mPlease enter master node name: \e[0m' mNode 
+    read -p $'\e[1;32mPlease enter node name: \e[0m' mNode 
     rm -rf ${mNode}
     echo $mNode > nodename
     mkdir -p ${mNode}/node/keys

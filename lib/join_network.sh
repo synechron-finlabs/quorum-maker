@@ -1,16 +1,17 @@
 #!/bin/bash
 
 function readInputs(){  
-    read -p $'\e[1;31mPlease enter main node IP Address: \e[0m' pMainIp
-	read -p $'\e[1;33mPlease enter server node manager port: \e[0m' mgoPort
-    read -p $'\e[1;31mPlease enter this node IP Address: \e[0m' pCurrentIp
-    read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
-    read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
-    read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
-    read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
-    read -p $'\e[1;33mPlease enter node manager Port: \e[0m' tgoPort 
-    read -p $'\e[1;93mPlease enter log explorer port: \e[0m' logPort
-    read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role     
+    read -p $'\e[1;31mPlease enter IP Address of existing node: \e[0m' pMainIp
+	read -p $'\e[1;33mPlease enter Node Manager Port of existing node: \e[0m' mgoPort
+    read -p $'\e[1;31mPlease enter IP Address of this node: \e[0m' pCurrentIp
+    read -p $'\e[1;32mPlease enter RPC Port of this node: \e[0m' rPort
+    read -p $'\e[1;32mPlease enter Network Listening Port of this node: \e[0m' wPort
+    read -p $'\e[1;32mPlease enter Constellation Port of this node: \e[0m' cPort
+    read -p $'\e[1;35mPlease enter Raft Port of this node: \e[0m' raPort
+    read -p $'\e[1;33mPlease enter Node Manager Port of this node: \e[0m' tgoPort 
+    read -p $'\e[1;93mPlease enter UI Port of this node: \e[0m' logPort
+    #read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role     
+    role="Unassigned"
 
     urlG=http://${pMainIp}:${mgoPort}/genesis
 }
@@ -136,7 +137,7 @@ function goGetGenesis(){
     }')
     if [ "$response" = "$pending" ]
     then 
-        echo "Previous request to Join Network is still pending. Please try later. Program exiting" 
+        echo "Previous request for Joining Network is still pending. Please try later. Program exiting" 
         exit
     elif [ "$response" = "$rejected" ]
     then
@@ -179,7 +180,7 @@ function executeInit(){
 }
 
 function main(){    
-    read -p $'\e[1;32mPlease enter slave node name: \e[0m' sNode 
+    read -p $'\e[1;32mPlease enter node name: \e[0m' sNode 
     echo $sNode > nodeName
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys

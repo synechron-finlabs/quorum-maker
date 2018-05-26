@@ -2,15 +2,16 @@
 
 # read inputs to create network
 function readInputs(){   
-    read -p $'\e[1;31mPlease enter this node IP Address: \e[0m' pCurrentIp
-    read -p $'\e[1;32mPlease enter this node RPC Port: \e[0m' rPort
-    read -p $'\e[1;32mPlease enter this node Network Listening Port: \e[0m' wPort
-    read -p $'\e[1;32mPlease enter this node Constellation Port: \e[0m' cPort
-    read -p $'\e[1;35mPlease enter this node raft port: \e[0m' raPort
-    read -p $'\e[1;93mPlease enter node manager port: \e[0m' mgoPort
-    read -p $'\e[1;93mPlease enter log explorer port: \e[0m' logPort
-    read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role
-
+    read -p $'\e[1;31mPlease enter IP Address of this node: \e[0m' pCurrentIp
+    read -p $'\e[1;32mPlease enter RPC Port of this node: \e[0m' rPort
+    read -p $'\e[1;32mPlease enter Network Listening Port of this node: \e[0m' wPort
+    read -p $'\e[1;32mPlease enter Constellation Port of this node: \e[0m' cPort
+    read -p $'\e[1;35mPlease enter Raft Port of this node: \e[0m' raPort
+    read -p $'\e[1;93mPlease enter Node Manager Port of this node: \e[0m' mgoPort
+    read -p $'\e[1;93mPlease enter UI Port of this node: \e[0m' logPort
+    #read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role
+    role="Unassigned"
+	
     #append values in Setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ./setup.conf
     echo 'RPC_PORT='$rPort >> ./setup.conf
@@ -144,15 +145,17 @@ function main(){
      copyRaft
      copyGoService
      publickey=$(cat node/keys/$nodeName.pub)
+     uiPort="http://localhost:"$logPort"/dashboard"
      echo 'PUBKEY='$publickey >> ./setup.conf
 
      echo -e '****************************************************************************************************************'
 
      echo -e '\e[1;32mSuccessfully created and started \e[0m'$nodeName
-     echo -e '\e[1;32mYou can send transactions to: \e[0m'$pCurrentIp:$rPort
+     echo -e '\e[1;32mYou can send transactions to \e[0m'$pCurrentIp:$rPort
      echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
-     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and Choose option to run Join Network.\e[0m'
-     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Node Manager IP and \e[0m'$mgoPort '\e[1;32mfor NodeManager port.\e[0m'
+     echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiPort
+     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and choose option to run Join Network\e[0m'
+     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Existing Node IP and \e[0m'$mgoPort '\e[1;32mfor Node Manager Port\e[0m'
 
      echo -e '****************************************************************************************************************'
 
