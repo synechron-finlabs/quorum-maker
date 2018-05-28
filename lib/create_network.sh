@@ -43,6 +43,8 @@ function copyStartTemplate(){
     PATTERN="s/#netid#/${NET_ID}/g"
     sed -i $PATTERN ${mNode}/start.sh
     chmod +x ${mNode}/start.sh
+
+    cp lib/common.sh ${mNode}/node/common.sh
 }
 
 #function to generate enode

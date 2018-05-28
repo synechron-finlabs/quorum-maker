@@ -1,13 +1,21 @@
 #!/bin/bash
 
+source node/common.sh
+
 # read inputs to create network
 function readInputs(){   
+    
     read -p $'\e[1;31mPlease enter IP Address of this node: \e[0m' pCurrentIp
-    read -p $'\e[1;32mPlease enter RPC Port of this node: \e[0m' rPort
-    read -p $'\e[1;32mPlease enter Network Listening Port of this node: \e[0m' wPort
-    read -p $'\e[1;32mPlease enter Constellation Port of this node: \e[0m' cPort
-    read -p $'\e[1;35mPlease enter Raft Port of this node: \e[0m' raPort
-    read -p $'\e[1;93mPlease enter Node Manager Port of this node: \e[0m' mgoPort
+    getInputWithDefault 'Please enter RPC Port of this node' 21999 rPort $GREEN
+    
+    getInputWithDefault 'Please enter Network Listening Port of this node' rPort wPort $GREEN
+    
+    getInputWithDefault 'Please enter Constellation Port of this node' wPort cPort $GREEN
+    
+    getInputWithDefault 'Please enter Raft Port of this node' cPort raPort $PINK
+    
+    getInputWithDefault 'Please enter Node Manager Port of this node' raPort mgoPort $BLUE
+    
     
     role="Unassigned"
 	
