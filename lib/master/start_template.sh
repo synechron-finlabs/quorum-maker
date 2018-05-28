@@ -114,7 +114,7 @@ function copyGoService(){
 
 # docker command to create a network
 function startNode(){
-    docker run -it --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
+    docker run -it --rm --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
           -p $logPort:$logPort -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:$mgoPort \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
