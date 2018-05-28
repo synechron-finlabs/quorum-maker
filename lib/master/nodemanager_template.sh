@@ -2,4 +2,4 @@
 
 # start node manager service inside docker
 cd /root/quorum-maker/
-./start_nodemanager.sh #rpcPort# #servicePort# #logPort#
+./start_nodemanager.sh #rpcPort# #servicePort#

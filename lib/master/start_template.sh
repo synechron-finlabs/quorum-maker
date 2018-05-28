@@ -8,8 +8,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter Constellation Port of this node: \e[0m' cPort
     read -p $'\e[1;35mPlease enter Raft Port of this node: \e[0m' raPort
     read -p $'\e[1;93mPlease enter Node Manager Port of this node: \e[0m' mgoPort
-    read -p $'\e[1;93mPlease enter UI Port of this node: \e[0m' logPort
-    #read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role
+    
     role="Unassigned"
 	
     #append values in Setup.conf file 
@@ -19,7 +18,7 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
     echo 'NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
-    echo 'LOG_PORT='$logPort >>  ./setup.conf
+    
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf
     echo 'NODENAME='$nodeName >> ./setup.conf
@@ -57,9 +56,6 @@ function readFromFile(){
     
     var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
     mgoPort=$var
-
-    var="$(grep -F -m 1 'LOG_PORT=' $1)"; var="${var#*=}"
-    logPort=$var
     
     var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
     nodeName=$var
@@ -106,8 +102,7 @@ function copyGoService(){
     sed -i $PATTERN #nodename#/node/nodemanager.sh
     PATTERN="s/#servicePort#/${mgoPort}/g"
     sed -i $PATTERN #nodename#/node/nodemanager.sh
-    PATTERN="s/#logPort#/${logPort}/g"
-    sed -i $PATTERN #nodename#/node/nodemanager.sh
+    
     chmod +x #nodename#/node/nodemanager.sh
     cd #nodename#
 }
@@ -115,7 +110,7 @@ function copyGoService(){
 # docker command to create a network
 function startNode(){
     docker run -it --rm --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
-          -p $logPort:$logPort -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:$mgoPort \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:$mgoPort \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -145,7 +140,7 @@ function main(){
      copyRaft
      copyGoService
      publickey=$(cat node/keys/$nodeName.pub)
-     uiPort="http://localhost:"$logPort"/dashboard"
+     uiUrl="http://localhost:"$mgoPort"/"
      echo 'PUBKEY='$publickey >> ./setup.conf
 
      echo -e '****************************************************************************************************************'
@@ -153,7 +148,7 @@ function main(){
      echo -e '\e[1;32mSuccessfully created and started \e[0m'$nodeName
      echo -e '\e[1;32mYou can send transactions to \e[0m'$pCurrentIp:$rPort
      echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
-     echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiPort
+     echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiUrl
      echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and choose option to run Join Network\e[0m'
      echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Existing Node IP and \e[0m'$mgoPort '\e[1;32mfor Node Manager Port\e[0m'
 

@@ -12,7 +12,6 @@ function createSetupConf(){
     echo 'THIS_NODEMANAGER_PORT='$tgoPort >> ./setup.conf
     echo 'MASTER_IP='$pMainIp >> ./setup.conf
     echo 'NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
-    echo 'LOG_PORT='$logPort >>  ./setup.conf
     echo 'NODENAME='$node >> ./setup.conf
     echo 'ROLE='$role >> ./setup.conf
     echo 'REGISTERED=' >> ./setup.conf
@@ -44,9 +43,6 @@ function readFromFile(){
 
     var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
     mgoPort=$var
-
-    var="$(grep -F -m 1 'LOG_PORT=' $1)"; var="${var#*=}"
-    logPort=$var
 
     var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
     node=$var
@@ -110,8 +106,7 @@ function copyGoService(){
     sed -i $PATTERN #nodename#/node/nodemanager.sh
     PATTERN="s/#servicePort#/${tgoPort}/g"
     sed -i $PATTERN #nodename#/node/nodemanager.sh
-    PATTERN="s/#logport#/${logPort}/g"
-    sed -i $PATTERN #nodename#/node/nodemanager.sh
+    
     chmod +x #nodename#/node/nodemanager.sh
     cd #nodename#
 }
@@ -119,7 +114,7 @@ function copyGoService(){
 # docker command to join th network 
 function startNode(){
     docker run -it --rm --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $logPort:$logPort -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort\
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort\
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -139,7 +134,6 @@ function main(){
     wPort=#wisport#
     raPort=#raftPort#
     mgoPort=#mgoPort#
-    logPort=#logPort#
     role=#role#
     createSetupConf
 	nodeConf
@@ -148,14 +142,14 @@ function main(){
     copyGoService
     publickey=$(cat node/keys/$node.pub)
     echo 'PUBKEY='$publickey >> ./setup.conf
-    uiPort="http://localhost:"$logPort"/dashboard"
+    uiUrl="http://localhost:"$mgoPort"/"
 
     echo -e '****************************************************************************************************************'
 
     echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
     echo -e '\e[1;32mYou can send transactions to \e[0m'$pCurrentIp:$rPort
     echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
-    echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiPort
+    echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiUrl
     echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and choose option to run Join Network\e[0m'
     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Existing Node IP and \e[0m'$tgoPort '\e[1;32mfor Node Manager port\e[0m'
 

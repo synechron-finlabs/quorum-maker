@@ -9,7 +9,7 @@ function readInputs(){
     read -p $'\e[1;32mPlease enter Constellation Port of this node: \e[0m' cPort
     read -p $'\e[1;35mPlease enter Raft Port of this node: \e[0m' raPort
     read -p $'\e[1;33mPlease enter Node Manager Port of this node: \e[0m' tgoPort 
-    read -p $'\e[1;93mPlease enter UI Port of this node: \e[0m' logPort
+    
     #read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role     
     role="Unassigned"
 
@@ -113,8 +113,6 @@ function copyStartTemplate(){
     PATTERN="s/#mgoPort#/${mgoPort}/g"
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#pCurrentIp#/${pCurrentIp}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#logPort#/${logPort}/g"
     sed -i $PATTERN ${sNode}/start.sh
     PATTERN="s/#role#/${role}/g"
     sed -i $PATTERN ${sNode}/start.sh
