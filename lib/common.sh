@@ -30,3 +30,17 @@ function getInputWithDefault() {
 
     eval $__resultvar="'$__newValue'"
 }
+
+function updateProperty() {
+    local file=$1
+    local key=$2
+    local value=$3
+  
+    if grep -q $key= $file; then        
+        sed -i "s/$key=.*/$key=$value/g" $file
+    else
+        echo "" >> $file
+        echo $key=$value >> $file
+    fi
+    sed -i '/^$/d' $file
+}

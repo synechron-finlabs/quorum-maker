@@ -91,7 +91,8 @@ response=$(echo $response | tr -d \")
 echo $response > input.txt
 RAFTV=$(awk -F':' '{ print $1 }' input.txt)
 contractAdd=$(awk -F':' '{ print $2 }' input.txt)
-echo 'CONTRACT_ADD='$contractAdd >> ../setup.conf
+updateProperty ../setup.conf CONTRACT_ADD $contractAdd
+
 PATTERN="s/#raftId#/$RAFTV/g"
 sed -i $PATTERN start_${node}.sh
 rm -f input.txt
