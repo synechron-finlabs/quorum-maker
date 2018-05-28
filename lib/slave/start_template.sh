@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source node/common.sh
 # create setup configurations
 function createSetupConf(){  
 
@@ -124,7 +125,7 @@ function startNode(){
 }
 
 function main(){
-    dockerImage=syneblock/quorum-maker:2.0.2_6
+    
     node=#nodename#
     pMainIp=#pmainip#
     pCurrentIp=#pCurrentIp#

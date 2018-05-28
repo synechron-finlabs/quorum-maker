@@ -122,6 +122,7 @@ function copyStartTemplate(){
     chmod +x ${sNode}/start.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 
+    cp lib/common.sh  ${sNode}/node
 }
 
 # Function to send post call to java endpoint getGenesis 

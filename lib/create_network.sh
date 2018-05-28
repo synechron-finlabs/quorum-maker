@@ -1,5 +1,7 @@
 #!/bin/bash
  
+ source lib/common.sh
+ 
 #create node configuration file
  function copyConfTemplate(){
     PATTERN="s/#mNode#/${mNode}/g"
