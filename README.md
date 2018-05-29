@@ -2,6 +2,7 @@
 
 Synechron's Quorum Maker is a tool that allows users to spin up the nodes that are needed to build a Quorum network. Manually editing configuration files and creating nodes can be a tedious and error-prone process. Quorum Maker can create several nodes of various configurations dynamically with limited user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to run with docker-compose (Raft consensus/Quorum 2.0.0) for easy use in development environments or nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.0.2)
 
+![Quorum Maker 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/QM2.png) 
 # Quorum Maker provides following benefits:
   -	An easy interface to create and manage Quorum Network
   -	A modern UI to monitor and manager Quorum Network
@@ -50,20 +51,31 @@ $ ./setup.sh
 After few of the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
 
 `Please select an option:`
+
 `1) Create Network`
+
 `2) Join Network`
+
 `3) Remove Node`
+
 `4) Setup Development/Test Network`
+
 `5) Exit`
+
 `option:` 1
 
 `Please enter node name:` Org1
 
 `Please enter IP Address of this node:` 10.0.2.15
+
 `Please enter RPC Port of this node[Default:22000]:`
+
 `Please enter Network Listening Port of this node[Default:22001]:`
+
 `Please enter Constellation Port of this node[Default:22002]:`
+
 `Please enter Raft Port of this node[Default:22003]:`
+
 `Please enter Node Manager Port of this node[Default:22004]:`
 
 This completes the creator node startup procedure. Under the hood it uses the user provided parameters to start geth and constellation inside the docker container and also starts the NodeManager service. Quorum Maker has created a directory with name you supplied for node name. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart using runing `sudo ./start.sh` from the node directory (Eg. `Org1`). 
@@ -80,23 +92,37 @@ $ ./setup.sh
 After few of the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
 
 `Please select an option:`
+
 `1) Create Network`
+
 `2) Join Network`
+
 `3) Remove Node`
+
 `4) Setup Development/Test Network`
+
 `5) Exit`
+
 `option:` 2
 
 `Please enter node name:` Org2
 
 `Please enter IP Address of existing node:` 10.0.2.15
-`Please enter Node Manager Port of existing node:` 22004         
+
+`Please enter Node Manager Port of existing node:` 22004   
+
 `Please enter IP Address of this node:` 14.0.2.30
+
 `Please enter RPC Port of this node[Default:22000]:`24000
+
 `Please enter Network Listening Port of this node[Default:24001]:`
+
 `Please enter Constellation Port of this node[Default:24002]:`
+
 `Please enter Raft Port of this node[Default:24003]:`
+
 `Please enter Node Manager Port of this node[Default:24004]:`
+
 
 At this point, a directory with the node name is created and most of the files are created. But to join the exisisting network, this node requires the Genesis file specific to the network. Quorum Maker will contact the existing node and request permission to join and send Genesis. An administrator of that node will get a notification for the join request and needs to approve it. 
 
