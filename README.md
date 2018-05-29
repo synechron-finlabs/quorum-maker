@@ -80,6 +80,8 @@ After few of the required docker images are downloaded, Quorum Maker will presen
 
 This completes the creator node startup procedure. Under the hood it uses the user provided parameters to start geth and constellation inside the docker container and also starts the NodeManager service. Quorum Maker has created a directory with name you supplied for node name. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart using runing `sudo ./start.sh` from the node directory (Eg. `Org1`). 
 
+![Screenshot 1](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot1.png) 
+
 ## Joining a Network
 Once a node a created, you can create and join more nodes to form a Quourm Network. Ideally subsequent nodes should be created on other computers. If you are creating another node on the same computer, please make sure to use different ports. In this case you can use the same Quorum Maker clone, since it creates separate directories for each node.
 
@@ -123,6 +125,7 @@ After few of the required docker images are downloaded, Quorum Maker will presen
 
 `Please enter Node Manager Port of this node[Default:24004]:`
 
+![Screenshot 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot2.png) 
 
 At this point, a directory with the node name is created and most of the files are created. But to join the exisisting network, this node requires the Genesis file specific to the network. Quorum Maker will contact the existing node and request permission to join and send Genesis. An administrator of that node will get a notification for the join request and needs to approve it. 
 
