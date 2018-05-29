@@ -9,7 +9,7 @@ Synechron's Quorum Maker is a tool that allows users to spin up the nodes that a
   -	Block and Transaction Explorer
   -	Smart Contract Deployment
   -	Email Notifications
-## Summary of features across different versions of Quorum Maker
+## Features at a glance
 
 | Features | V 1.0 | V 2.0 |
 | ------ | ------ |-----|
