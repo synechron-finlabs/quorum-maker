@@ -13,7 +13,7 @@ Synechron's Quorum Maker is a tool that allows users to spin up the nodes that a
 
 | Features | V 1.0 | V 2.0 |
 | ------ | ------ |-----|
-| Create Network | Yes | No |
+| Create Network | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png)  | No |
 |Join Network | No | Yes|
 |Delete Nodes	 	  | Yes | Yes |
 |Quick Setup with Docker	 	  | Yes | Yes |
