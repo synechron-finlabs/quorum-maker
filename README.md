@@ -13,22 +13,22 @@ Synechron's Quorum Maker is a tool that allows users to spin up the nodes that a
 
 | Features | V 1.0 | V 2.0 |
 | ------ | ------ |-----|
-| Create Network | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png)  | No |
-|Join Network | No | Yes|
-|Delete Nodes	 	  | Yes | Yes |
-|Quick Setup with Docker	 	  | Yes | Yes |
-|Quick network with Docker Compose	 	  | Yes | Yes |
-|Quorum Chain Consensus	 	  | Yes | Yes |
-|Raft Consensus	 	  | Yes | Yes |
-|Istanbul PBFT Consensus	 	  | Yes | Yes |
-|Network Map Service  	 	  | Yes | Yes |
-|Node Monitoring	 	  | Yes | Yes |
-|Web UI	 	  | Yes | Yes |
-|Block Explorer	 	  | Yes | Yes |
-|Transaction Explorer	 	  | Yes | Yes |
-|Email Notification	 	  | Yes | Yes |
-|Restful API	 	  | Yes | Yes |
-|Smart Contract Deployer	 	  | Yes | Yes |
+| Create Network | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png)  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Join Network | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png)  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png)|
+|Delete Nodes	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/wip.png) |
+|Quick Setup with Docker	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Quick network with Docker Compose	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/wip.png) |
+|Quorum Chain Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) |
+|Raft Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Istanbul PBFT Consensus	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/wip.png) |
+|Network Map Service  	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Node Monitoring	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Web UI	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Block Explorer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Transaction Explorer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Email Notification	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Restful API	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
+|Smart Contract Deployer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/cross.png) | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/tick.png) |
 
 # Quickstart
 
