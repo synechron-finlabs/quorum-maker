@@ -135,10 +135,15 @@ At this point, a directory with the node name is created and most of the files a
 -	Once a join request has been sent by a node willing to join a network to one of the existing network participants, this node has the option to approve/reject this join request
 -	If the join request is accepted, the main node's constellation port, genesis file and network ID is returned to the joiner. If the join request is rejected, the joiner's setup script exits
 
+![Screenshot 3](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot3.png) 
+
 ## Node Explorer
 Quorum Maker provides a web interface to monitor the network. You can explore the blocks getting created and the transactions in them. Node admin can watch the performance of their node as well peek into othe connected nodes. 
 
 Administrators can view geth and constellation logs from Quorum Maker. 
+
+![Screenshot 4](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot4.png) 
+
 ## Monitoring and Email Notification
 1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
 2.	The user is sent an email notification indicating that the node has gone down. The node admin has to preconfigure the notification procedure by providing the following details
@@ -159,6 +164,7 @@ Smart contracts can be deployed from Quorum Maker. Uses can choose solidity file
 6.	Error messages that occur from compilation failures are also displayed on UI
 All the deployed contracts are easily accessible from the UI in the format contractAddress_contractName and contain the corresponding ABI, Bytecode and JSON
 
+![Screenshot 5](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot5.png) 
 # Node Manager API
 
 Quorum Maker provides APIs that internally uses, but useful for application development. 
