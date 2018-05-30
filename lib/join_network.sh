@@ -12,8 +12,6 @@ function readInputs(){
     getInputWithDefault 'Please enter Raft Port of this node' cPort raPort $PINK
     getInputWithDefault 'Please enter Node Manager Port of this node' raPort tgoPort $BLUE
     
-    
-    #read -p $'\e[1;93mPlease enter node role e.g. Custodian, Broker, Investment Manager: \e[0m' role     
     role="Unassigned"
 
     urlG=http://${pMainIp}:${mgoPort}/genesis
