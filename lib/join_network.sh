@@ -79,7 +79,7 @@ function createAccount(){
 
 #function to create start node script without --raftJoinExisting flag
 function copyStartTemplate(){
-    cat lib/slave/start_quorum_template.sh > ${sNode}/node/start_${sNode}.sh
+    cp lib/slave/start_quorum_template.sh ${sNode}/node/start_${sNode}.sh
     PATTERN="s/#sNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN="s/r_Port/${rPort}/g"
@@ -93,7 +93,7 @@ function copyStartTemplate(){
     PATTERN="s/nm_Port/${tgoPort}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
 
-    cat lib/slave/start_template.sh > ${sNode}/start.sh
+    cp lib/slave/start_template.sh ${sNode}/start.sh
     START_CMD="start_${sNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
     sed -i $PATTERN ${sNode}/start.sh
