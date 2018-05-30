@@ -39,7 +39,7 @@ The first step to use Quorum Maker is to clone the source code from GitHub.
 $ git clone git@github.com:synechron-finlabs/quorum-maker.git 
 ```
 
-Once the repository is successfully cloned, run setup.sh script. There are no pre-requisites for running Quorum Maker other than Ubuntu 16.04 or later. This script will automatically download and install required software, including docker if not found. 
+Once the repository is successfully cloned, run `setup.sh` script. There are no pre-requisites for running Quorum Maker other than Ubuntu 16.04 or later. This script will automatically download and install required software, including docker if not found. 
 
 ## Creating a Network
 
@@ -48,7 +48,7 @@ $ cd quorum-maker
 $ ./setup.sh
 ```
 
-After few of the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
+After the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
 
 `Please select an option:`
 
@@ -91,7 +91,7 @@ $ cd quorum-maker
 $ ./setup.sh
 ```
 
-After few of the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
+After the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
 
 `Please select an option:`
 
@@ -127,7 +127,7 @@ After few of the required docker images are downloaded, Quorum Maker will presen
 
 ![Screenshot 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot2.png) 
 
-At this point, a directory with the node name is created and most of the files are created. But to join the exisisting network, this node requires the Genesis file specific to the network. Quorum Maker will contact the existing node and request permission to join and send Genesis. An administrator of that node will get a notification for the join request and needs to approve it. 
+At this point, a directory with the node name is created and most of the files are created. But to join the exisisting network, this node requires the Genesis file specific to the network. Quorum Maker will contact the existing node and request permission to join and receive Genesis. An administrator of that node will get a notification for the join request and needs to approve it. 
 
 > Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator of the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `sudo ./start.sh` from the directory created and the setup will be resumed. 
 
@@ -138,7 +138,7 @@ At this point, a directory with the node name is created and most of the files a
 ![Screenshot 3](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot3.png) 
 
 ## Node Explorer
-Quorum Maker provides a web interface to monitor the network. You can explore the blocks getting created and the transactions in them. Node admin can watch the performance of their node as well peek into othe connected nodes. 
+Quorum Maker provides a web interface to monitor the network. You can explore the blocks getting created and the transactions in them. Node admin can watch the performance of their node as well as peek into othe connected nodes. 
 
 Administrators can view geth and constellation logs from Quorum Maker. 
 
@@ -147,10 +147,10 @@ Administrators can view geth and constellation logs from Quorum Maker.
 ## Monitoring and Email Notification
 1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
 2.	The user is sent an email notification indicating that the node has gone down. The node admin has to preconfigure the notification procedure by providing the following details
-a.	SMTP Sever Host
-b.	Port
-c.	Username
-d.	Password
+- SMTP Sever Host
+- Port
+- Username
+- Password
 
 ## Contract Deployment
 
@@ -161,10 +161,12 @@ Smart contracts can be deployed from Quorum Maker. Users can choose solidity fil
 3.	The deployment is done either publicly or privately
 4.	In case of private deployment the public keys of the concerned parties are sent from the UI
 5.	The list of network participants and their corresponding public keys are fetched using a REST API call 
-6.	Error messages that occur from compilation failures are also displayed on UI
+6.	Error messages that occur from compilation failures are also displayed on the UI
+
 All the deployed contracts are easily accessible from the UI in the format contractAddress_contractName and contain the corresponding ABI, Bytecode and JSON
 
 ![Screenshot 5](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot5.png) 
+
 # Node Manager API
 
 Quorum Maker provides APIs that internally uses, but useful for application development. 
