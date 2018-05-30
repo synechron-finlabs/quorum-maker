@@ -3,8 +3,7 @@ set -u
 set -e
 NETID=#networkId#
 RAFTID=#raftId#
-echo 'NETWORK_ID='$NETID >> ../setup.conf
-echo 'RAFT_ID='$RAFTID >>  ../setup.conf
+
 RA_PORT=ra_Port
 R_PORT=r_Port
 W_PORT=w_Port
@@ -23,9 +22,8 @@ echo "[*] Starting #sNode# node" >> qdata/gethLogs/#sNode#.log
 echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport $RA_PORT --rpcport "$R_PORT "--port "$W_PORT "--nat extip:"$CURRENT_NODE_IP>> qdata/gethLogs/#sNode#.log
 
 PRIVATE_CONFIG=qdata/slave.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/#sNode#.log &
-process=$(ps -ef | grep $NODE_MANAGER_PORT |grep NodeManagerGo| awk '{print $2}')
-if [  -z "$process" ]; then
+
 ./nodemanager.sh
-fi
+
 
 

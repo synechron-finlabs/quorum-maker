@@ -25,7 +25,7 @@ function readInputs(){
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
-    echo 'NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
+    echo 'MAIN_NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
     
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf
@@ -62,7 +62,7 @@ function readFromFile(){
     var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
     raPort=$var
     
-    var="$(grep -F -m 1 'NODEMANAGER_PORT=' $1)"; var="${var#*=}"
+    var="$(grep -F -m 1 'MAIN_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
     mgoPort=$var
     
     var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"

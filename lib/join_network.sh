@@ -14,7 +14,7 @@ function readInputs(){
     
     role="Unassigned"
 
-    urlG=http://${pMainIp}:${mgoPort}/genesis
+    
 }
  
  #create node configuration file
@@ -97,88 +97,46 @@ function copyStartTemplate(){
     START_CMD="start_${sNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
     sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#nodename#/${sNode}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#pmainip#/${pMainIp}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#wisport#/${wPort}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#raftPort#/${raPort}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#rpcPort#/${rPort}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#constPort#/${cPort}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#tgoPort#/${tgoPort}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#mgoPort#/${mgoPort}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#pCurrentIp#/${pCurrentIp}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    PATTERN="s/#role#/${role}/g"
-    sed -i $PATTERN ${sNode}/start.sh
+    
+    echo 'NODENAME='${sNode} > ${sNode}/setup.conf
+    echo 'MASTER_IP='${pMainIp} >> ${sNode}/setup.conf
+    echo 'WHISPER_PORT='${wPort} >> ${sNode}/setup.conf
+    echo 'RAFT_PORT='${raPort} >> ${sNode}/setup.conf
+    echo 'RPC_PORT='${rPort} >> ${sNode}/setup.conf
+    echo 'CONSTELLATION_PORT='${cPort} >> ${sNode}/setup.conf
+    echo 'THIS_NODEMANAGER_PORT='${tgoPort} >> ${sNode}/setup.conf
+    echo 'MAIN_NODEMANAGER_PORT='${mgoPort} >> ${sNode}/setup.conf
+    echo 'CURRENT_IP='${pCurrentIp} >> ${sNode}/setup.conf
+    echo 'REGISTERED=' >> ${sNode}/setup.conf
+
+    #PATTERN="s/#nodename#/${sNode}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#pmainip#/${pMainIp}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#wisport#/${wPort}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#raftPort#/${raPort}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#rpcPort#/${rPort}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#constPort#/${cPort}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#tgoPort#/${tgoPort}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#mgoPort#/${mgoPort}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#pCurrentIp#/${pCurrentIp}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    #PATTERN="s/#role#/${role}/g"
+    #sed -i $PATTERN ${sNode}/start.sh
+    
     chmod +x ${sNode}/start.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 
     cp lib/common.sh  ${sNode}/node
 }
 
-# Function to send post call to java endpoint getGenesis 
-function goGetGenesis(){
-    pending="Pending user response"
-    rejected="Access denied"
-    timeout="Response Timed Out"
-    response=$(curl -X POST \
-    --max-time 310 ${urlG} \
-    -H "content-type: application/json" \
-    -d '{
-       "enode-id":"'${Enode1}'",
-       "ip-address":"'${pCurrentIp}'",
-       "nodename":"'${sNode}'"
-    }')
-    if [ "$response" = "$pending" ]
-    then 
-        echo "Previous request for Joining Network is still pending. Please try later. Program exiting" 
-        exit
-    elif [ "$response" = "$rejected" ]
-    then
-        echo "Request to Join Network was rejected. Program exiting"
-        exit
-    elif [ "$response" = "$timeout" ]
-    then
-        echo "Waited too long for approval from Master node. Please try later. Program exiting"
-        exit
-    else
-    echo $response > input1.json
-    sed -i 's/\\//g' input1.json
-    sed -i 's/"{ "config"/{ "config"/g' input1.json
-    sed -i 's/}"/}/g' input1.json
-    sed -i 's/,/,\n/g' input1.json
-    sed -i 's/ //g' input1.json
-    cat input1.json | jq '.netID' > net1.txt
-    sed -i 's/"//g' net1.txt
-    netvalue=$(cat net1.txt)
-    cat input1.json | jq '.["contstellation-port"]' > const.txt
-    sed -i 's/"//g' const.txt
-    mconstv=$(cat const.txt)
-    echo 'MASTER_CONSTELLATION_PORT='$mconstv >>  ${sNode}/setup.conf
-    genesis=$(jq '.genesis' input1.json)
-    echo $genesis > ${sNode}/node/genesis.json
-    rm -f input1.json
-    rm -f const.txt
-    rm -f net1.txt
-    fi
-}
 
-# execute init script
-function executeInit(){
-    PATTERN="s/#networkId#/${netvalue}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/#mConstellation#/${mconstv}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-    cd ${sNode}
-    ./init.sh
-}
 
 function main(){    
     read -p $'\e[1;32mPlease enter node name: \e[0m' sNode 
@@ -194,8 +152,8 @@ function main(){
     generateEnode
     copyStartTemplate
     createAccount
-    goGetGenesis
-    executeInit
+    #goGetGenesis
+    #executeInit
 }
 main
     
