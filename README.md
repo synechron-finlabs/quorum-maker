@@ -5,7 +5,7 @@ Synechron's Quorum Maker is a tool that allows users to spin up the nodes that a
 ![Quorum Maker 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/QM2.png) 
 # Quorum Maker provides following the benefits:
   -	An easy interface to create and manage the Quorum Network
-  -	A modern UI to monitor and manager Quorum Network
+  -	A modern UI to monitor and manage Quorum Network
   -	A Network Map Service to be used for identifying nodes and self-publishing roles.  
   -	Block and Transaction Explorer
   -	Smart Contract Deployment
