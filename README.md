@@ -3,8 +3,8 @@
 Synechron's Quorum Maker is a tool that allows users to spin up the nodes that are needed to build a Quorum network. Manually editing configuration files and creating nodes can be a tedious and error-prone process. Quorum Maker can create several nodes of various configurations dynamically with limited user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to run with docker-compose (Raft consensus/Quorum 2.0.0) for easy use in development environments or nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.0.2)
 
 ![Quorum Maker 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/QM2.png) 
-# Quorum Maker provides following benefits:
-  -	An easy interface to create and manage Quorum Network
+# Quorum Maker provides following the benefits:
+  -	An easy interface to create and manage the Quorum Network
   -	A modern UI to monitor and manager Quorum Network
   -	A Network Map Service to be used for identifying nodes and self-publishing roles.  
   -	Block and Transaction Explorer
@@ -78,12 +78,12 @@ After few of the required docker images are downloaded, Quorum Maker will presen
 
 `Please enter Node Manager Port of this node[Default:22004]:`
 
-This completes the creator node startup procedure. Under the hood it uses the user provided parameters to start geth and constellation inside the docker container and also starts the NodeManager service. Quorum Maker has created a directory with name you supplied for node name. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart using runing `sudo ./start.sh` from the node directory (Eg. `Org1`). 
+This completes the creator node startup procedure. Under the hood it uses the user provided parameters to start geth and constellation inside the docker container and also starts the NodeManager service. Quorum Maker has created a directory with the name you supplied for node name. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart using runing `sudo ./start.sh` from the node directory (Eg. `Org1`). 
 
 ![Screenshot 1](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot1.png) 
 
 ## Joining a Network
-Once a node a created, you can create and join more nodes to form a Quourm Network. Ideally subsequent nodes should be created on other computers. If you are creating another node on the same computer, please make sure to use different ports. In this case you can use the same Quorum Maker clone, since it creates separate directories for each node.
+Once a node is created, you can create and join more nodes to form a Quourm Network. Ideally subsequent nodes should be created on other computers. If you are creating another node on the same computer, please make sure to use different ports. In this case you can use the same Quorum Maker clone, since it creates separate directories for each node.
 
 
 ```
@@ -129,7 +129,7 @@ After few of the required docker images are downloaded, Quorum Maker will presen
 
 At this point, a directory with the node name is created and most of the files are created. But to join the exisisting network, this node requires the Genesis file specific to the network. Quorum Maker will contact the existing node and request permission to join and send Genesis. An administrator of that node will get a notification for the join request and needs to approve it. 
 
-> Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `sudo ./start.sh` from the directory created and the setup will be resumed. 
+> Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator of the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `sudo ./start.sh` from the directory created and the setup will be resumed. 
 
 ## Approve/Reject Network
 -	Once a join request has been sent by a node willing to join a network to one of the existing network participants, this node has the option to approve/reject this join request
@@ -154,12 +154,12 @@ d.	Password
 
 ## Contract Deployment
 
-Smart contracts can be deployed from Quorum Maker. Uses can choose solidity files (Even multiple contracts !) and deploy them publicaly or privetly.  
+Smart contracts can be deployed from Quorum Maker. Users can choose solidity files (Even multiple contracts !) and deploy them publicaly or privately.  
 
 1.	Multiple contracts can be uploaded via the Compile and Deploy Tab
 2.	The source .sol files are compiled using solc and subsequently deployed 
 3.	The deployment is done either publicly or privately
-4.	In case of private deployment the public keys of the concerned parties are sent from UI
+4.	In case of private deployment the public keys of the concerned parties are sent from the UI
 5.	The list of network participants and their corresponding public keys are fetched using a REST API call 
 6.	Error messages that occur from compilation failures are also displayed on UI
 All the deployed contracts are easily accessible from the UI in the format contractAddress_contractName and contain the corresponding ABI, Bytecode and JSON
