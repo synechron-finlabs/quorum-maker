@@ -1,6 +1,9 @@
 # Quorum Maker V2.0
 
-Synechron's Quorum Maker is a tool that allows users to spin up the nodes that are needed to build a Quorum network. Manually editing configuration files and creating nodes can be a tedious and error-prone process. Quorum Maker can create several nodes of various configurations dynamically with limited user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to run with docker-compose (Raft consensus/Quorum 2.0.0) for easy use in development environments or nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.0.2)
+Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
+
+-	run with docker-compose (Raft consensus/Quorum 2.0.0) for easy use in development environments; or,
+-	nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.0.2)
 
 ![Quorum Maker 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/QM2.png) 
 # Quorum Maker provides the following benefits:
@@ -11,6 +14,8 @@ Synechron's Quorum Maker is a tool that allows users to spin up the nodes that a
   -	Smart Contract Deployment
   -	Email Notifications
 ## Features at a glance
+
+Quorum Maker v2.0 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform. 
 
 | Features | V 1.0 | V 2.0 |
 | ------ | ------ |-----|
@@ -78,12 +83,12 @@ After the required docker images are downloaded, Quorum Maker will present with 
 
 `Please enter Node Manager Port of this node[Default:22004]:`
 
-This completes the creator node startup procedure. Under the hood it uses the user provided parameters to start geth and constellation inside the docker container and also starts the NodeManager service. Quorum Maker has created a directory with the name you supplied for node name. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart using runing `sudo ./start.sh` from the node directory (Eg. `Org1`). 
+This completes the creator node startup procedure. Quorum Maker collects the user provided parameters in order to generate geth and constellation inside the docker container. It also starts the NodeManager service.  and creates a directory with the node name provided. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart by running `sudo ./start.sh` from the node directory (Eg. `Org1`). 
 
 ![Screenshot 1](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot1.png) 
 
 ## Joining a Network
-Once a node is created, you can create and join more nodes to form a Quourm Network. Ideally subsequent nodes should be created on other computers. If you are creating another node on the same computer, please make sure to use different ports. In this case you can use the same Quorum Maker clone, since it creates separate directories for each node.
+Once a node is created, you can create and join more nodes to form a Quorum Network. Ideally subsequent nodes should be created on other computers. If you are creating another node on the same computer, please make sure to use different ports. In this case you can use the same Quorum Maker clone, since it creates separate directories for each node.
 
 
 ```
@@ -91,7 +96,7 @@ $ cd quorum-maker
 $ ./setup.sh
 ```
 
-After the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
+After the required docker images are downloaded, Quorum Maker will present users with a few questions to complete the node setup.
 
 `Please select an option:`
 
@@ -127,7 +132,7 @@ After the required docker images are downloaded, Quorum Maker will present with 
 
 ![Screenshot 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot2.png) 
 
-At this point, a directory with the node name is created and most of the files are created. But to join the exisisting network, this node requires the Genesis file specific to the network. Quorum Maker will contact the existing node and request permission to join and receive Genesis. An administrator of that node will get a notification for the join request and needs to approve it. 
+At this point, a directory with the node name is created and most of the files are created. To join the existing network, the active node requires the Genesis file specific to the network. Quorum Maker will contact the node chose in the wizard and request permission to join and receive the Genesis file. An administrator of that node will get notifications on UI and e-mail for the join request and needs to approve it.
 
 > Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator of the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `sudo ./start.sh` from the directory created and the setup will be resumed. 
 
@@ -138,7 +143,7 @@ At this point, a directory with the node name is created and most of the files a
 ![Screenshot 3](https://github.com/synechron-finlabs/quorum-maker/blob/V2.0/img/screenshot3.png) 
 
 ## Node Explorer
-Quorum Maker provides a web interface to monitor the network. You can explore the blocks getting created and the transactions in them. Node admin can watch the performance of their node as well as peek into othe connected nodes. 
+Quorum Maker provides a web interface to monitor the network. You can explore the blocks getting created and the transactions in them. Node admin can watch the performance of their node and other connected nodes to ensure availability and network resilience.
 
 Administrators can view geth and constellation logs from Quorum Maker. 
 
@@ -146,7 +151,7 @@ Administrators can view geth and constellation logs from Quorum Maker.
 
 ## Monitoring and Email Notification
 1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
-2.	The user is sent an email notification indicating that the node has gone down. The node admin has to preconfigure the notification procedure by providing the following details
+2.	The user is sent an email notification indicating that the node has gone down. The node admin must preconfigure the notification procedure by providing the following details on **Email Server Configuration** menu on UI:
 - SMTP Sever Host
 - Port
 - Username
@@ -154,7 +159,7 @@ Administrators can view geth and constellation logs from Quorum Maker.
 
 ## Contract Deployment
 
-Smart contracts can be deployed from Quorum Maker. Users can choose solidity files (Even multiple contracts !) and deploy them publicaly or privately.  
+Smart contracts can be deployed from Quorum Maker. Users can choose solidity files (Even multiple contracts !) and deploy them publicly  or privately.  
 
 1.	Multiple contracts can be uploaded via the Compile and Deploy Tab
 2.	The source .sol files are compiled using solc and subsequently deployed 
@@ -169,7 +174,7 @@ All the deployed contracts are easily accessible from the UI in the format contr
 
 # Node Manager API
 
-Quorum Maker provides APIs that internally uses, but useful for application development. 
+Quorum Maker provides APIs that it used internally, that are also useful for application development. Below is a list and explanation of each:
 
 |URI|Method|Description|
 |--|--|--|
@@ -189,6 +194,8 @@ Quorum Maker provides APIs that internally uses, but useful for application deve
 If you need to run Quorum Maker with a different version of Geth or Constellation than comes with defualt docker image, use [Quorum-Maker-Image](https://github.com/synechron-finlabs/quorum-maker-image "Quorum-Maker-Image"). Create docker image locally and run Quorum Maker again. 
 
 ### Work In Progress
+
+We expect the following areas to be part of future upgrades:
 
  - Support for Istanbul PBFT
  - Support for creating network using docker-compose for development/experimental purpose
