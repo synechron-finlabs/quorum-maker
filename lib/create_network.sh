@@ -1,7 +1,7 @@
 #!/bin/bash
  
  source lib/common.sh
- 
+
 #create node configuration file
  function copyConfTemplate(){
     PATTERN="s/#mNode#/${mNode}/g"
@@ -22,7 +22,7 @@
 
 #function to create node initialization script
 function createInitNodeScript(){
-    cat lib/master/init_template.sh > ${mNode}/init.sh
+    cp lib/master/init_template.sh ${mNode}/init.sh
     chmod +x ${mNode}/init.sh
 }
 
@@ -30,13 +30,13 @@ function createInitNodeScript(){
 function copyStartTemplate(){
     NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
     PATTERN="s|#network_Id_value#|${NET_ID}|g"
-    cat lib/master/start_quorum_template.sh > ${mNode}/node/start_${mNode}.sh
+    cp lib/master/start_quorum_template.sh ${mNode}/node/start_${mNode}.sh
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     PATTERN="s/#mNode#/${mNode}/g"
     sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     chmod +x ${mNode}/node/start_${mNode}.sh
 
-    cat lib/master/start_template.sh > ${mNode}/start.sh
+    cp lib/master/start_template.sh ${mNode}/start.sh
     START_CMD="start_${mNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
     sed -i $PATTERN ${mNode}/start.sh
@@ -67,7 +67,7 @@ function generateEnode(){
     fi
     
     cp nodekey ${mNode}/node/qdata/geth/.
-    cat lib/master/static-nodes_template.json > ${mNode}/node/qdata/static-nodes.json
+    cp lib/master/static-nodes_template.json ${mNode}/node/qdata/static-nodes.json
     PATTERN="s|#eNode#|${Enode}|g"
     sed -i $PATTERN ${mNode}/node/qdata/static-nodes.json
 
