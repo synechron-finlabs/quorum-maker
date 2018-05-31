@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+
 source node/common.sh
 # create setup configurations
 function createSetupConf(){  
