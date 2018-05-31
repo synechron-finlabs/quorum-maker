@@ -14,7 +14,7 @@ function readInputs(){
     
     getInputWithDefault 'Please enter Raft Port of this node' cPort raPort $PINK
     
-    getInputWithDefault 'Please enter Node Manager Port of this node' raPort mgoPort $BLUE
+    getInputWithDefault 'Please enter Node Manager Port of this node' raPort tgoPort $BLUE
     
     
     role="Unassigned"
@@ -25,7 +25,7 @@ function readInputs(){
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
-    echo 'THIS_NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
+    echo 'THIS_NODEMANAGER_PORT='$tgoPort >>  ./setup.conf
     
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf
@@ -41,7 +41,7 @@ function readInputs(){
     sed -i $PATTERN node/start_${nodeName}.sh
     PATTERN="s/ra_Port/${raPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
-    PATTERN="s/nm_Port/${mgoPort}/g"
+    PATTERN="s/nm_Port/${tgoPort}/g"
     sed -i $PATTERN node/start_${nodeName}.sh
 }
 
@@ -62,8 +62,8 @@ function readFromFile(){
     var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
     raPort=$var
     
-    var="$(grep -F -m 1 'MAIN_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    mgoPort=$var
+    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
+    tgoPort=$var
     
     var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
     nodeName=$var
@@ -108,7 +108,7 @@ function copyGoService(){
     cat lib/master/nodemanager_template.sh > #nodename#/node/nodemanager.sh
     PATTERN="s/#rpcPort#/${rPort}/g"
     sed -i $PATTERN #nodename#/node/nodemanager.sh
-    PATTERN="s/#servicePort#/${mgoPort}/g"
+    PATTERN="s/#servicePort#/${tgoPort}/g"
     sed -i $PATTERN #nodename#/node/nodemanager.sh
     
     chmod +x #nodename#/node/nodemanager.sh
@@ -118,7 +118,7 @@ function copyGoService(){
 # docker command to create a network
 function startNode(){
     docker run -it --rm --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $mgoPort:$mgoPort \
+           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
@@ -148,7 +148,7 @@ function main(){
      copyRaft
      copyGoService
      publickey=$(cat node/keys/$nodeName.pub)
-     uiUrl="http://localhost:"$mgoPort"/"
+     uiUrl="http://localhost:"$tgoPort"/"
      echo 'PUBKEY='$publickey >> ./setup.conf
 
      echo -e '****************************************************************************************************************'
@@ -158,7 +158,7 @@ function main(){
      echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
      echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiUrl
      echo -e '\e[1;32mTo join this node from a different host, please run Quorum Maker and choose option to run Join Network\e[0m'
-     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Existing Node IP and \e[0m'$mgoPort '\e[1;32mfor Node Manager Port\e[0m'
+     echo -e '\e[1;32mWhen asked, enter \e[0m'$pCurrentIp '\e[1;32mfor Existing Node IP and \e[0m'$tgoPort '\e[1;32mfor Node Manager Port\e[0m'
 
      echo -e '****************************************************************************************************************'
 
