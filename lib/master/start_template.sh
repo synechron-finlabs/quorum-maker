@@ -25,7 +25,7 @@ function readInputs(){
     echo 'WHISPER_PORT='$wPort >> ./setup.conf
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
-    echo 'MAIN_NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
+    echo 'THIS_NODEMANAGER_PORT='$mgoPort >>  ./setup.conf
     
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf

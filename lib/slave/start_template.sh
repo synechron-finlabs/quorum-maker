@@ -218,7 +218,8 @@ function main(){
         copyGoService
         publickey=$(cat node/keys/$node.pub)
         echo 'PUBKEY='$publickey >> setup.conf
-        echo 'ROLE=' >> setup.conf
+        role="Unassigned"
+        echo 'ROLE='$role >> setup.conf
     fi    
 
     
