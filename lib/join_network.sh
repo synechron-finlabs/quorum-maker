@@ -13,7 +13,6 @@ function readInputs(){
     getInputWithDefault 'Please enter Node Manager Port of this node' raPort tgoPort $BLUE
     
     role="Unassigned"
-
     
 }
  
@@ -59,7 +58,7 @@ function generateEnode(){
     fi
     disc='?discport=0&raftport='
     Enode1=$Enode$pCurrentIp:$wPort$disc$raPort 
-    echo $Enode1 > ${sNode}/node/enode1.txt
+    echo $Enode1 > ${sNode}/node/enode.txt
     cp nodekey ${sNode}/node/qdata/geth/.
     rm enode.txt
     rm nodekey
@@ -78,7 +77,7 @@ function createAccount(){
 }
 
 #function to create start node script without --raftJoinExisting flag
-function copyStartTemplate(){
+function createStartNodeScript(){
     cp lib/slave/start_quorum_template.sh ${sNode}/node/start_${sNode}.sh
     PATTERN="s/#sNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
@@ -90,14 +89,22 @@ function copyStartTemplate(){
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     PATTERN="s/ra_Port/${raPort}/g"
     sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/nm_Port/${tgoPort}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
+    
 
     cp lib/slave/start_template.sh ${sNode}/start.sh
     START_CMD="start_${sNode}.sh"
     PATTERN="s/#start_cmd#/${START_CMD}/g"
     sed -i $PATTERN ${sNode}/start.sh
-    
+            
+    chmod +x ${sNode}/start.sh
+    chmod +x ${sNode}/node/start_${sNode}.sh
+
+    cp lib/slave/pre_start_check.sh ${sNode}/node/pre_start_check.sh
+
+    cp lib/common.sh  ${sNode}/node
+}
+
+function createSetupScript() {
     echo 'NODENAME='${sNode} > ${sNode}/setup.conf
     echo 'MASTER_IP='${pMainIp} >> ${sNode}/setup.conf
     echo 'WHISPER_PORT='${wPort} >> ${sNode}/setup.conf
@@ -108,35 +115,7 @@ function copyStartTemplate(){
     echo 'MAIN_NODEMANAGER_PORT='${mgoPort} >> ${sNode}/setup.conf
     echo 'CURRENT_IP='${pCurrentIp} >> ${sNode}/setup.conf
     echo 'REGISTERED=' >> ${sNode}/setup.conf
-
-    #PATTERN="s/#nodename#/${sNode}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#pmainip#/${pMainIp}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#wisport#/${wPort}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#raftPort#/${raPort}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#rpcPort#/${rPort}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#constPort#/${cPort}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#tgoPort#/${tgoPort}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#mgoPort#/${mgoPort}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#pCurrentIp#/${pCurrentIp}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    #PATTERN="s/#role#/${role}/g"
-    #sed -i $PATTERN ${sNode}/start.sh
-    
-    chmod +x ${sNode}/start.sh
-    chmod +x ${sNode}/node/start_${sNode}.sh
-
-    cp lib/common.sh  ${sNode}/node
 }
-
-
 
 function main(){    
     read -p $'\e[1;32mPlease enter node name: \e[0m' sNode 
@@ -150,10 +129,10 @@ function main(){
     generateKeyPair
     createInitNodeScript
     generateEnode
-    copyStartTemplate
+    createStartNodeScript
+    createSetupScript
     createAccount
-    #goGetGenesis
-    #executeInit
-}
-main
     
+}
+
+main

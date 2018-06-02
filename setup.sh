@@ -15,10 +15,15 @@ dockerImage=syneblock/quorum-maker:2.0.2_6
 			sudo ./start.sh
 			;;
 		2)
-			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} $dockerImage lib/join_network.sh
+			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} \
+			  $dockerImage lib/join_network.sh
+
 			JoinNodeName=$(cat nodeName)
-			cd $JoinNodeName
 			rm -f ../nodeName
+			
+			
+
+			cd $JoinNodeName
 			sudo ./start.sh
 			;;
 		3)
