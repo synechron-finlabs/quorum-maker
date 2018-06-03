@@ -44,7 +44,7 @@ The first step to use Quorum Maker is to clone the source code from GitHub.
 $ git clone git@github.com:synechron-finlabs/quorum-maker.git 
 ```
 
-Once the repository is successfully cloned, run `setup.sh` script. There are no pre-requisites for running Quorum Maker other than Ubuntu 16.04 or later. This script will automatically download and install required software, including docker if not found. 
+Once the repository is successfully cloned, run `setup.sh` script. To minimize the pre-requisites and make setup easy, Quorum Maker uses docker and rest of the dependencies are baked to `syneblock/quorum-maker` image.
 
 ## Creating a Network
 
