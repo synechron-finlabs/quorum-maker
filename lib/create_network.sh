@@ -99,7 +99,7 @@ function executeInit(){
 }
 
 function main(){    
-    read -p $'\e[1;32mPlease enter node name: \e[0m' mNode 
+    getInputWithDefault 'Please enter node name' "" mNode $GREEN
     rm -rf ${mNode}
     echo $mNode > nodename
     mkdir -p ${mNode}/node/keys

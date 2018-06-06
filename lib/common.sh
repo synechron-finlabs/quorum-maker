@@ -10,7 +10,7 @@ COLOR_END=$'\e[0m'
 
 function getInputWithDefault() {
     local msg=$1
-    local preValue=$2
+    local __defaultValue=$2
     local __resultvar=$3
     local __clr=$4
     
@@ -20,11 +20,17 @@ function getInputWithDefault() {
 
     fi
 
-    read -p $__clr"$msg""[Default:"$((preValue+1))"]:"$COLOR_END __newValue
+    if [ -z "$__defaultValue" ]; then
+
+       read -p $__clr"$msg: "$COLOR_END __newValue
+    else
+        read -p $__clr"$msg""[Default:"$__defaultValue"]:"$COLOR_END __newValue
+    fi
+    
     
     if [ -z "$__newValue" ]; then
 
-        __newValue=$((preValue+1))
+        __newValue=$__defaultValue
 
     fi
 
