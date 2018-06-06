@@ -44,7 +44,7 @@ The first step to use Quorum Maker is to clone the source code from GitHub.
 $ git clone git@github.com:synechron-finlabs/quorum-maker.git 
 ```
 
-Once the repository is successfully cloned, change to the Qorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. To minimize the pre-requisites and make setup easy, Quorum Maker uses docker and rest of the dependencies are baked to `syneblock/quorum-maker` image.
+Once the repository is successfully cloned, change to the Quorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. To minimize the pre-requisites and make setup easy, Quorum Maker uses docker and rest of the dependencies are baked to `syneblock/quorum-maker` image.
 
 ## Setting up Quorum Network on single machine
 
@@ -52,7 +52,7 @@ Quorum Maker allows to quickly spin up a Quorum network on single machine using 
 
 ### Setting up nodes
 
-Once the repository is successfully cloned, change to the Qorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. Choose the option `4` to Setup Development/Test Network. This will ask you to provide a project name and number of nodes to be created. You can either leave to the default values or enter your choice. 
+Once the repository is successfully cloned, change to the Quorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. Choose the option `4` to Setup Development/Test Network. This will ask you to provide a project name and number of nodes to be created. You can either leave to the default values or enter your choice. 
 
 ![Screenshot 7](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot7.png) 
 
