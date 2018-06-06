@@ -1,4 +1,4 @@
-# Quorum Maker V2.0
+# Quorum Maker V2.1
 
 Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
@@ -23,7 +23,7 @@ Quorum Maker v2.0 is an upgrade on v1.0 released by Synechron in October 2017. T
 |Join Network | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available")  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available")|
 |Delete Nodes	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/wip.png "Work In Progress") |
 |Quick Setup with Docker	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Quick network with Docker Compose	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/wip.png "Work In Progress") |
+|Quick network with Docker Compose	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
 |Quorum Chain Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") |
 |Raft Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
 |Istanbul PBFT Consensus	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/wip.png "Work In Progress") |
