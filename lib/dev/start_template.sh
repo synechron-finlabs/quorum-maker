@@ -6,7 +6,7 @@ function waitForMaster(){
         address=$var
 
         if [ -z "$address" ]; then
-            echo "Waiting for Master to deploy contract..."
+            echo "Waiting for Node 1 to deploy NetworkManager contract..."
             sleep 5
         else
             echo "CONTRACT_ADD=$address" >> /home/setup.conf
@@ -20,9 +20,7 @@ function main(){
     nodeName=$(basename `pwd`)
 
     publickey=$(cat node/keys/$nodeName.pub)
-     
-    echo 'PUBKEY='$publickey
-     
+         
     cd node
     ./start_$nodeName.sh
 
