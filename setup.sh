@@ -8,14 +8,14 @@ dockerImage=syneblock/quorum-maker:2.0.2_6
 	read option
 	case $option in
 		1)
-			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} $dockerImage lib/create_network.sh
+			docker run -it --rm -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} $dockerImage lib/create_network.sh
 			createNodeName=$(cat nodename)
 			cd $createNodeName
 			rm -f ../nodename
 			sudo ./start.sh
 			;;
 		2)
-			docker run -it -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} \
+			docker run -it --rm -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} \
 			  $dockerImage lib/join_network.sh
 
 			JoinNodeName=$(cat nodeName)
@@ -30,7 +30,7 @@ dockerImage=syneblock/quorum-maker:2.0.2_6
 			./remove_node.sh
 			;; 
 		4)
-			./setup_network.sh
+			docker run -it --rm -v $(pwd)/$line:/${PWD##*/} -w /${PWD##*/} $dockerImage lib/create_dev_network.sh
 			;;
 		5)
 			flagmain=false
