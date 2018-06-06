@@ -50,3 +50,11 @@ function updateProperty() {
     fi
     sed -i '/^$/d' $file
 }
+
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
