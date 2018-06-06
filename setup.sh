@@ -21,8 +21,6 @@ dockerImage=syneblock/quorum-maker:2.0.2_6
 			JoinNodeName=$(cat nodeName)
 			rm -f ../nodeName
 			
-			
-
 			cd $JoinNodeName
 			sudo ./start.sh
 			;;
