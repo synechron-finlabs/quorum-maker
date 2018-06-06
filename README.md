@@ -91,32 +91,20 @@ Once the repository is successfully cloned, change to the Qorum Maker directory 
 
 After the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
 
-`Please select an option:`
-
-`1) Create Network`
-
-`2) Join Network`
-
-`3) Remove Node`
-
-`4) Setup Development/Test Network`
-
+`Please select an option:`  
+`1) Create Network`  
+`2) Join Network`  
+`3) Remove Node`  
+`4) Setup Development/Test Network`  
 `5) Exit`
 
-`option:` 1
-
-`Please enter node name:` Org1
-
-`Please enter IP Address of this node:` 10.0.2.15
-
-`Please enter RPC Port of this node[Default:22000]:`
-
-`Please enter Network Listening Port of this node[Default:22001]:`
-
-`Please enter Constellation Port of this node[Default:22002]:`
-
-`Please enter Raft Port of this node[Default:22003]:`
-
+`option:` 1  
+`Please enter node name:` Org1  
+`Please enter IP Address of this node:` 10.0.2.15  
+`Please enter RPC Port of this node[Default:22000]:`  
+`Please enter Network Listening Port of this node[Default:22001]:`  
+`Please enter Constellation Port of this node[Default:22002]:`  
+`Please enter Raft Port of this node[Default:22003]:`  
 `Please enter Node Manager Port of this node[Default:22004]:`
 
 This completes the creator node startup procedure. Quorum Maker collects the user provided parameters in order to generate geth and constellation inside the docker container. It also starts the NodeManager service.  and creates a directory with the node name provided. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart by running `sudo ./start.sh` from the node directory (Eg. `Org1`). 
@@ -134,36 +122,22 @@ $ ./setup.sh
 
 After the required docker images are downloaded, Quorum Maker will present users with a few questions to complete the node setup.
 
-`Please select an option:`
-
-`1) Create Network`
-
-`2) Join Network`
-
-`3) Remove Node`
-
-`4) Setup Development/Test Network`
-
+`Please select an option:`  
+`1) Create Network`  
+`2) Join Network`  
+`3) Remove Node`  
+`4) Setup Development/Test Network`  
 `5) Exit`
 
-`option:` 2
-
-`Please enter node name:` Org2
-
-`Please enter IP Address of existing node:` 10.0.2.15
-
-`Please enter Node Manager Port of existing node:` 22004   
-
-`Please enter IP Address of this node:` 14.0.2.30
-
-`Please enter RPC Port of this node[Default:22000]:`24000
-
-`Please enter Network Listening Port of this node[Default:24001]:`
-
-`Please enter Constellation Port of this node[Default:24002]:`
-
-`Please enter Raft Port of this node[Default:24003]:`
-
+`option:` 2  
+`Please enter node name:` Org2  
+`Please enter IP Address of existing node:` 10.0.2.15  
+`Please enter Node Manager Port of existing node:` 22004  
+`Please enter IP Address of this node:` 14.0.2.30  
+`Please enter RPC Port of this node[Default:22000]:`24000  
+`Please enter Network Listening Port of this node[Default:24001]:`  
+`Please enter Constellation Port of this node[Default:24002]:`  
+`Please enter Raft Port of this node[Default:24003]:`  
 `Please enter Node Manager Port of this node[Default:24004]:`
 
 ![Screenshot 2](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot2.png) 
