@@ -1,6 +1,5 @@
 #!/bin/bash
  
- set -x
  source lib/common.sh
 
  DOCKER_NETWORK_IP=10.50.0.
@@ -19,7 +18,12 @@
 
  function generateSetupConf(){
     echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
-    echo 'ROLE='$role >> $projectName/node$1/setup.conf
+    echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
+    echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
+    echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
+    echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
+    echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
+    echo 'ROLE=' >> $projectName/node$1/setup.conf
     echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
     echo 'REGISTERED=' >> $projectName/node$1/setup.conf
  }
@@ -47,16 +51,6 @@ function copyStartTemplate(){
     chmod +x $projectName/node$1/node/start_node$1.sh
 
     cp lib/dev/start_template.sh $projectName/node$1/start.sh
-
-    #@TODO Add later
-    #START_CMD="start_${mNode}.sh"
-    #PATTERN="s/#start_cmd#/${START_CMD}/g"
-    #sed -i $PATTERN ${mNode}/start.sh
-    #PATTERN="s/#nodename#/${mNode}/g"
-    #sed -i $PATTERN ${mNode}/start.sh
-    #PATTERN="s/#netid#/${NET_ID}/g"
-    #sed -i $PATTERN ${mNode}/start.sh
-    #chmod +x ${mNode}/start.sh
 
     cp lib/common.sh $projectName/node$1/node/common.sh
 }
@@ -87,12 +81,7 @@ function generateEnode(){
     fi
     
     cp nodekey $projectName/node$1/node/qdata/geth/.
-    
-    #@TODO Add later
-    #cp lib/master/static-nodes_template.json ${mNode}/node/qdata/static-nodes.json
-    #PATTERN="s|#eNode#|${Enode}|g"
-    #sed -i $PATTERN ${mNode}/node/qdata/static-nodes.json
-
+  
     rm enode.txt
     rm nodekey
 }
@@ -129,6 +118,8 @@ function addNodeToDC(){
     echo "    command: [\"bash\" , \"start.sh\"]" >> $projectName/docker-compose.yml
     echo "    volumes:" >> $projectName/docker-compose.yml
     echo "      - ./node$1:/node$1" >> $projectName/docker-compose.yml
+    echo "      - ./node$1:/home" >> $projectName/docker-compose.yml
+    echo "      - ./node1:/master" >> $projectName/docker-compose.yml
     echo "    networks:" >> $projectName/docker-compose.yml
     echo "      vpcbr:" >> $projectName/docker-compose.yml
     echo "        ipv4_address: $DOCKER_NETWORK_IP$(($1+1))" >> $projectName/docker-compose.yml
@@ -147,13 +138,14 @@ function createNodeDirs(){
     while : ; do
         mkdir -p $projectName/node$i/node/keys
         mkdir -p $projectName/node$i/node/qdata/{keystore,geth,gethLogs,constellationLogs}
-        generateNodeConf $i
-        generateSetupConf $i
+        
         generateKeyPair $i
         copyStartTemplate $i
         generateEnode $i
         createAccount $i
         executeInit $i
+        generateNodeConf $i
+        generateSetupConf $i
         addNodeToDC $i
 
         if [ $i -eq $nodeCount ]; then
