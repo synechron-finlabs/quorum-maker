@@ -5,9 +5,8 @@
         "eip155Block": 0,
         "eip158Block": 0
     },
-  "alloc"      : {"#mNodeAddress#": {
-      "balance": "1000000000000000000000000000"
-    }
+  "alloc"      : {
+    #AccountBalance#
   },
   "coinbase"   : "0x0000000000000000000000000000000000000000",
   "difficulty" : "0x0",

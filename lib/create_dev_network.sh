@@ -86,9 +86,9 @@ function generateEnode(){
     rm nodekey
 }
 
-#function to create node accout and append it into genesis.json file
+#function to create node accout to prepare for Genesis creation
 function createAccount(){
-    mAccountAddress="$(geth --datadir datadir --password lib/dev/passwords.txt account new)"
+    mAccountAddress="$(geth --datadir datadir --password lib/dev/passwords.txt account new 2>> /dev/null)"
     re="\{([^}]+)\}"
     if [[ $mAccountAddress =~ $re ]];
     then
@@ -98,15 +98,15 @@ function createAccount(){
 
     cp datadir/keystore/* $projectName/node$1/node/qdata/keystore/node$1key
 
-    if [ $i -eq 1 ]; then
-        PATTERN="s|#mNodeAddress#|${mAccountAddress}|g"
-        PATTERN1="s|20|${NET_ID}|g"
-        cat lib/dev/genesis_template.json >> $projectName/genesis.json
-        sed -i $PATTERN $projectName/genesis.json
-        sed -i $PATTERN1 $projectName/genesis.json    
-    fi
-    cp $projectName/genesis.json $projectName/node$1/node
+    
 
+    COMMA=","
+    if [ $i -eq $nodeCount ]; then
+        COMMA=""
+    fi
+
+    echo "\"$mAccountAddress\": {\"balance\": \"1000000000000000000000000000\"}$COMMA">> $projectName/accountsBalances.txt
+    
     rm -rf datadir
 }
 
@@ -126,12 +126,6 @@ function addNodeToDC(){
     
 
 }
-# execute init script
-function executeInit(){
-    pushd $projectName/node$1/node
-    geth --datadir qdata init genesis.json
-    popd
-}
 
 function createNodeDirs(){
     i=1
@@ -142,8 +136,7 @@ function createNodeDirs(){
         generateKeyPair $i
         copyStartTemplate $i
         generateEnode $i
-        createAccount $i
-        executeInit $i
+        createAccount $i        
         generateNodeConf $i
         generateSetupConf $i
         addNodeToDC $i
@@ -159,6 +152,35 @@ function copyStaticNodeJson(){
     i=1
     while : ; do
         cp $projectName/static-nodes.json $projectName/node$i/node/qdata
+        
+        if [ $i -eq $nodeCount ]; then
+            break;
+        fi
+        let "i++"
+    done
+}
+
+function generateGenesis(){
+
+    touch $projectName/accountsBalances.txt
+
+    PATTERN="s|20|${NET_ID}|g"
+    cat lib/dev/genesis_template.json >> $projectName/genesis.json
+    sed -i $PATTERN $projectName/genesis.json
+
+    DATA=`cat $projectName/accountsBalances.txt | tr -d '\n' | tr -d [:space:]`
+    PATTERN="s/#AccountBalance#/$DATA/g"
+    sed -i $PATTERN $projectName/genesis.json
+}
+
+function initNodes(){
+
+    i=1
+    while : ; do
+        cp $projectName/genesis.json $projectName/node$i/node
+        pushd $projectName/node$i/node
+        geth --datadir qdata init genesis.json 2>> /dev/null
+        popd
 
         if [ $i -eq $nodeCount ]; then
             break;
@@ -170,7 +192,7 @@ function copyStaticNodeJson(){
 function main(){    
     getInputWithDefault 'Please enter a project name' "TestNetwork" projectName $RED
     getInputWithDefault 'Please enter number of nodes to be created' 3 nodeCount $GREEN
-    
+        
     rm -rf $projectName
     mkdir $projectName
         
@@ -183,5 +205,8 @@ function main(){
     createNodeDirs
     echo ] >> $projectName/static-nodes.json
     copyStaticNodeJson
+
+    generateGenesis
+    initNodes
 }
 main
