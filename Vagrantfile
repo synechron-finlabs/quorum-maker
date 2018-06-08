@@ -1,0 +1,16 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.network "private_network", ip: "192.168.33.11"
+  config.vm.provider "virtualbox" do |vb|
+     vb.memory = "2048"
+  end
+   config.vm.provision "shell", inline: <<-SHELL
+     apt-get update
+     curl https://get.docker.com | bash
+     sudo usermod -aG docker ubuntu
+     sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+     sudo chmod +x /usr/local/bin/docker-compose
+     cp -r /vagrant /home/ubuntu
+     touch /home/ubuntu/.qm_export_ports
+   SHELL
+end
