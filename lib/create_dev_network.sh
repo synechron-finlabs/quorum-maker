@@ -120,6 +120,17 @@ function addNodeToDC(){
     echo "      - ./node$1:/node$1" >> $projectName/docker-compose.yml
     echo "      - ./node$1:/home" >> $projectName/docker-compose.yml
     echo "      - ./node1:/master" >> $projectName/docker-compose.yml
+  
+    if [ -f .qm_export_ports ]; then
+        i=$1
+
+        if [ $i -lt 10 ]; then 
+            i="0"$i
+        fi
+        echo "    ports:" >> $projectName/docker-compose.yml
+        echo "      - \"2${i}04:22004" >> $projectName/docker-compose.yml
+    fi
+
     echo "    networks:" >> $projectName/docker-compose.yml
     echo "      vpcbr:" >> $projectName/docker-compose.yml
     echo "        ipv4_address: $DOCKER_NETWORK_IP$(($1+1))" >> $projectName/docker-compose.yml
