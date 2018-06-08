@@ -209,6 +209,23 @@ Quorum Maker provides APIs that it used internally, that are also useful for app
 ### Using a different version of Geth/Constellation 
 If you need to run Quorum Maker with a different version of Geth or Constellation than comes with default docker image, use [Quorum-Maker-Image](https://github.com/synechron-finlabs/quorum-maker-image "Quorum-Maker-Image"). Create docker image locally and run Quorum Maker again. 
 
+## Windows/Mac Support
+
+Quorum Maker provides Vagrant box for running Quorum Maker on Windows/Mac. 
+
+1. Install Oracle VirtualBox for Windows/Mac
+2. Install Vagrant for Windows/Mac
+3. Install a git client for Windows/Mac (GitBash is recommended on Windows)
+4. Git Clone or download Quorum Maker 
+5. Run `$ vagrant up` to provision a vagrant box with support for Ubuntu 16.04, Docker and Docker Compose.
+6. Run `$ vagrant ssh` to remote into vagrant box with default user `ubuntu`
+7. Quorum Maker is automatically copied to `/home/ubuntu`. Run `$ ./setup.sh` and follow the instructions to setup Quorum Network as explianed before in this document.
+
+> Note: Vagrant box for Quorum Maker by default runs on 192.168.33.11. You can access Quorum Maker UI from Windows/Mac on a browser pointing to http://192.168.33.11/22004. (Replace with Quorum Maker Nodemanager Port you setup) 
+
+> Note: If you create a Development/Test Network, the ports are automatically exported in sequential number, starting 20104, 20204 and so on for each you node created. 
+
+
 ### Work In Progress
 
 We expect the following areas to be part of future upgrades:
