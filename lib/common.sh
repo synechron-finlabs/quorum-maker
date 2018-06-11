@@ -51,6 +51,38 @@ function updateProperty() {
     sed -i '/^$/d' $file
 }
 
+function displayProgress(){
+    local __TOTAL=$1
+    local __CURRENT=$2
+
+    let __PER=$__CURRENT*100/$__TOTAL
+    
+    local __PROG=""
+
+    local __j=0
+    while : ; do  
+
+        if [ $__j -lt $__PER ]; then
+            __PROG+="#"
+        else
+            __PROG+=" "
+        fi
+
+        if [ $__j -eq 100 ]; then
+            break;
+        fi
+        let "__j++"
+    done
+
+    echo -ne "[${YELLOW}${__PROG}${COLOR_END}"$GREEN'('$__PER'%)'${COLOR_END}']\r'
+
+    if [ $__TOTAL -eq $__CURRENT ]; then
+            echo ""
+            break;
+    fi
+
+}
+
 pushd () {
     command pushd "$@" > /dev/null
 }

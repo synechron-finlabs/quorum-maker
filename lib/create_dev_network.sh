@@ -145,14 +145,14 @@ function createNodeDirs(){
         mkdir -p $projectName/node$i/node/qdata/{keystore,geth,gethLogs,constellationLogs}
         
         generateKeyPair $i
-        echo -e '\e[1;34mCreated Constellation Keys for 'node$i'\e[0m'
         copyStartTemplate $i
         generateEnode $i
         createAccount $i    
-        echo -e '\e[1;34mCreated Ethereum Keys for 'node$i'\e[0m'    
         generateNodeConf $i
         generateSetupConf $i
         addNodeToDC $i
+
+        displayProgress $nodeCount $i
 
         if [ $i -eq $nodeCount ]; then
             break;
@@ -194,8 +194,7 @@ function initNodes(){
         pushd $projectName/node$i/node
         geth --datadir qdata init genesis.json 2>> /dev/null
         popd
-
-        echo -e '\e[1;32mInitialized 'node$i'\e[0m'
+        
         if [ $i -eq $nodeCount ]; then
             break;
         fi
@@ -207,7 +206,9 @@ function main(){
     getInputWithDefault 'Please enter a project name' "TestNetwork" projectName $RED
     getInputWithDefault 'Please enter number of nodes to be created' 3 nodeCount $GREEN
         
-    echo -e '\e[1;35mCreating '$projectName' with '$nodeCount' nodes. Please wait... \e[0m'
+    echo -e $BLUE'Creating '$projectName' with '$nodeCount' nodes. Please wait... '$COLOR_END
+
+    displayProgress $nodeCount 0
 
     rm -rf $projectName
     mkdir $projectName
@@ -221,16 +222,11 @@ function main(){
     createNodeDirs
     echo ] >> $projectName/static-nodes.json
 
-    echo -e '\e[1;34mCreated Node structures...\e[0m'
-
     copyStaticNodeJson
-    echo -e '\e[1;34mCreated Static Node JSON...\e[0m'
-
     generateGenesis
-    echo -e '\e[1;34mCreated Genesis JSON...\e[0m'
 
     initNodes
 
-    echo -e '\e[1;96mProject '$projectName' created successfully. Please execute docker-compose up from '$projectName' directory\e[0m'
+    echo -e $GREEN'Project '$projectName' created successfully. Please execute docker-compose up from '$projectName' directory'$COLOR_END
 }
 main
