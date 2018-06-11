@@ -71,10 +71,10 @@ function displayProgress(){
         if [ $__j -eq 100 ]; then
             break;
         fi
-        let "__j++"
+        let "__j+=2"
     done
 
-    echo -ne "[${YELLOW}${__PROG}${COLOR_END}"$GREEN'('$__PER'%)'${COLOR_END}']\r'
+    echo -ne ' ['${YELLOW}"${__PROG}"${COLOR_END}']'$GREEN'('$__PER'%)'${COLOR_END}'\r'
 
     if [ $__TOTAL -eq $__CURRENT ]; then
             echo ""
