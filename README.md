@@ -218,8 +218,8 @@ Quorum Maker provides Vagrant box for running Quorum Maker on Windows/Mac.
 3. Install a git client for Windows/Mac (GitBash is recommended on Windows)
 4. Git Clone or download Quorum Maker 
 5. Run `$ vagrant up` to provision a vagrant box with support for Ubuntu 16.04, Docker and Docker Compose.
-6. Run `$ vagrant ssh` to remote into vagrant box with default user `ubuntu`
-7. Quorum Maker is automatically copied to `/home/ubuntu`. Run `$ ./setup.sh` and follow the instructions to setup Quorum Network as explianed before in this document.
+6. Run `$ vagrant ssh` to remote into vagrant box with default user `vagrant`
+7. Quorum Maker is automatically copied to `/home/vagrant`. Run `$ ./setup.sh` and follow the instructions to setup Quorum Network as explianed before in this document.
 
 > Note: Vagrant box for Quorum Maker by default runs on 192.168.33.11. You can access Quorum Maker UI from Windows/Mac on a browser pointing to http://192.168.33.11:20104, http://192.168.33.11:20204 etc. (Quorum Maker automatically detects you are running from Vagrant and uses a different port than you entered to avoid coflicts. Read below) 
 
