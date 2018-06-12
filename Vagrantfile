@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
      sudo chmod +x /usr/local/bin/docker-compose
      sudo apt install dos2unix
      cp -r /vagrant/* /home/ubuntu
-     find . -type f -print0 | xargs -0 dos2unix
+     find /home/ubuntu -type f -print0 | xargs -0 dos2unix
      touch /home/ubuntu/.qm_export_ports
    SHELL
 end
