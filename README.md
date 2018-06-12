@@ -79,7 +79,7 @@ You can now connect to the Quorum Maker UI for each node from a web browser by p
 
 ![Screenshot 9](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot9.png) 
 
-> Note: By default, Quourm Maker doesnt expose ports to the host due to possible conflicts, when running Developement/Test Network. You can update `docker-compose.yml` to expose any port you would like to be accessible outside your computer. 
+> Note: By default, Quourm Maker doesnt expose ports to the host due to possible conflicts, when running Development/Test Network. You can update `docker-compose.yml` to expose any port you would like to be accessible outside your computer. 
 
 ## Setting up Quorum Network on multiple machines
 
@@ -219,9 +219,9 @@ Quorum Maker provides Vagrant box for running Quorum Maker on Windows/Mac.
 4. Git Clone or download Quorum Maker 
 5. Run `$ vagrant up` to provision a vagrant box with support for Ubuntu 16.04, Docker and Docker Compose.
 6. Run `$ vagrant ssh` to remote into vagrant box with default user `vagrant`
-7. Quorum Maker is automatically copied to `/home/vagrant`. Run `$ ./setup.sh` and follow the instructions to setup Quorum Network as explianed before in this document.
+7. Quorum Maker is automatically copied to `/home/vagrant`. Run `$ ./setup.sh` and follow the instructions to setup Quorum Network as explained before in this document.
 
-> Note: Vagrant box for Quorum Maker by default runs on 192.168.33.11. You can access Quorum Maker UI from Windows/Mac on a browser pointing to http://192.168.33.11:20104, http://192.168.33.11:20204 etc. (Quorum Maker automatically detects you are running from Vagrant and uses a different port than you entered to avoid coflicts. Read below) 
+> Note: Vagrant box for Quorum Maker by default runs on 192.168.33.11. You can access Quorum Maker UI from Windows/Mac on a browser pointing to http://192.168.33.11:20104, http://192.168.33.11:20204 etc. (Quorum Maker automatically detects you are running from Vagrant and uses a different port than you entered to avoid conflicts. Read below) 
 
 > Note: If you create a Development/Test Network, the ports are automatically exported in sequential number, starting 20104, 20204 and so on for each you node created. 
 
