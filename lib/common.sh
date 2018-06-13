@@ -1,4 +1,3 @@
-dockerImage=syneblock/quorum-maker:2.0.2_2.1
 
 RED=$'\e[1;31m'
 GREEN=$'\e[1;32m'

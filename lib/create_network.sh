@@ -1,5 +1,6 @@
 #!/bin/bash
  
+ source qm.variables
  source lib/common.sh
 
 #create node configuration file
@@ -103,6 +104,8 @@ function main(){
     mkdir -p ${mNode}/node/keys
     mkdir -p ${mNode}/node/qdata
     mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
+    cp qm.variables $mNode
+
     copyConfTemplate
     generateKeyPair
     createInitNodeScript
