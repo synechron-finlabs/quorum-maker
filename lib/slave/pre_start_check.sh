@@ -64,11 +64,10 @@ function nodeConf(){
 
 # Function to send post call to go endpoint joinNode 
 function updateNmcAddress(){
-    echo "Waiting for approval from "${pMainIp}
-    
+        
     url=http://${mainIp}:${mgoPort}/peer
 
-    response=$(curl -X POST \
+    response=$(curl -s -X POST \
     --max-time 310 ${url} \
     -H "content-type: application/json" \
     -d '{
@@ -97,7 +96,9 @@ function requestGenesis(){
     timeout="Response Timed Out"
     urlG=http://${mainIp}:${mgoPort}/genesis
 
-    response=$(curl -X POST \
+    echo -e $RED'\nJoin Request sent to '$mainIp'. Waiting for approval...'$COLOR_END
+
+    response=$(curl -s -X POST \
     --max-time 310 ${urlG} \
     -H "content-type: application/json" \
     -d '{
@@ -105,8 +106,6 @@ function requestGenesis(){
        "ip-address":"'${pCurrentIp}'",
        "nodename":"'${node}'"
     }')
-
-    echo "master response" $response
 
     if [ "$response" = "$pending" ]
     then 

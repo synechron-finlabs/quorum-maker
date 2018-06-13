@@ -25,11 +25,9 @@ function readInputs(){
 
 #function to generate keyPair for node
  function generateKeyPair(){
-    echo "Generating public and private keys for " ${sNode}", Please enter password or leave blank"
-    echo -ne "\n" | constellation-node --generatekeys=${sNode}
+    echo -ne "\n" | constellation-node --generatekeys=${sNode} 1>>/dev/null
 
-    echo "Generating public and private backup keys for " ${sNode}", Please enter password or leave blank"
-    echo -ne "\n" | constellation-node --generatekeys=${sNode}a
+    echo -ne "\n" | constellation-node --generatekeys=${sNode}a 1>>/dev/null
 
     mv ${sNode}*.*  ${sNode}/node/keys/.
     
@@ -67,7 +65,7 @@ function generateEnode(){
 
 #function to create node accout and append it into genesis.json file
 function createAccount(){
-    sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new)"
+    sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new 2>> /dev/null)"
     re="\{([^}]+)\}"
     if [[ $sAccountAddress =~ $re ]];
     then
