@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source qm.variables
 source lib/common.sh
 
 function readInputs(){  
@@ -123,6 +124,8 @@ function main(){
     mkdir -p ${sNode}/node/keys
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
+    cp qm.variables $sNode
+
     readInputs
     copyConfTemplate
     generateKeyPair

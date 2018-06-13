@@ -1,5 +1,6 @@
 #!/bin/bash
  
+ source qm.variables
  source lib/common.sh
 
  DOCKER_NETWORK_IP=10.50.0.

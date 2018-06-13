@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source qm.variables
 source node/common.sh
     
 function readFromFile(){
