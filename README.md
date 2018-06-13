@@ -46,9 +46,9 @@ $ git clone git@github.com:synechron-finlabs/quorum-maker.git
 
 Once the repository is successfully cloned, change to the Quorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. To minimize the pre-requisites and make setup easy, Quorum Maker uses docker and rest of the dependencies are baked to `syneblock/quorum-maker` image.
 
-## Setting up Quorum Network on single machine
+## Setting up Quorum Test/Development Network
 
-Quorum Maker allows to quickly spin up a Quorum network on single machine using Docker Compose with minimal input. Nodes created would be fully functional with all the features of Quorum as well as Quorum Maker. This allows developers to experiment with latest features with different number of nodes. 
+Quorum Maker allows to quickly spin up a Quorum network for development or test purpose using Docker Compose with minimal input. Nodes created would be fully functional with all the features of Quorum as well as Quorum Maker. This allows developers to experiment with latest features with different number of nodes. 
 
 ### Setting up nodes
 
@@ -58,7 +58,7 @@ Once the repository is successfully cloned, change to the Quorum Maker directory
 
 A series of commands will be executed and you can see that a new directory with the name of the project your entered get created. This directory contains a `docker-compose.yml` and as many directories as the number of nodes you asked to create. 
 
-## Running Development Network
+## Running Test/Development Network
 
 After the project is created, change to the directory just created and run `$ docker-compose up` to bring up the network. You will see each node coming up and node managers for each node getting started. Once the activities stop, you will have a fully functioning Quorum Network running. 
 
