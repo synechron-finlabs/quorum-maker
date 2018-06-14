@@ -1,5 +1,6 @@
 #!/bin/bash
  
+ source qm.variables
  source lib/common.sh
 
 #create node configuration file
@@ -10,11 +11,9 @@
 
 #function to generate keyPair for node
  function generateKeyPair(){
-    echo "Generating public and private keys for " ${mNode}", Please enter password or leave blank"
-    echo -ne "\n" | constellation-node --generatekeys=${mNode}
-
-    echo "Generating public and private backup keys for " ${mNode}", Please enter password or leave blank"
-    echo -ne "\n" | constellation-node --generatekeys=${mNode}a
+    echo -ne "\n" | constellation-node --generatekeys=${mNode} 1>>/dev/null
+    
+    echo -ne "\n" | constellation-node --generatekeys=${mNode}a 1>>/dev/null
 
     mv ${mNode}*.*  ${mNode}/node/keys/.
     
@@ -37,16 +36,22 @@ function copyStartTemplate(){
     chmod +x ${mNode}/node/start_${mNode}.sh
 
     cp lib/master/start_template.sh ${mNode}/start.sh
-    START_CMD="start_${mNode}.sh"
-    PATTERN="s/#start_cmd#/${START_CMD}/g"
-    sed -i $PATTERN ${mNode}/start.sh
-    PATTERN="s/#nodename#/${mNode}/g"
-    sed -i $PATTERN ${mNode}/start.sh
-    PATTERN="s/#netid#/${NET_ID}/g"
-    sed -i $PATTERN ${mNode}/start.sh
     chmod +x ${mNode}/start.sh
 
+    cp lib/master/pre_start_check_template.sh ${mNode}/node/pre_start_check.sh
+    START_CMD="start_${mNode}.sh"
+    PATTERN="s/#start_cmd#/${START_CMD}/g"
+    sed -i $PATTERN ${mNode}/node/pre_start_check.sh
+    PATTERN="s/#nodename#/${mNode}/g"
+    sed -i $PATTERN ${mNode}/node/pre_start_check.sh
+    PATTERN="s/#netid#/${NET_ID}/g"
+    sed -i $PATTERN ${mNode}/node/pre_start_check.sh
+    chmod +x ${mNode}/node/pre_start_check.sh
+
     cp lib/common.sh ${mNode}/node/common.sh
+
+    cat lib/master/nodemanager_template.sh > ${mNode}/node/nodemanager.sh
+    chmod +x ${mNode}/node/nodemanager.sh
 }
 
 #function to generate enode
@@ -77,7 +82,7 @@ function generateEnode(){
 
 #function to create node accout and append it into genesis.json file
 function createAccount(){
-    mAccountAddress="$(geth --datadir datadir --password lib/master/passwords.txt account new)"
+    mAccountAddress="$(geth --datadir datadir --password lib/master/passwords.txt account new 2>> /dev/null)"
     re="\{([^}]+)\}"
     if [[ $mAccountAddress =~ $re ]];
     then
@@ -99,12 +104,14 @@ function executeInit(){
 }
 
 function main(){    
-    read -p $'\e[1;32mPlease enter node name: \e[0m' mNode 
+    getInputWithDefault 'Please enter node name' "" mNode $GREEN
     rm -rf ${mNode}
-    echo $mNode > nodename
+    echo $mNode > .nodename
     mkdir -p ${mNode}/node/keys
     mkdir -p ${mNode}/node/qdata
     mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
+    cp qm.variables $mNode
+
     copyConfTemplate
     generateKeyPair
     createInitNodeScript

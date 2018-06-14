@@ -10,7 +10,7 @@ GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID  
 
 echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_#sNode#.log
 
-constellation-node #sNode#.conf 2>> qdata/constellationLogs/constellation_#sNode#.log &
+constellation-node #sNode#.conf >> qdata/constellationLogs/constellation_#sNode#.log 2>&1 &
 sleep 1
 
 echo "[*] Starting #sNode# node" >> qdata/gethLogs/#sNode#.log

@@ -1,16 +1,18 @@
 #!/bin/bash
 
+source qm.variables
 source lib/common.sh
 
 function readInputs(){  
-    read -p $'\e[1;31mPlease enter IP Address of existing node: \e[0m' pMainIp
-	read -p $'\e[1;33mPlease enter Node Manager Port of existing node: \e[0m' mgoPort
-    read -p $'\e[1;31mPlease enter IP Address of this node: \e[0m' pCurrentIp
-    getInputWithDefault 'Please enter RPC Port of this node' 21999 rPort $GREEN
-    getInputWithDefault 'Please enter Network Listening Port of this node' rPort wPort $GREEN
-    getInputWithDefault 'Please enter Constellation Port of this node' wPort cPort $GREEN
-    getInputWithDefault 'Please enter Raft Port of this node' cPort raPort $PINK
-    getInputWithDefault 'Please enter Node Manager Port of this node' raPort tgoPort $BLUE
+    
+	getInputWithDefault 'Please enter IP Address of existing node' "" pMainIp $RED
+    getInputWithDefault 'Please enter Node Manager Port of existing node' "" mgoPort $YELLOW
+    getInputWithDefault 'Please enter IP Address of this node' "" pCurrentIp $RED
+    getInputWithDefault 'Please enter RPC Port of this node' 22000 rPort $GREEN
+    getInputWithDefault 'Please enter Network Listening Port of this node' $((rPort+1)) wPort $GREEN
+    getInputWithDefault 'Please enter Constellation Port of this node' $((wPort+1)) cPort $GREEN
+    getInputWithDefault 'Please enter Raft Port of this node' $((cPort+1)) raPort $PINK
+    getInputWithDefault 'Please enter Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
     
     role="Unassigned"
     
@@ -24,11 +26,9 @@ function readInputs(){
 
 #function to generate keyPair for node
  function generateKeyPair(){
-    echo "Generating public and private keys for " ${sNode}", Please enter password or leave blank"
-    echo -ne "\n" | constellation-node --generatekeys=${sNode}
+    echo -ne "\n" | constellation-node --generatekeys=${sNode} 1>>/dev/null
 
-    echo "Generating public and private backup keys for " ${sNode}", Please enter password or leave blank"
-    echo -ne "\n" | constellation-node --generatekeys=${sNode}a
+    echo -ne "\n" | constellation-node --generatekeys=${sNode}a 1>>/dev/null
 
     mv ${sNode}*.*  ${sNode}/node/keys/.
     
@@ -66,7 +66,7 @@ function generateEnode(){
 
 #function to create node accout and append it into genesis.json file
 function createAccount(){
-    sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new)"
+    sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new 2>> /dev/null)"
     re="\{([^}]+)\}"
     if [[ $sAccountAddress =~ $re ]];
     then
@@ -118,12 +118,14 @@ function createSetupScript() {
 }
 
 function main(){    
-    read -p $'\e[1;32mPlease enter node name: \e[0m' sNode 
-    echo $sNode > nodeName
+    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+    echo $sNode > .nodename
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
+    cp qm.variables $sNode
+
     readInputs
     copyConfTemplate
     generateKeyPair

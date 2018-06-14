@@ -5,6 +5,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.50.0.0/16
-          gateway: 10.50.0.1
+        - subnet: #DOCKER_NETWORK_IP#0/16
+          gateway: #DOCKER_NETWORK_IP#1
 services:
+

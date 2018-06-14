@@ -1,16 +1,16 @@
-dockerImage=syneblock/quorum-maker:2.0.2_2.0
 
 RED=$'\e[1;31m'
 GREEN=$'\e[1;32m'
 YELLOW=$'\e[1;33m'
 BLUE=$'\e[1;34m'
 PINK=$'\e[1;35m'
-
+CYAN=$'\e[1;96m'
+WHITE=$'\e[1;39m'
 COLOR_END=$'\e[0m'
 
 function getInputWithDefault() {
     local msg=$1
-    local preValue=$2
+    local __defaultValue=$2
     local __resultvar=$3
     local __clr=$4
     
@@ -20,11 +20,17 @@ function getInputWithDefault() {
 
     fi
 
-    read -p $__clr"$msg""[Default:"$((preValue+1))"]:"$COLOR_END __newValue
+    if [ -z "$__defaultValue" ]; then
+
+       read -p $__clr"$msg: "$COLOR_END __newValue
+    else
+        read -p $__clr"$msg""[Default:"$__defaultValue"]:"$COLOR_END __newValue
+    fi
+    
     
     if [ -z "$__newValue" ]; then
 
-        __newValue=$((preValue+1))
+        __newValue=$__defaultValue
 
     fi
 
@@ -43,4 +49,44 @@ function updateProperty() {
         echo $key=$value >> $file
     fi
     sed -i '/^$/d' $file
+}
+
+function displayProgress(){
+    local __TOTAL=$1
+    local __CURRENT=$2
+
+    let __PER=$__CURRENT*100/$__TOTAL
+    
+    local __PROG=""
+
+    local __j=0
+    while : ; do  
+
+        if [ $__j -lt $__PER ]; then
+            __PROG+="#"
+        else
+            __PROG+=" "
+        fi
+
+        if [ $__j -eq 100 ]; then
+            break;
+        fi
+        let "__j+=2"
+    done
+
+    echo -ne ' ['${YELLOW}"${__PROG}"${COLOR_END}']'$GREEN'('$__PER'%)'${COLOR_END}'\r'
+
+    if [ $__TOTAL -eq $__CURRENT ]; then
+            echo ""
+            break;
+    fi
+
+}
+
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
 }
