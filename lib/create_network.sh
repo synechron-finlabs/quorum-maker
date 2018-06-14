@@ -36,16 +36,22 @@ function copyStartTemplate(){
     chmod +x ${mNode}/node/start_${mNode}.sh
 
     cp lib/master/start_template.sh ${mNode}/start.sh
-    START_CMD="start_${mNode}.sh"
-    PATTERN="s/#start_cmd#/${START_CMD}/g"
-    sed -i $PATTERN ${mNode}/start.sh
-    PATTERN="s/#nodename#/${mNode}/g"
-    sed -i $PATTERN ${mNode}/start.sh
-    PATTERN="s/#netid#/${NET_ID}/g"
-    sed -i $PATTERN ${mNode}/start.sh
     chmod +x ${mNode}/start.sh
 
+    cp lib/master/pre_start_check_template.sh ${mNode}/node/pre_start_check.sh
+    START_CMD="start_${mNode}.sh"
+    PATTERN="s/#start_cmd#/${START_CMD}/g"
+    sed -i $PATTERN ${mNode}/node/pre_start_check.sh
+    PATTERN="s/#nodename#/${mNode}/g"
+    sed -i $PATTERN ${mNode}/node/pre_start_check.sh
+    PATTERN="s/#netid#/${NET_ID}/g"
+    sed -i $PATTERN ${mNode}/node/pre_start_check.sh
+    chmod +x ${mNode}/node/pre_start_check.sh
+
     cp lib/common.sh ${mNode}/node/common.sh
+
+    cat lib/master/nodemanager_template.sh > ${mNode}/node/nodemanager.sh
+    chmod +x ${mNode}/node/nodemanager.sh
 }
 
 #function to generate enode

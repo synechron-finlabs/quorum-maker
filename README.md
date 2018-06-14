@@ -211,7 +211,13 @@ If you need to run Quorum Maker with a different version of Geth or Constellatio
 
 ## Windows/Mac Support
 
-Quorum Maker provides Vagrant box for running Quorum Maker on Windows/Mac. 
+Quorum Maker can be run on Windows/Mac using Docker. Since Docker can not expose bridge network to host on Mac, Quorum Maker automatically exports ports when creating Development/Test network on Mac. 
+
+> Note: If you create a Development/Test Network on Mac, the ports are automatically exported in sequential number, starting 20104, 20204 and so on for each you node created. 
+
+## Vagrant Support.
+
+For full support for running using Docker, Quorum Maker provides Vagrant box for Windows/Mac. 
 
 1. Install Oracle VirtualBox for Windows/Mac
 2. Install Vagrant for Windows/Mac
