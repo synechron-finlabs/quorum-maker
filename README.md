@@ -107,7 +107,7 @@ After the required docker images are downloaded, Quorum Maker will present with 
 `Please enter Raft Port of this node[Default:22003]:`  
 `Please enter Node Manager Port of this node[Default:22004]:`
 
-This completes the creator node startup procedure. Quorum Maker collects the user provided parameters in order to generate geth and constellation inside the docker container. It also starts the NodeManager service.  and creates a directory with the node name provided. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart by running `sudo ./start.sh` from the node directory (Eg. `Org1`). 
+This completes the creator node startup procedure. Quorum Maker collects the user provided parameters in order to generate geth and constellation inside the docker container. It also starts the NodeManager service.  and creates a directory with the node name provided. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart by running `./start.sh` from the node directory (Eg. `Org1`). 
 
 ![Screenshot 1](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot1.png) 
 
@@ -144,7 +144,7 @@ After the required docker images are downloaded, Quorum Maker will present users
 
 At this point, a directory with the node name is created and most of the files are created. To join the existing network, the active node requires the Genesis file specific to the network. Quorum Maker will contact the node chose in the wizard and request permission to join and receive the Genesis file. An administrator of that node will get notifications on UI and e-mail for the join request and needs to approve it.
 
-> Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator of the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `sudo ./start.sh` from the directory created and the setup will be resumed. 
+> Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator of the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `./start.sh` from the directory created and the setup will be resumed. 
 
 ### Approve/Reject Network
 -	Once a join request has been sent by a node willing to join a network to one of the existing network participants, this node has the option to approve/reject this join request
