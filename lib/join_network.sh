@@ -119,7 +119,7 @@ function createSetupScript() {
 
 function main(){    
     getInputWithDefault 'Please enter node name' "" sNode $GREEN
-    echo $sNode > nodeName
+    echo $sNode > .nodename
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
     mkdir -p ${sNode}/node/qdata

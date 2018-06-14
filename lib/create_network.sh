@@ -100,7 +100,7 @@ function executeInit(){
 function main(){    
     getInputWithDefault 'Please enter node name' "" mNode $GREEN
     rm -rf ${mNode}
-    echo $mNode > nodename
+    echo $mNode > .nodename
     mkdir -p ${mNode}/node/keys
     mkdir -p ${mNode}/node/qdata
     mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
