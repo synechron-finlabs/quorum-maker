@@ -15,5 +15,5 @@ if [ -f .nodename ]; then
 	nodename=$(cat .nodename)
 	rm -f .nodename
 	cd $nodename	
-	sudo ./start.sh	
+	./start.sh	
 fi
