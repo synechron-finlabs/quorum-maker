@@ -1,0 +1,11 @@
+version: '2'
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: #DOCKER_NETWORK_IP#0/16
+          gateway: #DOCKER_NETWORK_IP#1
+services:
+
