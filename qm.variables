@@ -1,1 +1,1 @@
-dockerImage=syneblock/quorum-maker:2.0.2
+dockerImage=syneblock/quorum-maker:2.0.2_Dev
