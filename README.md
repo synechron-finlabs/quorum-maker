@@ -146,7 +146,7 @@ At this point, a directory with the node name is created and most of the files a
 
 > Note: The joining node will wait 5 minutes for the approval. If the request is not approved within that time, the Quorum Maker will quit. But the administrator of the other node can approve the request any time. Once the request is approved, the node can be restarted by executing `./start.sh` from the directory created and the setup will be resumed. 
 
-### Approve/Reject Network
+### Approve/Reject Join Request
 -	Once a join request has been sent by a node willing to join a network to one of the existing network participants, this node has the option to approve/reject this join request
 -	If the join request is accepted, the main node's constellation port, genesis file and network ID is returned to the joiner. If the join request is rejected, the joiner's setup script exits
 
