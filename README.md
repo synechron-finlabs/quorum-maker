@@ -5,7 +5,7 @@ Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quoru
 -	run with docker-compose (Raft consensus/Quorum 2.0.2) for easy use in development environments; or,
 -	nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.0.2)
 
-![Quorum Maker 2](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/QM2.png) 
+![Quorum Maker 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/QM2.png) 
 ## Quorum Maker provides the following benefits:
   -	An easy interface to create and manage the Quorum Network
   -	A modern UI to monitor and manage Quorum Network
@@ -19,22 +19,22 @@ Quorum Maker v2.1 is an upgrade on v1.0 released by Synechron in October 2017. T
 
 | Features | V 1.0 | V 2.1 |
 | ------ | ------ |-----|
-| Create Network | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Join Network | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available")  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available")|
-|Delete Nodes	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/wip.png "Work In Progress") |
-|Quick Setup with Docker	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Quick network with Docker Compose	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Quorum Chain Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") |
-|Raft Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Istanbul PBFT Consensus	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/wip.png "Work In Progress") |
-|Network Map Service  	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Node Monitoring	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Web UI	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Block Explorer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Transaction Explorer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Email Notification	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Restful API	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
-|Smart Contract Deployer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/tick.png "Available") |
+| Create Network | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Join Network | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available")  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available")|
+|Delete Nodes	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/wip.png "Work In Progress") |
+|Quick Setup with Docker	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Quick network with Docker Compose	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Quorum Chain Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") |
+|Raft Consensus	 	  | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Istanbul PBFT Consensus	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![WIP](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/wip.png "Work In Progress") |
+|Network Map Service  	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Node Monitoring	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Web UI	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Block Explorer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Transaction Explorer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Email Notification	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Restful API	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
+|Smart Contract Deployer	 	  | ![No](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/cross.png "Not Available") | ![Yes](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/tick.png "Available") |
 
 ## Quickstart
 
@@ -54,7 +54,7 @@ Quorum Maker allows to quickly spin up a Quorum network for development or test 
 
 Once the repository is successfully cloned, change to the Quorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. Choose the option `4` to Setup Development/Test Network. This will ask you to provide a project name and number of nodes to be created. You can either leave to the default values or enter your choice. 
 
-![Screenshot 7](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot7.png) 
+![Screenshot 7](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot7.png) 
 
 A series of commands will be executed and you can see that a new directory with the name of the project your entered get created. This directory contains a `docker-compose.yml` and as many directories as the number of nodes you asked to create. 
 
@@ -62,7 +62,7 @@ A series of commands will be executed and you can see that a new directory with 
 
 After the project is created, change to the directory just created and run `$ docker-compose up` to bring up the network. You will see each node coming up and node managers for each node getting started. Once the activities stop, you will have a fully functioning Quorum Network running. 
 
-![Screenshot 8](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot8.png) 
+![Screenshot 8](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot8.png) 
 
 > Note:
 By default Quorum Maker creates bridge network with `subnet: 10.50.0.0/16` and `gateway: 10.50.0.1`. If you would like to run multiple Quorum Network on same machine, change this setting on the generated `docker-compose`.
@@ -77,7 +77,7 @@ Each node created gets it own IP address starting with `10.50.0.2`. Following ar
 
 You can now connect to the Quorum Maker UI for each node from a web browser by pointing to `http://10.50.0.2:22004`, `http://10.50.0.3:22004` etc. 
 
-![Screenshot 9](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot9.png) 
+![Screenshot 9](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot9.png) 
 
 > Note: By default, Quourm Maker doesnt expose ports to the host due to possible conflicts, when running Development/Test Network. You can update `docker-compose.yml` to expose any port you would like to be accessible outside your computer. 
 
@@ -109,7 +109,7 @@ After the required docker images are downloaded, Quorum Maker will present with 
 
 This completes the creator node startup procedure. Quorum Maker collects the user provided parameters in order to generate geth and constellation inside the docker container. It also starts the NodeManager service.  and creates a directory with the node name provided. This directory has the script to start the node and other files required. You can stop the node any time using `Ctrl + C`, and restart by running `./start.sh` from the node directory (Eg. `Org1`). 
 
-![Screenshot 1](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot1.png) 
+![Screenshot 1](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot1.png) 
 
 ### Joining a Network
 Once a node is created, you can create and join more nodes to form a Quorum Network. Ideally subsequent nodes should be created on other computers. If you are creating another node on the same computer, please make sure to use different ports. In this case you can use the same Quorum Maker clone, since it creates separate directories for each node.
@@ -140,7 +140,7 @@ After the required docker images are downloaded, Quorum Maker will present users
 `Please enter Raft Port of this node[Default:24003]:`  
 `Please enter Node Manager Port of this node[Default:24004]:`
 
-![Screenshot 2](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot2.png) 
+![Screenshot 2](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot2.png) 
 
 At this point, a directory with the node name is created and most of the files are created. To join the existing network, the active node requires the Genesis file specific to the network. Quorum Maker will contact the node chose in the wizard and request permission to join and receive the Genesis file. An administrator of that node will get notifications on UI and e-mail for the join request and needs to approve it.
 
@@ -150,7 +150,7 @@ At this point, a directory with the node name is created and most of the files a
 -	Once a join request has been sent by a node willing to join a network to one of the existing network participants, this node has the option to approve/reject this join request
 -	If the join request is accepted, the main node's constellation port, genesis file and network ID is returned to the joiner. If the join request is rejected, the joiner's setup script exits
 
-![Screenshot 3](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot3.png) 
+![Screenshot 3](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot3.png) 
 
 ## Quorum Maker Web UI
 
@@ -159,11 +159,11 @@ Quorum Maker provides a web interface to monitor the network. You can explore th
 
 Administrators can view geth and constellation logs from Quorum Maker. 
 
-![Screenshot 4](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot4.png) 
+![Screenshot 4](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot4.png) 
 
 Click on the node name of the table to view node details. You can also update the node name and role of your own node. Node name and Role are useful in a large network to identify the peers before sending transactions. Refer to the Quorum Maker API below to access node details using restful clients. 
 
-![Screenshot 6](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot6.png) 
+![Screenshot 6](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot6.png) 
 
 ### Monitoring and Email Notification
 1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
@@ -186,7 +186,7 @@ Smart contracts can be deployed from Quorum Maker. Users can choose solidity fil
 
 All the deployed contracts are easily accessible from the UI in the format contractAddress_contractName and contain the corresponding ABI, Bytecode and JSON
 
-![Screenshot 5](https://github.com/synechron-finlabs/quorum-maker/blob/master/img/screenshot5.png) 
+![Screenshot 5](https://github.com/synechron-finlabs/quorum-maker/blob/V2.1/img/screenshot5.png) 
 
 ## Quorum Maker Node Manager API
 
