@@ -178,7 +178,7 @@ function generateGenesis(){
 
     touch $projectName/accountsBalances.txt
 
-    PATTERN="s|20|${NET_ID}|g"
+    PATTERN="s|#CHAIN_ID#|${NET_ID}|g"
     cat lib/dev/genesis_template.json >> $projectName/genesis.json
     sed -i $PATTERN $projectName/genesis.json
 
