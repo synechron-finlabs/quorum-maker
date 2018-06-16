@@ -193,16 +193,31 @@ Click on the node name of the table to view node details. You can also update th
 ![Screenshot 6](img/screenshot6.png) 
 
 
-### Block Explorer
-### Transaction Explorer
+### Blockchain Explorer
+
+The Blockchain Explorer on Quorum Maker is customized for Quorum. You can click on the big block number button, and the blockchain explorer will be displayed. From here you can scroll through blocks, search by any content or expand to view more details. Transactions for the selected block is displayed on the right side and all the transactions belong to the block is highlighted in yellow. You can expand each transaction and view more details. Quorum has 3 types of transactions; public, private and Hash Only. Public transactions can be seen by every node on the network and is marked with a blue color <span style="color:blue">Public</span> label. Private transactions are avialable to your node to view and marked with a green color <span style="color:green">Private</span> label. Either you were a sender or recipient to these transactions. You can only the see the hash of the transctions to those you were not a party to. These are marked with a red color <span style="color:red">Hash Only</span> label. 
+
+![Screenshot 10](img/screenshot10.png) 
+
 ### Log Viewer
+
+You can view both Geth and Constellation logs from the Quorum Maker UI. In any event of failure, quick access to logs are important. Combined with E-Mail notification feature, administrators can even check the logs from a mobile device and spot errors. Quorum Maker also rotates the logs to keep the file size minimal.
+
+![Screenshot 11](img/screenshot11.png) 
+
 ### Monitoring and Email Notification
 1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
-2.	The user is sent an email notification indicating that the node has gone down. The node admin must preconfigure the notification procedure by providing the following details on **Email Server Configuration** menu on UI:
-- SMTP Sever Host
-- Port
-- Username
-- Password
+1.	The user is sent an email notification indicating that the node has gone down. The node admin must preconfigure the notification procedure by providing the following details on **Email Server Configuration** menu on UI:  
+    - SMTP Sever Host
+    - Port
+    - Username
+    - Password
+    - Recipient E-Mail list (Comma separated)
+![Screenshot 12](img/screenshot12.png) 
+
+1. Quorum Maker an also notify a request for join from another node. This lets node administrators not be online all the time to approve/reject a request.
+
+1. If a new node is joined, Quorum Maker notifies this to all node administrators with both Joiner and Approver details. 
 
 ### Contract Deployment
 
@@ -220,6 +235,8 @@ All the deployed contracts are easily accessible from the UI in the format contr
 ![Screenshot 5](img/screenshot5.png) 
 
 ### Contract Explorer
+
+
 
 ## Quorum Maker Node Manager API
 
