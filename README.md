@@ -192,6 +192,10 @@ Click on the node name of the table to view node details. You can also update th
 
 ![Screenshot 6](img/screenshot6.png) 
 
+
+### Block Explorer
+### Transaction Explorer
+### Log Viewer
 ### Monitoring and Email Notification
 1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
 2.	The user is sent an email notification indicating that the node has gone down. The node admin must preconfigure the notification procedure by providing the following details on **Email Server Configuration** menu on UI:
@@ -215,6 +219,8 @@ All the deployed contracts are easily accessible from the UI in the format contr
 
 ![Screenshot 5](img/screenshot5.png) 
 
+### Contract Explorer
+
 ## Quorum Maker Node Manager API
 
 Quorum Maker provides APIs that it used internally, that are also useful for application development. Below is a list and explanation of each:
@@ -233,18 +239,27 @@ Quorum Maker provides APIs that it used internally, that are also useful for app
 |/pubkeys|GET|This endpoint returns a list of network participants and their corresponding public keys for populating the contract deployment tab's network participants list|
 |/deployContract|POST|Multiple contracts can be uploaded via multipart file upload through this endpoint. The source .sol files are compiled using solc and subsequently deployed. The deployment is done either publicly or privately. In case of private deployment the public keys of the concerned parties are sent from UI. The list of network participants and their corresponding public keys are fetched using a REST API call. Error messages that occur from compilation failures are also displayed on UI. All the deployed contracts are easily accessible from the UI in the format|
 
-### Using a different version of Geth/Constellation 
+## Using a different version of Geth/Constellation 
 If you need to run Quorum Maker with a different version of Geth or Constellation than comes with default docker image, use [Quorum-Maker-Image](https://github.com/synechron-finlabs/quorum-maker-image "Quorum-Maker-Image"). Create docker image locally and run Quorum Maker again. 
 
 ## Windows/Mac Support
 
-Quorum Maker can be run on Windows/Mac using Docker. Since Docker can not expose bridge network to host on Mac, Quorum Maker automatically exports ports when creating Development/Test network on Mac. 
+### Using Docker
+
+Quorum Maker can be run on Windows/Mac using Docker. Some of features may not be available as running natively on Linux. Please refer to Docker doccumentation for missing features on Windows/Mac.
+
+1. Install Docker for Windows/Mac
+1. Install a git client for Windows/Mac (GitBash is recommended on Windows)
+1. Git Clone or download Quorum Maker 
+1. Run `$ ./setup.sh` and follow the instructions to setup Quorum Network as explained before in this document.
+
+> Note: Since Docker can not expose bridge network to host on Mac, Quorum Maker automatically exports ports when creating Development/Test network on Mac. 
 
 > Note: If you create a Development/Test Network on Mac, the ports are automatically exported in sequential number, starting 20104, 20204 and so on for each you node created. 
 
-## Vagrant Support.
+### Using Vagrant
 
-For full support for running using Docker, Quorum Maker provides Vagrant box for Windows/Mac. 
+For full support for running on Windows/Mac, Quorum Maker provides Vagrant box. 
 
 1. Install Oracle VirtualBox for Windows/Mac
 2. Install Vagrant for Windows/Mac
@@ -268,4 +283,4 @@ We expect the following areas to be part of future upgrades:
  - Password for private keys
 ## Troubleshooting
  ~~* Invalid Genesis  
- This happens while creating the nodes and this seems to be random issue. Please quit `./setup.sh` and try again   ~~ FIXED
+ This happens while creating the nodes and this seems to be random issue. Please quit `./setup.sh` and try again~~ FIXED
