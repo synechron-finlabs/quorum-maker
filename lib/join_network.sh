@@ -99,7 +99,7 @@ function createStartNodeScript(){
     chmod +x ${sNode}/start.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 
-    cp lib/slave/pre_start_check.sh ${sNode}/node/pre_start_check.sh
+    cp lib/slave/pre_start_check_template.sh ${sNode}/node/pre_start_check.sh
 
     cp lib/common.sh  ${sNode}/node
 }
