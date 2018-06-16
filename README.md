@@ -240,5 +240,5 @@ We expect the following areas to be part of future upgrades:
  - HTTPS support
  - Password for private keys
 ## Troubleshooting
- * Invalid Genesis  
- This happens while creating the nodes and this seems to be random issue. Please quit `./setup.sh` and try again   
+ ~~* Invalid Genesis  
+ This happens while creating the nodes and this seems to be random issue. Please quit `./setup.sh` and try again   ~~ FIXED
