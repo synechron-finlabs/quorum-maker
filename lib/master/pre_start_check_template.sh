@@ -47,38 +47,6 @@ function readInputs(){
     sed -i $PATTERN node/start_${nodeName}.sh
 }
 
-# if setup.conf available read from file to create a network
-function readFromFile(){
-    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
-    pCurrentIp=$var
-
-    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
-    rPort=$var
-    
-    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
-    wPort=$var
-    
-    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
-    cPort=$var
-    
-    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
-    raPort=$var
-    
-    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    tgoPort=$var
-    
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    nodeName=$var
-
-    var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
-    publickey=$var
-
-    var="$(grep -F -m 1 'ROLE=' $1)"; var="${var#*=}"
-    role=$var
-
-    var="$(grep -F -m 1 'NETWORK_ID=' $1)"; var="${var#*=}"
-    networkId=$var
-}
 
 # static node to create network 
 function staticNode(){
@@ -91,15 +59,6 @@ function staticNode(){
     sed -i "$PATTERN3" node/qdata/static-nodes.json
 }
 
-# create node configuration
-function nodeConf(){
-    PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
-    PATTERN2="s/#C_PORT#/${cPort}/g"
-
-    sed -i "$PATTERN1" node/#nodename#.conf
-    sed -i "$PATTERN2" node/#nodename#.conf
-}
-
 function main(){
     net=#netid#
     nodeName=#nodename#
@@ -108,8 +67,7 @@ function main(){
 
         readInputs
         staticNode
-        nodeConf
-
+        
         publickey=$(cat node/keys/$nodeName.pub)
         uiUrl="http://localhost:"$tgoPort"/"
         echo 'PUBKEY='$publickey >> ./setup.conf
