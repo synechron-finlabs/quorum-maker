@@ -43,25 +43,6 @@ function readFromFile(){
         
 }
 
-# create node configuration
-function nodeConf(){
-    cd node
-    
-    PATTERN1="s/#CURRENT_IP#/$pCurrentIp/g"
-    PATTERN2="s/#C_PORT#/$cPort/g"
-    PATTERN3="s/#MAIN_NODE_IP#/$mainIp/g"
-    PATTERN4="s/#M_C_PORT#/${mconstv}/g"
-
-    sed -i "$PATTERN1" ${node}.conf
-    sed -i "$PATTERN2" ${node}.conf
-    sed -i "$PATTERN3" ${node}.conf
-    sed -i "$PATTERN4" ${node}.conf
-
-    cd ..
-    
-}
-
-
 # Function to send post call to go endpoint joinNode 
 function updateNmcAddress(){
         
@@ -163,8 +144,7 @@ function main(){
     if [ -z $networkId ]; then
         enode=$(cat node/enode.txt)
         requestGenesis
-        executeInit        
-        nodeConf        
+        executeInit
         updateNmcAddress
         publickey=$(cat node/keys/$node.pub)
         echo 'PUBKEY='$publickey >> setup.conf
