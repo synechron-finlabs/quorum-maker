@@ -38,22 +38,24 @@ function readFromFile(){
 
 # docker command to create a network
 function startNode(){
-    docker run -it --rm --name $nodeName -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort \
-           -p $wPort:$wPort \
-           -p $wPort:$wPort/udp \
-           -p $cPort:$cPort \
-           -p $raPort:$raPort \
-           -p $tgoPort:$tgoPort \
-           -e CURRENT_NODE_IP=$pCurrentIp \
-           -e R_PORT=$rPort \
-           -e W_PORT=$wPort \
-           -e C_PORT=$cPort \
-	       -e RA_PORT=$raPort \
-           -e NODE_MANAGER_PORT=$tgoPort \
-           -e NETID=$networkId \
-           -e NODE_NAME=$nodeName \
-           $dockerImage ./start_${nodeName}.sh
+    docker run -it --rm --name $nodeName \
+            -v $(pwd):/home  -w /${PWD##*}/home/node  \
+            -v $(pwd)/node/contracts:/root/quorum-maker/contracts  -w /${PWD##*}/home/node  \
+            -p $rPort:$rPort \
+            -p $wPort:$wPort \
+            -p $wPort:$wPort/udp \
+            -p $cPort:$cPort \
+            -p $raPort:$raPort \
+            -p $tgoPort:$tgoPort \
+            -e CURRENT_NODE_IP=$pCurrentIp \
+            -e R_PORT=$rPort \
+            -e W_PORT=$wPort \
+            -e C_PORT=$cPort \
+            -e RA_PORT=$raPort \
+            -e NODE_MANAGER_PORT=$tgoPort \
+            -e NETID=$networkId \
+            -e NODE_NAME=$nodeName \
+            $dockerImage ./start_${nodeName}.sh
 }
 
 function main(){
