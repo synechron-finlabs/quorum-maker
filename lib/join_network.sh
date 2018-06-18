@@ -17,12 +17,6 @@ function readInputs(){
     role="Unassigned"
     
 }
- 
- #create node configuration file
- function copyConfTemplate(){
-    PATTERN="s/#sNode#/${sNode}/g"
-    sed $PATTERN lib/slave/template.conf > ${sNode}/node/${sNode}.conf
- }
 
 #function to generate keyPair for node
  function generateKeyPair(){
@@ -79,23 +73,9 @@ function createAccount(){
 #function to create start node script without --raftJoinExisting flag
 function createStartNodeScript(){
     cp lib/slave/start_quorum_template.sh ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/#sNode#/${sNode}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/r_Port/${rPort}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/w_Port/${wPort}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/nodeIp/${pCurrentIp}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
-    PATTERN="s/ra_Port/${raPort}/g"
-    sed -i $PATTERN ${sNode}/node/start_${sNode}.sh
     
-
     cp lib/slave/start_template.sh ${sNode}/start.sh
-    START_CMD="start_${sNode}.sh"
-    PATTERN="s/#start_cmd#/${START_CMD}/g"
-    sed -i $PATTERN ${sNode}/start.sh
-            
+                
     chmod +x ${sNode}/start.sh
     chmod +x ${sNode}/node/start_${sNode}.sh
 
@@ -122,12 +102,12 @@ function main(){
     echo $sNode > .nodename
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
+    mkdir -p ${mNode}/node/contracts
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
     cp qm.variables $sNode
 
     readInputs
-    copyConfTemplate
     generateKeyPair
     createInitNodeScript
     generateEnode

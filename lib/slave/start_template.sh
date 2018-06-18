@@ -18,6 +18,9 @@ function readFromFile(){
     
     var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
     cPort=$var
+
+    var="$(grep -F -m 1 'MAIN_CONSTELLATION_PORT=' $1)"; var="${var#*=}"
+    mcPort=$var
     
     var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
     raPort=$var
@@ -40,21 +43,35 @@ function readFromFile(){
     var="$(grep -F -m 1 'NETWORK_ID=' $1)"; var="${var#*=}"
     networkId=$var
 
-    
+    var="$(grep -F -m 1 'RAFT_ID=' $1)"; var="${var#*=}"
+    raftId=$var
         
 }
 
 # docker command to join th network 
 function startNode(){
-    docker run -it --rm --name $node -v $(pwd):/home  -w /${PWD##*}/home/node  \
-           -p $rPort:$rPort -p $wPort:$wPort -p $wPort:$wPort/udp -p $cPort:$cPort -p $raPort:$raPort -p $tgoPort:$tgoPort\
+    docker run -it --rm --name $node \
+           -v $(pwd):/home \
+           -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
+           -w /home/node  \
+           -p $rPort:$rPort \
+           -p $wPort:$wPort \
+           -p $wPort:$wPort/udp \
+           -p $cPort:$cPort \
+           -p $raPort:$raPort \
+           -p $tgoPort:$tgoPort\
+           -e NODENAME=$node \
            -e CURRENT_NODE_IP=$pCurrentIp \
            -e R_PORT=$rPort \
            -e W_PORT=$wPort \
            -e C_PORT=$cPort \
            -e RA_PORT=$raPort \
            -e NM_PORT=$tgoPort \
-           $dockerImage ./#start_cmd#
+           -e NETID=$networkId \
+           -e RAFTID=$raftId \
+           -e MASTER_IP=$mainIp \
+           -e MC_PORT=$mcPort \
+           $dockerImage ./start_$node.sh
 }
 
 function main(){

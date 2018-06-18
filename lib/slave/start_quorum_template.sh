@@ -2,21 +2,37 @@
 set -u
 set -e
 
-NETID=#networkId#
-RAFTID=#raftId#
-
-
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID  --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft --emitcheckpoints"
 
-echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_#sNode#.log
+echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_${NODENAME}.log
 
-constellation-node #sNode#.conf >> qdata/constellationLogs/constellation_#sNode#.log 2>&1 &
-sleep 1
+constellation-node \
+--url=https://$CURRENT_NODE_IP:$C_PORT/ \
+--port=$C_PORT \
+--workdir=qdata \
+--socket=$NODENAME.ipc \
+--publickeys=/home/node/keys/$NODENAME.pub \
+--privatekeys=/home/node/keys/$NODENAME.key \
+--othernodes=https://$MASTER_IP:$MC_PORT/ >> qdata/constellationLogs/constellation_${NODENAME}.log 2>&1 &
 
-echo "[*] Starting #sNode# node" >> qdata/gethLogs/#sNode#.log
-echo "[*] geth --verbosity 6 --datadir qdata --raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft --emitcheckpoints --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP">> qdata/gethLogs/#sNode#.log
+# Fix to wait till ipc file get generated
+while : ; do
+    
+    sleep 1
 
-PRIVATE_CONFIG=qdata/slave.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/#sNode#.log &
+    re="$NODENAME.ipc"
+	enodestr=$(ls -al qdata)
+    
+    if [[ $enodestr =~ $re ]];then
+        break;
+    fi
+
+done
+
+echo "[*] Starting ${NODENAME} node" >> qdata/gethLogs/${NODENAME}.log
+echo "[*] geth --verbosity 6 --datadir qdata --raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft --emitcheckpoints --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP">> qdata/gethLogs/${NODENAME}.log
+
+PRIVATE_CONFIG=qdata/$NODENAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODENAME}.log &
 
 cd /root/quorum-maker/
 ./start_nodemanager.sh $R_PORT $NM_PORT
