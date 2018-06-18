@@ -1,25 +1,36 @@
 #!/bin/bash
 set -u
 set -e
-NETID=#network_Id_value#
-RA_PORT=#raftPort#
-RA_PORT=ra_Port
-R_PORT=r_Port
-W_PORT=w_Port
-CURRENT_NODE_IP=nodeIp
-NODE_MANAGER_PORT=nm_Port
-process=""
 
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft --emitcheckpoints"
 
-echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_#mNode#.log
+echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_${NODE_NAME}.log
 
-constellation-node #mNode#.conf >> qdata/constellationLogs/constellation_#mNode#.log 2>&1 &
-sleep 1
+constellation-node \
+--url=https://$CURRENT_NODE_IP:$C_PORT/ \
+--port=$C_PORT \
+--workdir=qdata \
+--socket=$NODE_NAME.ipc \
+--publickeys=/home/node/keys/$NODE_NAME.pub \
+--privatekeys=/home/node/keys/$NODE_NAME.key >> qdata/constellationLogs/constellation_${NODE_NAME}.log 2>&1 &
 
-echo "[*] Starting #mNode# node" >> qdata/gethLogs/#mNode#.log
-echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport $RA_PORT --rpcport "$R_PORT "--port "$W_PORT "--nat extip:"$CURRENT_NODE_IP>> qdata/gethLogs/#mNode#.log
+# Fix to wait till ipc file get generated
+while : ; do
+    
+    sleep 1
 
-PRIVATE_CONFIG=qdata/master.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/#mNode#.log &
+    re="$NODE_NAME.ipc"
+	enodestr=$(ls -al qdata)
+    
+    if [[ $enodestr =~ $re ]];then
+        break;
+    fi
 
-./nodemanager.sh
+done
+
+echo "[*] Starting ${NODE_NAME} node" >> qdata/gethLogs/${NODE_NAME}.log
+echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport $RA_PORT --rpcport "$R_PORT "--port "$W_PORT "--nat extip:"$CURRENT_NODE_IP>> qdata/gethLogs/${NODE_NAME}.log
+
+PRIVATE_CONFIG=qdata/$NODE_NAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODE_NAME}.log &
+
+./nodemanager.sh $R_PORT $NODE_MANAGER_PORT

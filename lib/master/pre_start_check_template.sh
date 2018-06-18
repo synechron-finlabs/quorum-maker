@@ -100,23 +100,6 @@ function nodeConf(){
     sed -i "$PATTERN2" node/#nodename#.conf
 }
 
-# copy raft port to create network
-function copyRaft(){
-    PATTERN="s/#raftPort#/${raPort}/g"
-    sed -i $PATTERN node/start_#nodename#.sh
-    chmod +x node/start_#nodename#.sh
-}
-
-# copy node Service File to run service inside docker
-function copyGoService(){
-        
-    PATTERN="s/#rpcPort#/${rPort}/g"
-    sed -i $PATTERN node/nodemanager.sh
-    PATTERN="s/#servicePort#/${tgoPort}/g"
-    sed -i $PATTERN node/nodemanager.sh
-        
-}
-
 function main(){
     net=#netid#
     nodeName=#nodename#
@@ -124,12 +107,9 @@ function main(){
     if [ ! -f setup.conf ]; then
 
         readInputs
-
-        
         staticNode
         nodeConf
-        copyRaft
-        copyGoService
+
         publickey=$(cat node/keys/$nodeName.pub)
         uiUrl="http://localhost:"$tgoPort"/"
         echo 'PUBKEY='$publickey >> ./setup.conf
