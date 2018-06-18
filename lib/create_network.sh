@@ -3,12 +3,6 @@
  source qm.variables
  source lib/common.sh
 
-#create node configuration file
- function copyConfTemplate(){
-    PATTERN="s/#mNode#/${mNode}/g"
-    sed $PATTERN lib/master/template.conf > ${mNode}/node/${mNode}.conf
- }
-
 #function to generate keyPair for node
  function generateKeyPair(){
     echo -ne "\n" | constellation-node --generatekeys=${mNode} 1>>/dev/null
@@ -28,11 +22,8 @@ function createInitNodeScript(){
 #function to create start node script with --raft flag
 function copyStartTemplate(){
     NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
-    PATTERN="s|#network_Id_value#|${NET_ID}|g"
+    
     cp lib/master/start_quorum_template.sh ${mNode}/node/start_${mNode}.sh
-    sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
-    PATTERN="s/#mNode#/${mNode}/g"
-    sed -i $PATTERN ${mNode}/node/start_${mNode}.sh
     chmod +x ${mNode}/node/start_${mNode}.sh
 
     cp lib/master/start_template.sh ${mNode}/start.sh
@@ -90,7 +81,7 @@ function createAccount(){
     fi
     cp datadir/keystore/* ${mNode}/node/qdata/keystore/${mNode}key
     PATTERN="s|#mNodeAddress#|${mAccountAddress}|g"
-    PATTERN1="s|20|${NET_ID}|g"
+    PATTERN1="s|#CHAIN_ID#|${NET_ID}|g"
     cat lib/master/genesis_template.json >> ${mNode}/node/genesis.json
     sed -i $PATTERN ${mNode}/node/genesis.json
     sed -i $PATTERN1 ${mNode}/node/genesis.json
@@ -108,11 +99,11 @@ function main(){
     rm -rf ${mNode}
     echo $mNode > .nodename
     mkdir -p ${mNode}/node/keys
+    mkdir -p ${mNode}/node/contracts
     mkdir -p ${mNode}/node/qdata
     mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
     cp qm.variables $mNode
 
-    copyConfTemplate
     generateKeyPair
     createInitNodeScript
     copyStartTemplate
