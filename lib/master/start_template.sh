@@ -39,8 +39,8 @@ function readFromFile(){
 # docker command to create a network
 function startNode(){
     docker run -it --rm --name $nodeName \
-            -v $(pwd):/home  -w /${PWD##*}/home/node  \
-            -v $(pwd)/node/contracts:/root/quorum-maker/contracts  -w /${PWD##*}/home/node  \
+            -v $(pwd):/home  -w /home/node  \
+            -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
             -p $rPort:$rPort \
             -p $wPort:$wPort \
             -p $wPort:$wPort/udp \
@@ -60,7 +60,7 @@ function startNode(){
 
 function main(){
     
-    docker run -it --rm -v $(pwd):/home  -w /${PWD##*}/home  \
+    docker run -it --rm -v $(pwd):/home  -w /home  \
               $dockerImage node/pre_start_check.sh
 
     readFromFile setup.conf
