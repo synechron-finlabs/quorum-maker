@@ -19,7 +19,7 @@ function readFromFile(){
     var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
     cPort=$var
 
-    var="$(grep -F -m 1 'MAIN_CONSTELLATION_PORT=' $1)"; var="${var#*=}"
+    var="$(grep -F -m 1 'MASTER_CONSTELLATION_PORT=' $1)"; var="${var#*=}"
     mcPort=$var
     
     var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
