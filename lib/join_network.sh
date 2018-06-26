@@ -102,7 +102,7 @@ function main(){
     echo $sNode > .nodename
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
-    mkdir -p ${mNode}/node/contracts
+    mkdir -p ${sNode}/node/contracts
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
     cp qm.variables $sNode
