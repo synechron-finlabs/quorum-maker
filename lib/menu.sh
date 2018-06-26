@@ -8,7 +8,7 @@ flagmain=true
 echo -e $YELLOW'Please select an option: \n' \
 		$GREEN'1) Create Network \n' \
 		$PINK'2) Join Network \n' \
-		$BLUE'3) Remove Node \n' \
+		$BLUE'3) Attach to an existing Node \n' \
 		$CYAN'4) Setup Development/Test Network \n' \
 		$RED'5) Exit' 
 
@@ -21,7 +21,7 @@ case $option in
 	2)
 		lib/join_network.sh ;;
 	3)
-		./remove_node.sh ;; 
+		lib/attach_node.sh ;; 
 	4)
 		lib/create_dev_network.sh ;;
 	5)
