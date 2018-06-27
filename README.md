@@ -1,4 +1,4 @@
-# Quorum Maker V2.1
+# Quorum Maker V2.2
 
 Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
@@ -15,13 +15,13 @@ Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quoru
   -	Email Notifications
 ## Features at a glance
 
-Quorum Maker v2.1 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform. 
+Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform. 
 
-| Features | V 1.0 | V 2.1 |
+| Features | V 1.0 | V 2.2 |
 | ------ | ------ |-----|
 | Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
-|Delete Nodes	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
 |Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
@@ -36,6 +36,7 @@ Quorum Maker v2.1 is an upgrade on v1.0 released by Synechron in October 2017. T
 |Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
 
 ## Contents
 1. [Quickstart](#quickstart)
