@@ -49,17 +49,20 @@ Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. T
    * [Creating the first node](#creating-the-first-node)
    * [Joining a Network](#joining-a-network)
    * [Approve/Reject Join Request](#approvereject-join-request)
+1. [Attaching Quorum Maker to existing Quorum node](#attaching-quorum-maker-to-existing-quorum-node)
 1. [Quorum Maker Web UI](#quorum-maker-web-ui)
    * [Node Explorer](#node-explorer)
    * [Blockchain Explorer](#blockchain-explorer)
-   * [Log Viewer](#log-viewer)    
-   * [Monitoring and Email Notification](#monitoring-and-email-notification)
+   * [Transaction Parameters View](#transaction-parameters-view)
    * [Contract Deployment](#contract-deployment)
    * [Contract Explorer](#contract-explorer)
+   * [Log Viewer](#log-viewer)    
+   * [Monitoring and Email Notification](#monitoring-and-email-notification)
 1. [Quorum Maker Node Manager API](#quorum-maker-node-manager-api)
-1. [Windows/Mac Support](#quickstart)
+1. [Windows/Mac Support](#windowsmac-support)
    * [Using Docker](#using-docker)
    * [Using Vagrant](#using-vagrant)
+1. [Mobile Device Support](#quickstart)
 1. [Using a different version of Geth/Constellation](#using-a-different-version-of-gethconstellation)
 1. [Work In Progress](#work-in-progress)
 1. [Troubleshooting](#troubleshooting)
@@ -247,25 +250,6 @@ To decode the values, Quroum Maker requires ABI file of the Smart Contract. All 
 
 > Note: Only `uint256`, `bool`, `int256[n]` (Fixed Array), `bytes`, `uint32[]` (Dynamic Array) and `string` are supported currently. We are working to add support for all datatypes in a future release. 
 
-### Log Viewer
-
-You can view both Geth and Constellation logs from the Quorum Maker UI. In any event of failure, quick access to logs are important. Combined with E-Mail notification feature, administrators can even check the logs from a mobile device and spot errors. Quorum Maker also rotates the logs to keep the file size minimal.
-
-![Screenshot 11](img/screenshot11.png) 
-
-### Monitoring and Email Notification
-1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
-1.	The user is sent an email notification indicating that the node has gone down. The node admin must preconfigure the notification procedure by providing the following details on **Email Server Configuration** menu on UI:  
-    - SMTP Sever Host
-    - Port
-    - Username
-    - Password
-    - Recipient E-Mail list (Comma separated)
-![Screenshot 12](img/screenshot12.png) 
-
-1. Quorum Maker an also notify a request for join from another node. This lets node administrators not be online all the time to approve/reject a request.
-
-1. If a new node is joined, Quorum Maker notifies this to all node administrators with both Joiner and Approver details. 
 
 ### Contract Deployment
 
@@ -294,6 +278,27 @@ The orange button on the top-right side of dashboard shows the total number cont
 ![Screenshot 16](img/screenshot16.png) 
 
 Contract Explorer works hand-in-hand with Block and Transaction Explorer. Please read sections on Transaction Explorer for more details. 
+
+### Log Viewer
+
+You can view both Geth and Constellation logs from the Quorum Maker UI. In any event of failure, quick access to logs are important. Combined with E-Mail notification feature, administrators can even check the logs from a mobile device and spot errors. Quorum Maker also rotates the logs to keep the file size minimal.
+
+![Screenshot 11](img/screenshot11.png) 
+
+### Monitoring and Email Notification
+1.	There is an active monitoring system which checks whether the node is up every 30 seconds. If it fails to get the expected response which indicates that the node is functional, it waits for another 30 seconds and performs the health check again. If the check fails again then the user is notified
+1.	The user is sent an email notification indicating that the node has gone down. The node admin must preconfigure the notification procedure by providing the following details on **Email Server Configuration** menu on UI:  
+    - SMTP Sever Host
+    - Port
+    - Username
+    - Password
+    - Recipient E-Mail list (Comma separated)
+![Screenshot 12](img/screenshot12.png) 
+
+1. Quorum Maker an also notify a request for join from another node. This lets node administrators not be online all the time to approve/reject a request.
+
+1. If a new node is joined, Quorum Maker notifies this to all node administrators with both Joiner and Approver details. 
+
 
 
 ## Quorum Maker Node Manager API
@@ -348,6 +353,15 @@ For full support for running on Windows/Mac, Quorum Maker provides Vagrant box.
 
 > Note: If you create a Development/Test Network, the ports are automatically exported in sequential number, starting 20104, 20204 and so on for each you node created. 
 
+## Mobile Device Support
+
+Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile devices as well. We belive that having been able to monitor the network, view transactions and logs, approve/reject request will be a tremendous help for network administrators. Clubbed these with E-Mail notification feature of Quorum Maker, Suport team can be available 24x7. 
+
+![Screenshot 19](img/screenshot19.png)    ![Screenshot 20](img/screenshot20.png) 
+
+> Note: Quorum Maker assumes user authentication and autherization will be handled by exisisting organizational security tools. A future release will support SSL and HTTPS. 
+
+> Tip: Developers can expose Web UI running on their laptop using services like **ngrok** (https://ngrok.com/) for experimental purposes.
 
 ### Work In Progress
 
