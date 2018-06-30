@@ -21,7 +21,7 @@ Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. T
 | ------ | ------ |-----|
 | Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
-|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Exp](img/exp.png "Experimental") |
 |Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
@@ -32,11 +32,13 @@ Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. T
 |Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Block Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Transaction Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
-|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+
 
 ## Contents
 1. [Quickstart](#quickstart)
@@ -121,7 +123,7 @@ After the required docker images are downloaded, Quorum Maker will present with 
 `Please select an option:`  
 `1) Create Network`  
 `2) Join Network`  
-`3) Remove Node`  
+`3) Attach to an existing Node`  
 `4) Setup Development/Test Network`  
 `5) Exit`
 
@@ -152,7 +154,7 @@ After the required docker images are downloaded, Quorum Maker will present users
 `Please select an option:`  
 `1) Create Network`  
 `2) Join Network`  
-`3) Remove Node`  
+`3) Attach to an existing Node`  
 `4) Setup Development/Test Network`  
 `5) Exit`
 
@@ -179,6 +181,36 @@ At this point, a directory with the node name is created and most of the files a
 
 ![Screenshot 3](img/screenshot3.png) 
 
+## Attaching Quorum Maker to existing Quorum node
+
+You can enjoy most of the features of Quorum Maker by attaching it to an existing Quorum Node. By having all existing nodes attached thruough Quorum Maker, it can eventually provide all features as native setup. 
+
+> Note: Currently this is an expiremental feature and only Block and Transaction explorers are fully functional. 
+
+Once the repository is successfully cloned, change to the Qorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script.
+
+After the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
+
+`Please select an option:`  
+`1) Create Network`  
+`2) Join Network`  
+`3) Attach to an existing Node`  
+`4) Setup Development/Test Network`  
+`5) Exit`
+`option:` 3
+`Please enter node name:` MyRemoteNode
+`Please enter the IP Address of Geth:` 35.231.238.41
+`Please enter the Public Key of Constellation:` emupTbaUhpqUvezg4e4O2LywHer34qHAABNz+vAwWns=
+`Please enter the RPC Port of Geth[Default:22000]:`
+`Please enter the Network Listening Port of Geth[Default:22001]:`
+`Please enter the Constellation Port[Default:22002]:`
+`Please enter the Raft Port[Default:22003]:`
+`Please enter the Node Manager Port of this node[Default:22004]:`
+
+Except Node Manager port, all other details are of existing node. Please make sure to use an available port for Node Manager to avoid port conflicts. 
+
+![Screenshot 13](img/screenshot13.png) 
+
 ## Quorum Maker Web UI
 
 ### Node Explorer
@@ -198,6 +230,22 @@ Click on the node name of the table to view node details. You can also update th
 The Blockchain Explorer on Quorum Maker is customized for Quorum. You can click on the big block number button, and the blockchain explorer will be displayed. From here you can scroll through blocks, search by any content or expand to view more details. Transactions for the selected block is displayed on the right side and all the transactions belong to the block is highlighted in yellow. You can expand each transaction and view more details. Quorum has 3 types of transactions; public, private and Hash Only. Public transactions can be seen by every node on the network and is marked with a blue color <span style="color:blue">Public</span> label. Private transactions are avialable to your node to view and marked with a green color <span style="color:green">Private</span> label. Either you were a sender or recipient to these transactions. You can only the see the hash of the transctions to those you were not a party to. These are marked with a red color <span style="color:red">Hash Only</span> label. 
 
 ![Screenshot 10](img/screenshot10.png) 
+
+### Transaction Parameters View
+
+Quorum Maker can decode the sendTransaction parameters and displayed in human readable format. This is can aid both developers and node administrators get more visual details of the transactions in the network. 
+
+![Screenshot 17](img/screenshot17.png) 
+
+To view the transaction parameters, select the transaction from the Transaction Explorer and scroll down to the end. Signature of the function and the decoded values in a table format will be displayed. You can mouse over to view any values truncated due to display real estate limitations. 
+
+To decode the values, Quroum Maker requires ABI file of the Smart Contract. All contracts deployed thruough Quorum Maker has ABI available and the values will be decoded automatically. You can upload/attach the ABI file of the Smart Contract you deployed externally from the Smart Contract Explorer. 
+
+![Screenshot 18](img/screenshot18.png) 
+
+> Note: Currently Quorum Maker supports ABI files generated by Truffle, solc compiler and solc Node.JS version. 
+
+> Note: Only `uint256`, `bool`, `int256[n]` (Fixed Array), `bytes`, `uint32[]` (Dynamic Array) and `string` are supported currently. We are working to add support for all datatypes in a future release. 
 
 ### Log Viewer
 
@@ -236,6 +284,16 @@ All the deployed contracts are easily accessible from the UI in the format contr
 
 ### Contract Explorer
 
+The Contract Explorer in Quorum Maker can view all the smart contracts deployed in the blockchain network. The Contract Explorer displays both public and private Smart Contracts. You can also view the details of them and attach ABI of those missing.
+
+![Screenshot 14](img/screenshot14.png) 
+
+
+The orange button on the top-right side of dashboard shows the total number contracts deployed on the blockchain. Click on this button to view the Contract Explorer. It also displays the ABI files available. All contracts deployed through Quorum Maker has ABI available already. If you are deploying through an external tool like Truffle, you can attach the ABI of the contract, so that transaction details of the contract can be viewed. 
+
+![Screenshot 16](img/screenshot16.png) 
+
+Contract Explorer works hand-in-hand with Block and Transaction Explorer. Please read sections on Transaction Explorer for more details. 
 
 
 ## Quorum Maker Node Manager API
