@@ -355,7 +355,7 @@ For full support for running on Windows/Mac, Quorum Maker provides Vagrant box.
 
 ## Mobile Device Support
 
-Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile devices as well. We belive that having been able to monitor the network, view transactions and logs, approve/reject request will be a tremendous help for network administrators. Clubbed these with E-Mail notification feature of Quorum Maker, Suport team can be available 24x7. 
+Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile devices as well. We belive that having been able to monitor the network, view transactions and logs, approve/reject request from a mobile device will be a tremendous help for network administrators. Clubbed these with E-Mail notification feature of Quorum Maker, Suport team can be available 24x7. 
 
 ![Screenshot 19](img/screenshot19.png) ![](img/gap.png) ![Screenshot 20](img/screenshot20.png) 
 
