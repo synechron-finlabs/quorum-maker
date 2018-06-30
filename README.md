@@ -62,7 +62,7 @@ Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. T
 1. [Windows/Mac Support](#windowsmac-support)
    * [Using Docker](#using-docker)
    * [Using Vagrant](#using-vagrant)
-1. [Mobile Device Support](#quickstart)
+1. [Mobile Device Support](#mobile-device-support)
 1. [Using a different version of Geth/Constellation](#using-a-different-version-of-gethconstellation)
 1. [Work In Progress](#work-in-progress)
 1. [Troubleshooting](#troubleshooting)
@@ -357,7 +357,7 @@ For full support for running on Windows/Mac, Quorum Maker provides Vagrant box.
 
 Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile devices as well. We belive that having been able to monitor the network, view transactions and logs, approve/reject request will be a tremendous help for network administrators. Clubbed these with E-Mail notification feature of Quorum Maker, Suport team can be available 24x7. 
 
-![Screenshot 19](img/screenshot19.png)    ![Screenshot 20](img/screenshot20.png) 
+![Screenshot 19](img/screenshot19.png) ![](img/gap.png) ![Screenshot 20](img/screenshot20.png) 
 
 > Note: Quorum Maker assumes user authentication and autherization will be handled by exisisting organizational security tools. A future release will support SSL and HTTPS. 
 
