@@ -38,7 +38,8 @@ Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. T
 |Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-
+|Multi Operating System Support	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Mobile Device Support	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 
 ## Contents
 1. [Quickstart](#quickstart)
@@ -111,11 +112,11 @@ You can now connect to the Quorum Maker UI for each node from a web browser by p
 
 ![Screenshot 9](img/screenshot9.png) 
 
-> Note: By default, Quourm Maker doesnt expose ports to the host due to possible conflicts, when running Development/Test Network. You can update `docker-compose.yml` to expose any port you would like to be accessible outside your computer. 
+> Note: By default, Quorum Maker doesn't expose ports to the host due to possible conflicts, when running Development/Test Network. You can update `docker-compose.yml` to expose any port you would like to be accessible outside your computer. 
 
 ## Setting up Quorum Network on multiple machines
 
-Quourm Maker supports creating nodes on multiple machines and form a fully decentralized Quorum network. Each node administrators can clone Quorum Maker and run the same `setup.sh` script create a new network or join an existing one. 
+Quorum Maker supports creating nodes on multiple machines and form a fully decentralized Quorum network. Each node administrators can clone Quorum Maker and run the same `setup.sh` script create a new network or join an existing one. 
 
 ### Creating the first node
 
@@ -186,11 +187,11 @@ At this point, a directory with the node name is created and most of the files a
 
 ## Attaching Quorum Maker to existing Quorum node
 
-You can enjoy most of the features of Quorum Maker by attaching it to an existing Quorum Node. By having all existing nodes attached thruough Quorum Maker, it can eventually provide all features as native setup. 
+You can enjoy most of the features of Quorum Maker by attaching it to an existing Quorum Node. By having all existing nodes attached through Quorum Maker, it can eventually provide all features as native setup. 
 
 > Note: Currently this is an expiremental feature and only Block and Transaction explorers are fully functional. 
 
-Once the repository is successfully cloned, change to the Qorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script.
+Once the repository is successfully cloned, change to the Quorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script.
 
 After the required docker images are downloaded, Quorum Maker will present with few questions to complete the node setup. 
 
@@ -230,7 +231,7 @@ Click on the node name of the table to view node details. You can also update th
 
 ### Blockchain Explorer
 
-The Blockchain Explorer on Quorum Maker is customized for Quorum. You can click on the big block number button, and the blockchain explorer will be displayed. From here you can scroll through blocks, search by any content or expand to view more details. Transactions for the selected block is displayed on the right side and all the transactions belong to the block is highlighted in yellow. You can expand each transaction and view more details. Quorum has 3 types of transactions; public, private and Hash Only. Public transactions can be seen by every node on the network and is marked with a blue color <span style="color:blue">Public</span> label. Private transactions are avialable to your node to view and marked with a green color <span style="color:green">Private</span> label. Either you were a sender or recipient to these transactions. You can only the see the hash of the transctions to those you were not a party to. These are marked with a red color <span style="color:red">Hash Only</span> label. 
+The Blockchain Explorer on Quorum Maker is customized for Quorum. You can click on the big block number button, and the blockchain explorer will be displayed. From here you can scroll through blocks, search by any content or expand to view more details. Transactions for the selected block is displayed on the right side and all the transactions belong to the block is highlighted in yellow. You can expand each transaction and view more details. Quorum has 3 types of transactions; public, private and Hash Only. Public transactions can be seen by every node on the network and is marked with a blue color <span style="color:blue">Public</span> label. Private transactions are available to your node to view and marked with a green color <span style="color:green">Private</span> label. Either you were a sender or recipient to these transactions. You can only the see the hash of the transactions to those you were not a party to. These are marked with a red color <span style="color:red">Hash Only</span> label. 
 
 ![Screenshot 10](img/screenshot10.png) 
 
@@ -242,7 +243,7 @@ Quorum Maker can decode the sendTransaction parameters and displayed in human re
 
 To view the transaction parameters, select the transaction from the Transaction Explorer and scroll down to the end. Signature of the function and the decoded values in a table format will be displayed. You can mouse over to view any values truncated due to display real estate limitations. 
 
-To decode the values, Quroum Maker requires ABI file of the Smart Contract. All contracts deployed thruough Quorum Maker has ABI available and the values will be decoded automatically. You can upload/attach the ABI file of the Smart Contract you deployed externally from the Smart Contract Explorer. 
+To decode the values, Quoroum Maker requires ABI file of the Smart Contract. All contracts deployed through Quorum Maker has ABI available and the values will be decoded automatically. You can upload/attach the ABI file of the Smart Contract you deployed externally from the Smart Contract Explorer. 
 
 ![Screenshot 18](img/screenshot18.png) 
 
@@ -355,11 +356,11 @@ For full support for running on Windows/Mac, Quorum Maker provides Vagrant box.
 
 ## Mobile Device Support
 
-Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile devices as well. We belive that having been able to monitor the network, view transactions and logs, approve/reject request from a mobile device will be a tremendous help for network administrators. Clubbed these with E-Mail notification feature of Quorum Maker, Suport team can be available 24x7. 
+Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile devices as well. We belive that having been able to monitor the network, view transactions and logs, approve/reject request from a mobile device will be a tremendous help for network administrators. Clubbed these with E-Mail notification feature of Quorum Maker, Support team can be available 24x7. 
 
 ![Screenshot 19](img/screenshot19.png) ![](img/gap.png) ![Screenshot 20](img/screenshot20.png) 
 
-> Note: Quorum Maker assumes user authentication and autherization will be handled by exisisting organizational security tools. A future release will support SSL and HTTPS. 
+> Note: Quorum Maker assumes user authentication and authorization will be handled by existing organizational security tools. A future release will support SSL and HTTPS. 
 
 > Tip: Developers can expose Web UI running on their laptop using services like **ngrok** (https://ngrok.com/) for experimental purposes.
 
