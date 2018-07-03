@@ -71,7 +71,7 @@ function createAccount(){
 }
 
 #function to create start node script without --raftJoinExisting flag
-function createStartNodeScript(){
+function copyScripts(){
     cp lib/slave/start_quorum_template.sh ${sNode}/node/start_${sNode}.sh
     
     cp lib/slave/start_template.sh ${sNode}/start.sh
@@ -82,9 +82,11 @@ function createStartNodeScript(){
     cp lib/slave/pre_start_check_template.sh ${sNode}/node/pre_start_check.sh
 
     cp lib/common.sh  ${sNode}/node
+
+    cp lib/slave/constellation_template.conf ${sNode}/node/constellation.conf
 }
 
-function createSetupScript() {
+function createSetupConf() {
     echo 'NODENAME='${sNode} > ${sNode}/setup.conf
     echo 'MASTER_IP='${pMainIp} >> ${sNode}/setup.conf
     echo 'WHISPER_PORT='${wPort} >> ${sNode}/setup.conf
@@ -111,8 +113,8 @@ function main(){
     generateKeyPair
     createInitNodeScript
     generateEnode
-    createStartNodeScript
-    createSetupScript
+    copyScripts
+    createSetupConf
     createAccount
     
 }

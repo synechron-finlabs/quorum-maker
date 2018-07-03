@@ -50,13 +50,23 @@ function readInputs(){
 
 # static node to create network 
 function staticNode(){
-    PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
+    PATTERN1="s/#CURRENT_IP#/$pCurrentIp/g"
     PATTERN2="s/#W_PORT#/${wPort}/g"
     PATTERN3="s/#raftPprt#/${raPort}/g"
 
     sed -i "$PATTERN1" node/qdata/static-nodes.json
     sed -i "$PATTERN2" node/qdata/static-nodes.json
     sed -i "$PATTERN3" node/qdata/static-nodes.json
+}
+
+function generateConstellationConf() {
+    PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
+    PATTERN2="s/#C_PORT#/$cPort/g"
+    PATTERN3="s/#mNode#/$nodeName/g"
+
+    sed -i "$PATTERN1" node/constellation.conf
+    sed -i "$PATTERN2" node/constellation.conf
+    sed -i "$PATTERN3" node/constellation.conf
 }
 
 function main(){
@@ -67,7 +77,8 @@ function main(){
 
         readInputs
         staticNode
-        
+        generateConstellationConf
+
         publickey=$(cat node/keys/$nodeName.pub)
         uiUrl="http://localhost:"$tgoPort"/"
         echo 'PUBKEY='$publickey >> ./setup.conf

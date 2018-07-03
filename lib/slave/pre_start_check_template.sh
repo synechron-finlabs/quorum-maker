@@ -4,7 +4,7 @@ source node/common.sh
     
 function readFromFile(){
     var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    node=$var
+    nodeName=$var
 
     var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
     pCurrentIp=$var
@@ -29,9 +29,6 @@ function readFromFile(){
 
     var="$(grep -F -m 1 'MAIN_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
     mgoPort=$var
-
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    node=$var
 
     var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
     publickey=$var
@@ -128,10 +125,24 @@ function requestGenesis(){
     fi
 }
 
+function generateConstellationConf() {
+    PATTERN1="s/#CURRENT_IP#/${pCurrentIp}/g"
+    PATTERN2="s/#C_PORT#/$cPort/g"
+    PATTERN3="s/#mNode#/$nodeName/g"
+    PATTERN4="s/#MASTER_IP#/$mainIp/g"
+    PATTERN5="s/#MASTER_CONSTELLATION_PORT#/$mconstv/g"
+
+    sed -i "$PATTERN1" node/constellation.conf
+    sed -i "$PATTERN2" node/constellation.conf
+    sed -i "$PATTERN3" node/constellation.conf
+    sed -i "$PATTERN4" node/constellation.conf
+    sed -i "$PATTERN5" node/constellation.conf
+}
+
 # execute init script
 function executeInit(){
     PATTERN="s/#networkId#/${netvalue}/g"
-    sed -i $PATTERN node/start_${node}.sh
+    sed -i $PATTERN node/start_${nodeName}.sh
         
     ./init.sh
 }
@@ -146,17 +157,18 @@ function main(){
         requestGenesis
         executeInit
         updateNmcAddress
-        publickey=$(cat node/keys/$node.pub)
+        generateConstellationConf
+
+        publickey=$(cat node/keys/$nodeName.pub)
         echo 'PUBKEY='$publickey >> setup.conf
         role="Unassigned"
         echo 'ROLE='$role >> setup.conf
-
 
         uiUrl="http://localhost:"$tgoPort"/"
 
         echo -e '****************************************************************************************************************'
 
-        echo -e '\e[1;32mSuccessfully created and started \e[0m'$node
+        echo -e '\e[1;32mSuccessfully created and started \e[0m'$nodeName
         echo -e '\e[1;32mYou can send transactions to \e[0m'$pCurrentIp:$rPort
         echo -e '\e[1;32mFor private transactions, use \e[0m'$publickey
         echo -e '\e[1;32mFor accessing Quorum Maker UI, please open the following from a web browser \e[0m'$uiUrl

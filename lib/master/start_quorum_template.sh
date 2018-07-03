@@ -6,14 +6,7 @@ GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --rpc --rpcaddr 0.0.0.0 --rp
 
 echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_${NODE_NAME}.log
 
-constellation-node \
---url=http://$CURRENT_NODE_IP:$C_PORT/ \
---port=$C_PORT \
---workdir=qdata \
---socket=$NODE_NAME.ipc \
---publickeys=/home/node/keys/$NODE_NAME.pub \
---tls=off \
---privatekeys=/home/node/keys/$NODE_NAME.key >> qdata/constellationLogs/constellation_${NODE_NAME}.log 2>&1 &
+constellation-node constellation.conf >> qdata/constellationLogs/constellation_${NODE_NAME}.log 2>&1 &
 
 # Fix to wait till ipc file get generated
 while : ; do

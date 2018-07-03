@@ -20,7 +20,7 @@ function createInitNodeScript(){
 }
 
 #function to create start node script with --raft flag
-function copyStartTemplate(){
+function copyScripts(){
     NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
     
     cp lib/master/start_quorum_template.sh ${mNode}/node/start_${mNode}.sh
@@ -41,8 +41,11 @@ function copyStartTemplate(){
 
     cp lib/common.sh ${mNode}/node/common.sh
 
-    cat lib/master/nodemanager_template.sh > ${mNode}/node/nodemanager.sh
+    cp lib/master/nodemanager_template.sh ${mNode}/node/nodemanager.sh
     chmod +x ${mNode}/node/nodemanager.sh
+
+    cp lib/master/constellation_template.conf ${mNode}/node/constellation.conf
+
 }
 
 #function to generate enode
@@ -106,7 +109,7 @@ function main(){
 
     generateKeyPair
     createInitNodeScript
-    copyStartTemplate
+    copyScripts
     generateEnode
     createAccount
     executeInit   
