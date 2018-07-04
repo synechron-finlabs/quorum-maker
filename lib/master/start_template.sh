@@ -38,6 +38,8 @@ function readFromFile(){
 
 # docker command to create a network
 function startNode(){
+    docker kill $nodeName 2> /dev/null && docker rm $nodeName 2> /dev/null
+
     docker run -it --rm --name $nodeName \
             -v $(pwd):/home  -w /home/node  \
             -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
