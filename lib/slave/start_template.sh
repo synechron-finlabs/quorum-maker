@@ -34,9 +34,6 @@ function readFromFile(){
     var="$(grep -F -m 1 'MAIN_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
     mgoPort=$var
 
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    node=$var
-
     var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
     publickey=$var
 

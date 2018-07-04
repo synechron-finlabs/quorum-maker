@@ -99,8 +99,7 @@ function createSetupConf() {
     echo 'REGISTERED=' >> ${sNode}/setup.conf
 }
 
-function main(){    
-    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+function cleanup() {
     echo $sNode > .nodename
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
@@ -108,7 +107,12 @@ function main(){
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
     cp qm.variables $sNode
+}
 
+function main(){    
+    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+    
+    cleanup
     readInputs
     generateKeyPair
     createInitNodeScript

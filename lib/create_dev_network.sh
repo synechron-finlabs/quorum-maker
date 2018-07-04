@@ -1,41 +1,42 @@
 #!/bin/bash
- 
- source qm.variables
- source lib/common.sh
 
- DOCKER_NETWORK_IP=10.50.0.
+source qm.variables
+source lib/common.sh
+
+DOCKER_NETWORK_IP=10.50.0.
+
 #create node configuration file
- function generateNodeConf(){
+function generateNodeConf(){
     PATTERN="s/#mNode#/node$1/g"
     sed $PATTERN lib/dev/template.conf > $projectName/node$1/node/node$1.conf
-    
+
     PATTERN="s/#CURRENT_IP#/${DOCKER_NETWORK_IP}$(($1+1))/g"
     sed -i $PATTERN $projectName/node$1/node/node$1.conf
 
     if [ $i -gt 1 ]; then
         echo othernodes = ["\"http://${DOCKER_NETWORK_IP}2:22002/\""] >> $projectName/node$1/node/node$1.conf
     fi
- }
+}
 
- function generateSetupConf(){
-    echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
-    echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
-    echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
-    echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
-    echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
-    echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
-    echo 'ROLE=' >> $projectName/node$1/setup.conf
-    echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
-    echo 'REGISTERED=' >> $projectName/node$1/setup.conf
- }
+function generateSetupConf(){
+echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
+echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
+echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
+echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
+echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
+echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
+echo 'ROLE=' >> $projectName/node$1/setup.conf
+echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
+echo 'REGISTERED=' >> $projectName/node$1/setup.conf
+}
 
 #function to generate keyPair for node
- function generateKeyPair(){
+function generateKeyPair(){
     echo -ne "\n" | constellation-node --generatekeys=node$1 1>>/dev/null
     echo -ne "\n" | constellation-node --generatekeys=node$1a 1>>/dev/null
 
     mv node$1*.*  $projectName/node$1/node/keys/.
-    
+
 }
 
 #function to create start node script with --raft flag
@@ -203,6 +204,16 @@ function initNodes(){
     done
 }
 
+function cleanup() {
+    rm -rf $projectName
+    mkdir $projectName
+        
+    NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
+    
+    PATTERN="s/#DOCKER_NETWORK_IP#/$DOCKER_NETWORK_IP/g"
+    sed $PATTERN lib/dev/header.yml > $projectName/docker-compose.yml
+}
+
 function main(){    
     getInputWithDefault 'Please enter a project name' "TestNetwork" projectName $RED
     getInputWithDefault 'Please enter number of nodes to be created' 3 nodeCount $GREEN
@@ -211,13 +222,7 @@ function main(){
 
     displayProgress $nodeCount 0
 
-    rm -rf $projectName
-    mkdir $projectName
-        
-    NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
-    
-    PATTERN="s/#DOCKER_NETWORK_IP#/$DOCKER_NETWORK_IP/g"
-    sed $PATTERN lib/dev/header.yml > $projectName/docker-compose.yml
+    cleanup
 
     echo [ > $projectName/static-nodes.json
     createNodeDirs

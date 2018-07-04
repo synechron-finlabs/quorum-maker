@@ -39,17 +39,21 @@ function createSetupScript() {
     echo 'REGISTERED=' >> ${sNode}/setup.conf    
 }
 
-function main(){    
-    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+function cleanup() {
     echo $sNode > .nodename
     rm -rf ${sNode}
     
     mkdir -p ${sNode}/node/contracts
 
-    cat lib/attach/genesis_template.json >> ${sNode}/node/genesis.json
+    cp lib/attach/genesis_template.json ${sNode}/node/genesis.json
     
     cp qm.variables $sNode
+}
 
+function main(){    
+    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+    
+    cleanup
     readInputs
     createStartNodeScript
     createSetupScript

@@ -4,13 +4,13 @@
  source lib/common.sh
 
 #function to generate keyPair for node
- function generateKeyPair(){
+function generateKeyPair(){
     echo -ne "\n" | constellation-node --generatekeys=${mNode} 1>>/dev/null
-    
+
     echo -ne "\n" | constellation-node --generatekeys=${mNode}a 1>>/dev/null
 
     mv ${mNode}*.*  ${mNode}/node/keys/.
-    
+
 }
 
 #function to create node initialization script
@@ -91,6 +91,16 @@ function createAccount(){
     rm -rf datadir
 }
 
+function cleanup(){
+    rm -rf ${mNode}
+    echo $mNode > .nodename
+    mkdir -p ${mNode}/node/keys
+    mkdir -p ${mNode}/node/contracts
+    mkdir -p ${mNode}/node/qdata
+    mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
+    cp qm.variables $mNode
+}
+
 # execute init script
 function executeInit(){
     cd ${mNode}
@@ -99,14 +109,8 @@ function executeInit(){
 
 function main(){    
     getInputWithDefault 'Please enter node name' "" mNode $GREEN
-    rm -rf ${mNode}
-    echo $mNode > .nodename
-    mkdir -p ${mNode}/node/keys
-    mkdir -p ${mNode}/node/contracts
-    mkdir -p ${mNode}/node/qdata
-    mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
-    cp qm.variables $mNode
-
+    
+    cleanup
     generateKeyPair
     createInitNodeScript
     copyScripts
@@ -114,4 +118,5 @@ function main(){
     createAccount
     executeInit   
 }
+
 main
