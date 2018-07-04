@@ -2,55 +2,25 @@
 
 source qm.variables
 source node/common.sh
-    
-function readFromFile(){
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    node=$var
-
-    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
-    pCurrentIp=$var
-
-    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
-    rPort=$var
-    
-    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
-    wPort=$var
-    
-    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
-    cPort=$var
-    
-    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
-    raPort=$var
-    
-    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    tgoPort=$var
-
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    node=$var
-
-    var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
-    publickey=$var
-        
-}
 
 # docker command to join th network 
 function startNode(){
     
-    docker kill $node 2> /dev/null && docker rm $node 2> /dev/null
+    docker kill $NODENAME 2> /dev/null && docker rm $NODENAME 2> /dev/null
     
-    docker run -it --rm --name $node \
+    docker run -it --rm --name $NODENAME \
            -v $(pwd):/home \
            -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
            -w /home/node  \
-           -p $tgoPort:$tgoPort\
-           -e CURRENT_NODE_IP=$pCurrentIp \
-           -e R_PORT=$rPort \
-           -e NM_PORT=$tgoPort \
-           $dockerImage ./start_$node.sh
+           -p $THIS_NODEMANAGER_PORT:$THIS_NODEMANAGER_PORT\
+           -e CURRENT_NODE_IP=$CURRENT_IP \
+           -e R_PORT=$RPC_PORT \
+           -e NM_PORT=$THIS_NODEMANAGER_PORT \
+           $dockerImage ./start_$NODENAME.sh
 }
 
 function main(){
-    readFromFile setup.conf
+    source setup.conf
     startNode
 }
 main

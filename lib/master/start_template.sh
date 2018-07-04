@@ -3,61 +3,28 @@
 source qm.variables
 source node/common.sh
 
-# if setup.conf available read from file to create a network
-function readFromFile(){
-    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
-    pCurrentIp=$var
-
-    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
-    rPort=$var
-    
-    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
-    wPort=$var
-    
-    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
-    cPort=$var
-    
-    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
-    raPort=$var
-    
-    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    tgoPort=$var
-    
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    nodeName=$var
-
-    var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
-    publickey=$var
-
-    var="$(grep -F -m 1 'ROLE=' $1)"; var="${var#*=}"
-    role=$var
-
-    var="$(grep -F -m 1 'NETWORK_ID=' $1)"; var="${var#*=}"
-    networkId=$var
-}
-
 # docker command to create a network
 function startNode(){
-    docker kill $nodeName 2> /dev/null && docker rm $nodeName 2> /dev/null
+    docker kill $NODENAME 2> /dev/null && docker rm $NODENAME 2> /dev/null
 
-    docker run -it --rm --name $nodeName \
+    docker run -it --rm --name $NODENAME \
             -v $(pwd):/home  -w /home/node  \
             -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
-            -p $rPort:$rPort \
-            -p $wPort:$wPort \
-            -p $wPort:$wPort/udp \
-            -p $cPort:$cPort \
-            -p $raPort:$raPort \
-            -p $tgoPort:$tgoPort \
-            -e CURRENT_NODE_IP=$pCurrentIp \
-            -e R_PORT=$rPort \
-            -e W_PORT=$wPort \
-            -e C_PORT=$cPort \
-            -e RA_PORT=$raPort \
-            -e NODE_MANAGER_PORT=$tgoPort \
-            -e NETID=$networkId \
-            -e NODE_NAME=$nodeName \
-            $dockerImage ./start_${nodeName}.sh
+            -p $RPC_PORT:$RPC_PORT \
+            -p $WHISPER_PORT:$WHISPER_PORT \
+            -p $WHISPER_PORT:$WHISPER_PORT/udp \
+            -p $CONSTELLATION_PORT:$CONSTELLATION_PORT \
+            -p $RAFT_PORT:$RAFT_PORT \
+            -p $THIS_NODEMANAGER_PORT:$THIS_NODEMANAGER_PORT \
+            -e CURRENT_NODE_IP=$CURRENT_IP \
+            -e R_PORT=$RPC_PORT \
+            -e W_PORT=$WHISPER_PORT \
+            -e C_PORT=$CONSTELLATION_PORT \
+            -e RA_PORT=$RAFT_PORT \
+            -e NODE_MANAGER_PORT=$THIS_NODEMANAGER_PORT \
+            -e NETID=$NETWORK_ID \
+            -e NODE_NAME=$NODENAME \
+            $dockerImage ./start_${NODENAME}.sh
 }
 
 function main(){
@@ -65,9 +32,9 @@ function main(){
     docker run -it --rm -v $(pwd):/home  -w /home  \
               $dockerImage node/pre_start_check.sh
 
-    readFromFile setup.conf
+    source setup.conf
 
-    if [ -z $networkId ]; then
+    if [ -z $NETWORK_ID ]; then
         exit
     fi
 
