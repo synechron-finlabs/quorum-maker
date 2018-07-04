@@ -35,6 +35,9 @@ function readFromFile(){
 
 # docker command to join th network 
 function startNode(){
+    
+    docker kill $node 2> /dev/null && docker rm $node 2> /dev/null
+    
     docker run -it --rm --name $node \
            -v $(pwd):/home \
            -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
