@@ -2,76 +2,34 @@
 
 source qm.variables
 source node/common.sh
-    
-function readFromFile(){
-    var="$(grep -F -m 1 'NODENAME=' $1)"; var="${var#*=}"
-    node=$var
-
-    var="$(grep -F -m 1 'CURRENT_IP=' $1)"; var="${var#*=}"
-    pCurrentIp=$var
-
-    var="$(grep -F -m 1 'RPC_PORT=' $1)"; var="${var#*=}"
-    rPort=$var
-    
-    var="$(grep -F -m 1 'WHISPER_PORT=' $1)"; var="${var#*=}"
-    wPort=$var
-    
-    var="$(grep -F -m 1 'CONSTELLATION_PORT=' $1)"; var="${var#*=}"
-    cPort=$var
-
-    var="$(grep -F -m 1 'MASTER_CONSTELLATION_PORT=' $1)"; var="${var#*=}"
-    mcPort=$var
-    
-    var="$(grep -F -m 1 'RAFT_PORT=' $1)"; var="${var#*=}"
-    raPort=$var
-    
-    var="$(grep -F -m 1 'THIS_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    tgoPort=$var
-
-    var="$(grep -F -m 1 'MASTER_IP=' $1)"; var="${var#*=}"
-    mainIp=$var
-
-    var="$(grep -F -m 1 'MAIN_NODEMANAGER_PORT=' $1)"; var="${var#*=}"
-    mgoPort=$var
-
-    var="$(grep -F -m 1 'PUBKEY=' $1)"; var="${var#*=}"
-    publickey=$var
-
-    var="$(grep -F -m 1 'NETWORK_ID=' $1)"; var="${var#*=}"
-    networkId=$var
-
-    var="$(grep -F -m 1 'RAFT_ID=' $1)"; var="${var#*=}"
-    raftId=$var
-        
-}
 
 # docker command to join th network 
 function startNode(){
 
-    docker kill $node 2> /dev/null && docker rm $node 2> /dev/null
+    docker kill $NODENAME 2> /dev/null && docker rm $NODENAME 2> /dev/null
 
-    docker run -it --rm --name $node \
+    docker run -it --rm --name $NODENAME \
            -v $(pwd):/home \
            -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
            -w /home/node  \
-           -p $rPort:$rPort \
-           -p $wPort:$wPort \
-           -p $wPort:$wPort/udp \
-           -p $cPort:$cPort \
-           -p $raPort:$raPort \
-           -p $tgoPort:$tgoPort\
-           -e NODENAME=$node \
-           -e CURRENT_NODE_IP=$pCurrentIp \
-           -e R_PORT=$rPort \
-           -e W_PORT=$wPort \
-           -e C_PORT=$cPort \
-           -e RA_PORT=$raPort \
-           -e NM_PORT=$tgoPort \
-           -e NETID=$networkId \
-           -e RAFTID=$raftId \
-           -e MASTER_IP=$mainIp \
-           -e MC_PORT=$mcPort \
-           $dockerImage ./start_$node.sh
+           -p $RPC_PORT:$RPC_PORT \
+           -p $WHISPER_PORT:$WHISPER_PORT \
+           -p $WHISPER_PORT:$WHISPER_PORT/udp \
+           -p $CONSTELLATION_PORT:$CONSTELLATION_PORT \
+           -p $RAFT_PORT:$RAFT_PORT \
+           -p $THIS_NODEMANAGER_PORT:$THIS_NODEMANAGER_PORT\
+           -e NODENAME=$NODENAME \
+           -e CURRENT_NODE_IP=$CURRENT_IP \
+           -e R_PORT=$RPC_PORT \
+           -e W_PORT=$WHISPER_PORT \
+           -e C_PORT=$CONSTELLATION_PORT \
+           -e RA_PORT=$RAFT_PORT \
+           -e NM_PORT=$THIS_NODEMANAGER_PORT \
+           -e NETID=$NETWORK_ID \
+           -e RAFTID=$RAFT_ID \
+           -e MASTER_IP=$MASTER_IP \
+           -e MC_PORT=$MASTER_CONSTELLATION_PORT \
+           $dockerImage ./start_$NODENAME.sh
 }
 
 function main(){
@@ -79,9 +37,9 @@ function main(){
     docker run -it --rm -v $(pwd):/home  -w /${PWD##*}/home  \
               $dockerImage node/pre_start_check.sh
 
-    readFromFile setup.conf
+    source setup.conf
 
-    if [ -z $networkId ]; then
+    if [ -z $NETWORK_ID ]; then
         exit
     fi
 
