@@ -97,6 +97,8 @@ function createSetupConf() {
     echo 'MAIN_NODEMANAGER_PORT='${mgoPort} >> ${sNode}/setup.conf
     echo 'CURRENT_IP='${pCurrentIp} >> ${sNode}/setup.conf
     echo 'REGISTERED=' >> ${sNode}/setup.conf
+    echo 'MODE=ACTIVE' >> ${sNode}/setup.conf
+    echo 'STATE=I' >> ${sNode}/setup.conf
 }
 
 function cleanup() {

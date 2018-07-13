@@ -28,6 +28,8 @@ echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/nod
 echo 'ROLE=' >> $projectName/node$1/setup.conf
 echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
 echo 'REGISTERED=' >> $projectName/node$1/setup.conf
+echo 'MODE=ACTIVE' >> $projectName/node$1/setup.conf
+echo 'STATE=I' >> $projectName/node$1/setup.conf
 }
 
 #function to generate keyPair for node
