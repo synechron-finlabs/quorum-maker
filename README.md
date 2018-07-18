@@ -1,4 +1,4 @@
-# Quorum Maker V2.2
+# Quorum Maker V2.3
 
 Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
@@ -18,13 +18,13 @@ Synechron's Quorum Maker is a tool that allows users to spin up nodes in a Quoru
 
 ## Features at a glance
 
-Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
+Quorum Maker v2.3 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-| Features | V 1.0 | V 2.2 |
+| Features | V 1.0 | V 2.3 |
 | ------ | ------ |-----|
 | Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
-|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Exp](img/exp.png "Experimental") |
+|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available")|
 |Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
@@ -38,6 +38,7 @@ Quorum Maker v2.2 is an upgrade on v1.0 released by Synechron in October 2017. T
 |Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Auto ABI upload for Truffle Deployments | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
@@ -215,10 +216,32 @@ After the required docker images are downloaded, Quorum Maker will present with 
 `Please enter the Constellation Port[Default:22002]:`
 `Please enter the Raft Port[Default:22003]:`
 `Please enter the Node Manager Port of this node[Default:22004]:`
+`Please enter the Attachment Mode of this node (1 for active and 2 for passive)[Default:1]:`1
 
-Except Node Manager port, all other details are of existing node. Please make sure to use an available port for Node Manager to avoid port conflicts.
+
+> Note: Except Node Manager port, all other details are of existing node. Please make sure to use an available port for Node Manager to avoid port conflicts.
 
 ![Screenshot 13](img/screenshot13.png)
+
+### Active Attachment
+
+Active Attachment allows you to migrate your existing nodes that was not created with Quorum Maker to a fully Quorum Maker equivalent. At the core, Quorum Maker uses Network Map Contract to share the details of each participant node. Due to security and transperancy reasons, this is a public smart contract. When attaching to a node that was not created using Quorum Maker, it will deploy Network Map Contract. This is an active participation in the network. Quorum Maker can also detect an existing instance of Network Map Contract and only register the node, instead of deploying a new instance. This allows Quorum Maker to act as a native installation once all nodes have Quorum Maker attached. 
+
+### Passive Attachment
+
+If you do not wish Quorum Maker to deploy a public contract but still want to use some of the features of Quorum Maker, you can attach in **Passive** mode. Most of the features except **Node Explorer** work as expected in this mode.
+
+### Configure Log paths and Genesis
+
+You can point to the location of your existing node's Geth and Constellation log directories and Quorum Maker can make them accessible through it's UI. When you access the UI after attaching to an exisisting Quorum node, a notification icon appears on the top right corner. Click on this to open up the window to enter the location of the log directory. 
+
+> Note: Due to browser security restrictions, **File Chooser** doesn't pickup the fully qualified path of a directory. Please enter this manually.
+
+Quorum Maker attached to an existing node can even approve join requests. To enable this feature choose the **Genesis** file of this network. 
+
+After you **SUBMIT** changes, please restart Quorum Maker Node to make the changes effect. 
+
+![Screenshot 21](img/screenshot21.png)
 
 ## Quorum Maker Web UI
 
@@ -303,6 +326,16 @@ You can view both Geth and Constellation logs from the Quorum Maker UI. In any e
 1. Quorum Maker an also notify a request for join from another node. This lets node administrators not be online all the time to approve/reject a request.
 
 1. If a new node is joined, Quorum Maker notifies this to all node administrators with both Joiner and Approver details.
+
+## Auto ABI upload for Truffle Deployments
+
+Even though Smart Contracts can be deployed from Quorum Maker UI, we recommend to use specialized tools like Truffle (https://github.com/trufflesuite/truffle) for this. Quorum Maker can automatically attach the ABI files generated by Truffle to the smart contracts deployed on the node. This allows you to view the Smart Contract Functions called and the parameters without having to attach the ABIs manually. 
+
+Please follow the steps below to enable auto attaching of ABIs. 
+
+1. Quorum Maker stores smart contract inside the directory **$nodeName/node/contracts**, here $nodeName is the name of the node you choose while creating the node using Quorum Maker.
+2. Create a symbolic link to your Truffle directory inside Quorum Maker contract directory. (E.g. **$nodeName/node/contract/myTruffleOutput**)
+3. Quorum Maker will automatically detect new files getting saved by Truffle and auto attach them to the smart contracts deployed. 
 
 ## Quorum Maker Node Manager API
 
