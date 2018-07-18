@@ -287,11 +287,12 @@ To decode the values, Quoroum Maker requires ABI file of the Smart Contract. All
 Smart contracts can be deployed from Quorum Maker. Users can choose solidity files (Even multiple contracts !) and deploy them publicly  or privately.  
 
 1.	Multiple contracts can be uploaded via the Compile and Deploy Tab
-2.	The source .sol files are compiled using solc and subsequently deployed
-3.	The deployment is done either publicly or privately
-4.	In case of private deployment the public keys of the concerned parties are sent from the UI
-5.	The list of network participants and their corresponding public keys are fetched using a REST API call 
-6.	Error messages that occur from compilation failures are also displayed on the UI
+1.	The source .sol files are compiled using solc and subsequently deployed
+1.  Quourm Maker can support inheritance. For this, source code of related contracts should be in same file.  
+1.	The deployment is done either publicly or privately
+1.	In case of private deployment the public keys of the concerned parties are sent from the UI
+1.	The list of network participants and their corresponding public keys are fetched using a REST API call 
+1.	Error messages that occur from compilation failures are also displayed on the UI
 
 All the deployed contracts are easily accessible from the UI in the format contractAddress_contractName and contain the corresponding ABI, Bytecode and JSON
 
