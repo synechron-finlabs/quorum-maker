@@ -76,6 +76,8 @@ Quorum Maker v2.3 is an upgrade on v1.0 released by Synechron in October 2017. T
 1. [Using a different version of Geth/Constellation](#using-a-different-version-of-gethconstellation)
 1. [Work In Progress](#work-in-progress)
 1. [Troubleshooting](#troubleshooting)
+1. [Change Log](#change-log)
+
 
 ## Quickstart
 
@@ -224,6 +226,10 @@ After the required docker images are downloaded, Quorum Maker will present with 
 
 
 > Note: Except Node Manager port, all other details are of existing node. Please make sure to use an available port for Node Manager to avoid port conflicts.
+
+> Note: If the existing node is running locally, do not use 127.0.0.1 for the IP Address while attaching, since Quorum Maker run inside docker. Use the host IP address. 
+
+> Note: Currently Quorum Maker assumes empty password for defualt (coinbase) account of exising Quorum Node. In a futre release Quorum Maker will support non empty passwords. 
 
 ![Screenshot 13](img/screenshot13.png)
 
@@ -419,3 +425,12 @@ We expect the following areas to be part of future upgrades:
  This happens while creating the nodes and this seems to be random issue. Please quit `./setup.sh` and try again~~ FIXED
 
 ## FAQ
+
+## Change Log
+
+Change log V2.3
+1. Attaching nodes to exisisting Quorum node is fully supported.
+2. Attached node can approve Join Requests. E.g. Fully migrate 7node example to Quorum Maker and add additional nodes. 
+3. Quorum Maker can deploy Smart Contracts using inheritance.
+4. Auto attach ABI of smart contracts deployed using Truffle. 
+5. All solidity data types are supported on the transaction parameter view. 
