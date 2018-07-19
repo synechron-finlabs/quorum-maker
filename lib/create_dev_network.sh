@@ -132,6 +132,10 @@ function addNodeToDC(){
             i="0"$i
         fi
         echo "    ports:" >> $projectName/docker-compose.yml
+        echo "      - \"2${i}00:22000\"" >> $projectName/docker-compose.yml
+        echo "      - \"2${i}01:22001\"" >> $projectName/docker-compose.yml
+        echo "      - \"2${i}02:22002\"" >> $projectName/docker-compose.yml
+        echo "      - \"2${i}03:22003\"" >> $projectName/docker-compose.yml
         echo "      - \"2${i}04:22004\"" >> $projectName/docker-compose.yml
     fi
 
