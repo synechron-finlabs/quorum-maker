@@ -17,8 +17,9 @@ function readInputs(){
     getInputWithDefault 'Please enter Raft Port of this node' $((cPort+1)) raPort $PINK
     
     getInputWithDefault 'Please enter Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
-    
-    
+
+    getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
+        
     role="Unassigned"
 	
     #append values in Setup.conf file 
@@ -28,7 +29,8 @@ function readInputs(){
     echo 'CONSTELLATION_PORT='$cPort >> ./setup.conf
     echo 'RAFT_PORT='$raPort >> ./setup.conf
     echo 'THIS_NODEMANAGER_PORT='$tgoPort >>  ./setup.conf
-    
+    echo 'WS_PORT='$wsPort >>  ./setup.conf
+        
     echo 'NETWORK_ID='$net >>  ./setup.conf
     echo 'RAFT_ID='1 >>  ./setup.conf
     echo 'NODENAME='$nodeName >> ./setup.conf

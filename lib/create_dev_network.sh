@@ -137,6 +137,8 @@ function addNodeToDC(){
         echo "      - \"2${i}02:22002\"" >> $projectName/docker-compose.yml
         echo "      - \"2${i}03:22003\"" >> $projectName/docker-compose.yml
         echo "      - \"2${i}04:22004\"" >> $projectName/docker-compose.yml
+        echo "      - \"2${i}05:22005\"" >> $projectName/docker-compose.yml
+        
     fi
 
     echo "    networks:" >> $projectName/docker-compose.yml

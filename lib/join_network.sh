@@ -13,6 +13,7 @@ function readInputs(){
     getInputWithDefault 'Please enter Constellation Port of this node' $((wPort+1)) cPort $GREEN
     getInputWithDefault 'Please enter Raft Port of this node' $((cPort+1)) raPort $PINK
     getInputWithDefault 'Please enter Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
+    getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
     
     role="Unassigned"
     
@@ -95,6 +96,7 @@ function createSetupConf() {
     echo 'CONSTELLATION_PORT='${cPort} >> ${sNode}/setup.conf
     echo 'THIS_NODEMANAGER_PORT='${tgoPort} >> ${sNode}/setup.conf
     echo 'MAIN_NODEMANAGER_PORT='${mgoPort} >> ${sNode}/setup.conf
+    echo 'WS_PORT='${wsPort} >> ${sNode}/setup.conf
     echo 'CURRENT_IP='${pCurrentIp} >> ${sNode}/setup.conf
     echo 'REGISTERED=' >> ${sNode}/setup.conf
     echo 'MODE=ACTIVE' >> ${sNode}/setup.conf

@@ -18,6 +18,7 @@ function startNode(){
            -p $CONSTELLATION_PORT:$CONSTELLATION_PORT \
            -p $RAFT_PORT:$RAFT_PORT \
            -p $THIS_NODEMANAGER_PORT:$THIS_NODEMANAGER_PORT\
+           -p $WS_PORT:$WS_PORT \
            -e NODENAME=$NODENAME \
            -e CURRENT_NODE_IP=$CURRENT_IP \
            -e R_PORT=$RPC_PORT \
@@ -25,6 +26,7 @@ function startNode(){
            -e C_PORT=$CONSTELLATION_PORT \
            -e RA_PORT=$RAFT_PORT \
            -e NM_PORT=$THIS_NODEMANAGER_PORT \
+           -e WS_PORT=$WS_PORT \
            -e NETID=$NETWORK_ID \
            -e RAFTID=$RAFT_ID \
            -e MASTER_IP=$MASTER_IP \
