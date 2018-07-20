@@ -6,14 +6,7 @@ GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --rpc --rpcaddr 0.0.0.0 --rp
 
 echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_${NODE_NAME}.log
 
-constellation-node \
---url=http://$CURRENT_NODE_IP:$C_PORT/ \
---port=$C_PORT \
---workdir=qdata \
---socket=$NODE_NAME.ipc \
---publickeys=/home/node/keys/$NODE_NAME.pub \
---tls=off \
---privatekeys=/home/node/keys/$NODE_NAME.key >> qdata/constellationLogs/constellation_${NODE_NAME}.log 2>&1 &
+constellation-node constellation.conf >> qdata/constellationLogs/constellation_${NODE_NAME}.log 2>&1 &
 
 # Fix to wait till ipc file get generated
 while : ; do
@@ -32,6 +25,6 @@ done
 echo "[*] Starting ${NODE_NAME} node" >> qdata/gethLogs/${NODE_NAME}.log
 echo "[*] geth --verbosity 6 --datadir qdata" $GLOBAL_ARGS" --raftport $RA_PORT --rpcport "$R_PORT "--port "$W_PORT "--nat extip:"$CURRENT_NODE_IP>> qdata/gethLogs/${NODE_NAME}.log
 
-PRIVATE_CONFIG=qdata/$NODE_NAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODE_NAME}.log &
+PRIVATE_CONFIG=qdata/$NODE_NAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --rpccorsdomain "*" --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --ws --wsaddr 0.0.0.0 --wsport $WS_PORT --wsorigins '*' --wsapi --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODE_NAME}.log &
 
 ./nodemanager.sh $R_PORT $NODE_MANAGER_PORT

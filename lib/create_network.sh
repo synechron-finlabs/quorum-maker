@@ -4,13 +4,13 @@
  source lib/common.sh
 
 #function to generate keyPair for node
- function generateKeyPair(){
+function generateKeyPair(){
     echo -ne "\n" | constellation-node --generatekeys=${mNode} 1>>/dev/null
-    
+
     echo -ne "\n" | constellation-node --generatekeys=${mNode}a 1>>/dev/null
 
     mv ${mNode}*.*  ${mNode}/node/keys/.
-    
+
 }
 
 #function to create node initialization script
@@ -20,7 +20,7 @@ function createInitNodeScript(){
 }
 
 #function to create start node script with --raft flag
-function copyStartTemplate(){
+function copyScripts(){
     NET_ID=$(awk -v min=10000 -v max=99999 -v freq=1 'BEGIN{srand(); for(i=0;i<freq;i++)print int(min+rand()*(max-min+1))}')
     
     cp lib/master/start_quorum_template.sh ${mNode}/node/start_${mNode}.sh
@@ -41,8 +41,11 @@ function copyStartTemplate(){
 
     cp lib/common.sh ${mNode}/node/common.sh
 
-    cat lib/master/nodemanager_template.sh > ${mNode}/node/nodemanager.sh
+    cp lib/master/nodemanager_template.sh ${mNode}/node/nodemanager.sh
     chmod +x ${mNode}/node/nodemanager.sh
+
+    cp lib/master/constellation_template.conf ${mNode}/node/constellation.conf
+
 }
 
 #function to generate enode
@@ -88,6 +91,16 @@ function createAccount(){
     rm -rf datadir
 }
 
+function cleanup(){
+    rm -rf ${mNode}
+    echo $mNode > .nodename
+    mkdir -p ${mNode}/node/keys
+    mkdir -p ${mNode}/node/contracts
+    mkdir -p ${mNode}/node/qdata
+    mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
+    cp qm.variables $mNode
+}
+
 # execute init script
 function executeInit(){
     cd ${mNode}
@@ -96,19 +109,14 @@ function executeInit(){
 
 function main(){    
     getInputWithDefault 'Please enter node name' "" mNode $GREEN
-    rm -rf ${mNode}
-    echo $mNode > .nodename
-    mkdir -p ${mNode}/node/keys
-    mkdir -p ${mNode}/node/contracts
-    mkdir -p ${mNode}/node/qdata
-    mkdir -p ${mNode}/node/qdata/{keystore,geth,logs}
-    cp qm.variables $mNode
-
+    
+    cleanup
     generateKeyPair
     createInitNodeScript
-    copyStartTemplate
+    copyScripts
     generateEnode
     createAccount
     executeInit   
 }
+
 main

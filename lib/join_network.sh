@@ -13,6 +13,7 @@ function readInputs(){
     getInputWithDefault 'Please enter Constellation Port of this node' $((wPort+1)) cPort $GREEN
     getInputWithDefault 'Please enter Raft Port of this node' $((cPort+1)) raPort $PINK
     getInputWithDefault 'Please enter Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
+    getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
     
     role="Unassigned"
     
@@ -71,7 +72,7 @@ function createAccount(){
 }
 
 #function to create start node script without --raftJoinExisting flag
-function createStartNodeScript(){
+function copyScripts(){
     cp lib/slave/start_quorum_template.sh ${sNode}/node/start_${sNode}.sh
     
     cp lib/slave/start_template.sh ${sNode}/start.sh
@@ -82,9 +83,11 @@ function createStartNodeScript(){
     cp lib/slave/pre_start_check_template.sh ${sNode}/node/pre_start_check.sh
 
     cp lib/common.sh  ${sNode}/node
+
+    cp lib/slave/constellation_template.conf ${sNode}/node/constellation.conf
 }
 
-function createSetupScript() {
+function createSetupConf() {
     echo 'NODENAME='${sNode} > ${sNode}/setup.conf
     echo 'MASTER_IP='${pMainIp} >> ${sNode}/setup.conf
     echo 'WHISPER_PORT='${wPort} >> ${sNode}/setup.conf
@@ -93,12 +96,14 @@ function createSetupScript() {
     echo 'CONSTELLATION_PORT='${cPort} >> ${sNode}/setup.conf
     echo 'THIS_NODEMANAGER_PORT='${tgoPort} >> ${sNode}/setup.conf
     echo 'MAIN_NODEMANAGER_PORT='${mgoPort} >> ${sNode}/setup.conf
+    echo 'WS_PORT='${wsPort} >> ${sNode}/setup.conf
     echo 'CURRENT_IP='${pCurrentIp} >> ${sNode}/setup.conf
     echo 'REGISTERED=' >> ${sNode}/setup.conf
+    echo 'MODE=ACTIVE' >> ${sNode}/setup.conf
+    echo 'STATE=I' >> ${sNode}/setup.conf
 }
 
-function main(){    
-    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+function cleanup() {
     echo $sNode > .nodename
     rm -rf ${sNode}
     mkdir -p ${sNode}/node/keys
@@ -106,13 +111,18 @@ function main(){
     mkdir -p ${sNode}/node/qdata
     mkdir -p ${sNode}/node/qdata/{keystore,geth,logs}
     cp qm.variables $sNode
+}
 
+function main(){    
+    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+    
+    cleanup
     readInputs
     generateKeyPair
     createInitNodeScript
     generateEnode
-    createStartNodeScript
-    createSetupScript
+    copyScripts
+    createSetupConf
     createAccount
     
 }
