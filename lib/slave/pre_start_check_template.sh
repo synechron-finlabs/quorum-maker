@@ -65,25 +65,15 @@ function requestGenesis(){
         exit
     else
         echo $response > input1.json
-        sed -i 's/\\//g' input1.json
-        sed -i 's/"{ "config"/{ "config"/g' input1.json
-        sed -i 's/}"/}/g' input1.json
-        sed -i 's/,/,\n/g' input1.json
-        sed -i 's/ //g' input1.json
-        cat input1.json | jq '.netID' > net1.txt
-        sed -i 's/"//g' net1.txt
-        netvalue=$(cat net1.txt)
-        echo 'NETWORK_ID='$netvalue >>  setup.conf
-
-        cat input1.json | jq '.["contstellation-port"]' > const.txt
-        sed -i 's/"//g' const.txt
-        mconstv=$(cat const.txt)
-        echo 'MASTER_CONSTELLATION_PORT='$mconstv >>  setup.conf
-        genesis=$(jq '.genesis' input1.json)
-        echo $genesis > node/genesis.json
+	declare -A replyMap
+	while IFS="=" read -r key value
+	do
+    	replyMap[$key]="$value"
+	done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" input1.json)
+	echo 'MASTER_CONSTELLATION_PORT='${replyMap[contstellation-port]} >>  setup.conf
+	echo 'NETWORK_ID='${replyMap[netID]} >>  setup.conf
+	echo ${replyMap[genesis]}  > node/genesis.json
         rm -f input1.json
-        rm -f const.txt
-        rm -f net1.txt
     fi
 }
 
