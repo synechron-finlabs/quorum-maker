@@ -434,3 +434,4 @@ Change log V2.3
 3. Quorum Maker can deploy Smart Contracts using inheritance.
 4. Auto attach ABI of smart contracts deployed using Truffle. 
 5. All solidity data types are supported on the transaction parameter view. 
+6. Enabled WS Ports for Web3 push service. 
