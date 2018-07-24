@@ -104,7 +104,7 @@ function main(){
 
     source setup.conf
     
-    if [ -z $networkId ]; then
+    if [ -z $NETWORK_ID ]; then
         enode=$(cat node/enode.txt)
         requestGenesis
         executeInit
