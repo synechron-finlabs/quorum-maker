@@ -437,6 +437,7 @@ Change log V2.3
 1. Attaching nodes to exisisting Quorum node is fully supported.
 2. Attached node can approve Join Requests. E.g. Fully migrate 7node example to Quorum Maker and add additional nodes. 
 3. Quorum Maker can deploy Smart Contracts using inheritance.
-4. Auto attach ABI of smart contracts deployed using Truffle. 
+4. Auto attach ABI of smart contracts deployed using Truffle and Quorum Maker Smart Contract Deployer. 
 5. All solidity data types are supported on the transaction parameter view. 
 6. Enabled WS Ports for Web3 push service. 
+7. Additional template for sending test mail on email service registration
