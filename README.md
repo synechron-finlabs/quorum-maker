@@ -441,3 +441,4 @@ Change log V2.3
 5. All solidity data types are supported on the transaction parameter view. 
 6. Enabled WS Ports for Web3 push service. 
 7. Additional template for sending test mail on email service registration
+8. Added -d flag for start.sh of nodes to run in daemon mode. 
