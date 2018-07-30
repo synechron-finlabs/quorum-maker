@@ -8,7 +8,7 @@ function startNode(){
 
     docker kill $NODENAME 2> /dev/null && docker rm $NODENAME 2> /dev/null
 
-    docker run -it --rm --name $NODENAME \
+    docker run $DOCKER_FLAG --rm --name $NODENAME \
            -v $(pwd):/home \
            -v $(pwd)/node/contracts:/root/quorum-maker/contracts \
            -w /home/node  \
@@ -45,6 +45,12 @@ function main(){
         exit
     fi
 
+        if [ "$1" = "-d" ]; then 
+	    DOCKER_FLAG="-d"
+    else
+	    DOCKER_FLAG="-it"
+    fi 		
+
     startNode
 }
-main
+main $1
