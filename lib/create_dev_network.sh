@@ -19,17 +19,17 @@ function generateNodeConf(){
 }
 
 function generateSetupConf(){
-echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
-echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
-echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
-echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
-echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
-echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
-echo 'ROLE=' >> $projectName/node$1/setup.conf
-echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
-echo 'REGISTERED=' >> $projectName/node$1/setup.conf
-echo 'MODE=ACTIVE' >> $projectName/node$1/setup.conf
-echo 'STATE=I' >> $projectName/node$1/setup.conf
+    echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
+    echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
+    echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
+    echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
+    echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
+    echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
+    echo 'ROLE=' >> $projectName/node$1/setup.conf
+    echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
+    echo 'REGISTERED=' >> $projectName/node$1/setup.conf
+    echo 'MODE=ACTIVE' >> $projectName/node$1/setup.conf
+    echo 'STATE=I' >> $projectName/node$1/setup.conf
 }
 
 #function to generate keyPair for node
