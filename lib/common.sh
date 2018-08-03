@@ -83,6 +83,62 @@ function displayProgress(){
 
 }
 
+function help(){
+    echo ""
+    echo "Usage ./setup.sh COMMAND [OPTIONS]"
+    echo ""
+    echo "Commands:"
+    echo "create    Create a new Node. The node hosts Quorum, Constellation and Node Manager"
+    echo "join      Create a node and Join to existing Network"
+    echo "attach    Attach to an existing Quorum Node. The node created hosts only Node Manager"
+    echo "dev       Create a development/test network with multiple nodes"
+    echo ""
+    echo "Options:"
+    echo ""
+    echo "For create command:"
+    echo "  -n, --name              Name of the node to be created"
+    echo "  --ip                    IP address of this node (IP of the host machine)"
+    echo "  -r, --rpc               RPC port of this node"
+    echo "  -w, --whisper           Discovery port of this node"
+    echo "  -c, --constellation     Constellation port of this node"
+    echo "  --raft                  Raft port of this node"
+    echo "  --nm                    Node Manager port of this node"
+    echo "  --ws                    Web Socket port of this node"
+    echo ""
+    echo "For join command:"
+    echo "  "
+    echo "  -n, --name              Name of the node to be created"
+    echo "  --oip                   IP address of the other node (IP of the existing node)"
+    echo "  --onm                   Node Manager port of the other node"
+    echo "  --tip                    IP address of this node (IP of the host machine)"
+    echo "  -r, --rpc               RPC port of this node"
+    echo "  -w, --whisper           Discovery port of this node"
+    echo "  -c, --constellation     Constellation port of this node"
+    echo "  --raft                  Raft port of this node"
+    echo "  --nm                    Node Manager port of this node"
+    echo "  --ws                    Web Socket port of this node"
+    echo ""
+    echo "For attach command:"
+    echo "  -n, --name              Name of the node to be created"
+    echo "  --ip                    IP address of existing Quorum"
+    echo "  --pk                    Public Key of existing Constellation"
+    echo "  -r, --rpc               RPC port of the existing Quorum"   
+    echo "  -w, --whisper           Discovery port of this node" 
+    echo "  -c, --constellation     Constellation port existing node"
+    echo "  --raft                  Raft port of existing node"
+    echo "  --nm                    Node Manager port of this node (New Node Manager will be created by this command)"
+    echo "  --active                Active attachment mode"
+    echo "  --passive               Passive attachment mode"
+    echo ""
+    echo "For dev command:"
+    echo "  -p, --project       Project Name"
+    echo "  -n, --nodecount     Number of nodes to be created"
+    echo ""
+    echo "  -h, --help          Display this help and exit"
+
+    exit
+}
+
 pushd () {
     command pushd "$@" > /dev/null
 }

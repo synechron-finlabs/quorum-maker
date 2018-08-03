@@ -32,9 +32,11 @@ function startNode(){
 function main(){
     
     docker run -it --rm -v $(pwd):/home  -w /home  \
-              $dockerImage node/pre_start_check.sh
+              $dockerImage node/pre_start_check.sh $@
 
-    source setup.conf
+    if [ -f setup.conf ]; then
+         source setup.conf
+    fi
 
     if [ -z $NETWORK_ID ]; then
         exit
@@ -48,4 +50,4 @@ function main(){
 
     startNode
 }
-main $1
+main $@

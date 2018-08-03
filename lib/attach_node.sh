@@ -3,22 +3,101 @@
 source qm.variables
 source lib/common.sh
 
+function readParameters() {
+    
+    POSITIONAL=()
+    while [[ $# -gt 0 ]]
+    do
+        key="$1"
+
+        case $key in
+            -n|--name)
+            sNode="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --ip)
+            pCurrentIp="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --pk)
+            publickey="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -r|--rpc)
+            rPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -w|--whisper)
+            wPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -c|--constellation)
+            cPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --raft)
+            raPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --nm)
+            tgoPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --active)
+            mode="ACTIVENI"
+            shift # past argument
+            ;;  
+            --passive)
+            mode="PASSIVE"
+            shift # past argument
+            ;;            
+            *)    # unknown option
+            POSITIONAL+=("$1") # save it in an array for later
+            shift # past argument
+            ;;
+        esac
+    done
+    set -- "${POSITIONAL[@]}" # restore positional parameters
+
+    if [[ -z "$sNode" && -z "$pCurrentIp" && -z "$publickey" && -z "$rPort" && -z "$rPort" && -z "$wPort" && -z "$cPort" && -z "$raPort" && -z "$tgoPort" && -z "$mode" ]]; then
+        return
+    fi
+
+    if [[ -z "$sNode" || -z "$pCurrentIp" || -z "$publickey" || -z "$rPort" || -z "$rPort" || -z "$wPort" || -z "$cPort" || -z "$raPort" || -z "$tgoPort" || -z "$mode" ]]; then
+        help
+    fi
+
+    NON_INTERACTIVE=true
+}
+
 function readInputs(){  
     
-    getInputWithDefault 'Please enter the IP Address of Geth' "" pCurrentIp $RED
-    getInputWithDefault 'Please enter the Public Key of Constellation' "" publickey $BLUE
-    getInputWithDefault 'Please enter the RPC Port of Geth' 22000 rPort $GREEN
-    getInputWithDefault 'Please enter the Network Listening Port of Geth' $((rPort+1)) wPort $GREEN
-    getInputWithDefault 'Please enter the Constellation Port' $((wPort+1)) cPort $GREEN
-    getInputWithDefault 'Please enter the Raft Port' $((cPort+1)) raPort $PINK
-    getInputWithDefault 'Please enter the Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
-    getInputWithDefault 'Please enter the Attachment Mode of this node (1 for active and 2 for passive)' 1 mode $CYAN
-    if [ "$mode" = "1" ]
-    then 
-	mode="ACTIVENI"
-    else
-	mode="PASSIVE"
-    fi 			    
+    if [ -z "$NON_INTERACTIVE" ]; then
+                
+        getInputWithDefault 'Please enter the IP Address of Geth' "" pCurrentIp $RED
+        getInputWithDefault 'Please enter the Public Key of Constellation' "" publickey $BLUE
+        getInputWithDefault 'Please enter the RPC Port of Geth' 22000 rPort $GREEN
+        getInputWithDefault 'Please enter the Network Listening Port of Geth' $((rPort+1)) wPort $GREEN
+        getInputWithDefault 'Please enter the Constellation Port' $((wPort+1)) cPort $GREEN
+        getInputWithDefault 'Please enter the Raft Port' $((cPort+1)) raPort $PINK
+        getInputWithDefault 'Please enter the Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
+        getInputWithDefault 'Please enter the Attachment Mode of this node (1 for active and 2 for passive)' 1 mode $CYAN
+        
+        if [ "$mode" = "1" ]; then 
+            mode="ACTIVENI"
+        else
+            mode="PASSIVE"
+        fi 			    
+    fi
+    
 }
 
 #function to create start node script without --raftJoinExisting flag
@@ -61,14 +140,20 @@ function cleanup() {
     cp qm.variables $sNode
 }
 
-function main(){    
-    getInputWithDefault 'Please enter node name' "" sNode $GREEN
-    
+function main(){   
+
+    readParameters $@
+
+    if [ -z "$NON_INTERACTIVE" ]; then 
+        getInputWithDefault 'Please enter node name' "" sNode $GREEN
+    fi
+
     cleanup
     readInputs
+    
     createStartNodeScript
     createSetupScript
         
 }
 
-main
+main $@
