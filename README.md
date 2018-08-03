@@ -27,6 +27,8 @@ Quorum Maker v2.3 is an upgrade on v1.0 released by Synechron in October 2017. T
 |Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available")|
 |Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Wizard Based Setup	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Non Interactive Setup  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
 |Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
@@ -59,6 +61,11 @@ Quorum Maker v2.3 is an upgrade on v1.0 released by Synechron in October 2017. T
    * [Active Attachment](#active-attachment)
    * [Passive Attachment](#passive-attachment)
    * [Configure Log paths and Genesis](#configure-log-paths-and-genesis)
+1. [Non Interactive Setup](#attaching-quorum-maker-to-existing-quorum-node)
+   * [Create Node](#active-attachment)
+   * [Join Node](#passive-attachment)   
+   * [Attach Node](#passive-attachment)   
+   * [Create Dev/Test Network](#passive-attachment)   
 1. [Quorum Maker Web UI](#quorum-maker-web-ui)
    * [Node Explorer](#node-explorer)
    * [Blockchain Explorer](#blockchain-explorer)
@@ -213,16 +220,16 @@ After the required docker images are downloaded, Quorum Maker will present with 
 `3) Attach to an existing Node`  
 `4) Setup Development/Test Network`  
 `5) Exit`
-`option:` 3
-`Please enter node name:` MyRemoteNode
-`Please enter the IP Address of Geth:` 35.231.238.41
-`Please enter the Public Key of Constellation:` emupTbaUhpqUvezg4e4O2LywHer34qHAABNz+vAwWns=
+`option:` 3  
+`Please enter node name:` MyRemoteNode  
+`Please enter the IP Address of Geth:` 35.231.238.41  
+`Please enter the Public Key of Constellation:` emupTbaUhpqUvezg4e4O2LywHer34qHAABNz+vAwWns=  
 `Please enter the RPC Port of Geth[Default:22000]:`
 `Please enter the Network Listening Port of Geth[Default:22001]:`
 `Please enter the Constellation Port[Default:22002]:`
 `Please enter the Raft Port[Default:22003]:`
 `Please enter the Node Manager Port of this node[Default:22004]:`
-`Please enter the Attachment Mode of this node (1 for active and 2 for passive)[Default:1]:`1
+`Please enter the Attachment Mode of this node (1 for active and 2 for passive)[Default:1]:`1  
 
 
 > Note: Except Node Manager port, all other details are of existing node. Please make sure to use an available port for Node Manager to avoid port conflicts.
@@ -252,6 +259,110 @@ Quorum Maker attached to an existing node can even approve join requests. To ena
 After you **SUBMIT** changes, please restart Quorum Maker Node to make the changes effect. 
 
 ![Screenshot 21](img/screenshot21.png)
+
+## Non Interactive Setup
+
+By default Quorum Maker runs in Wizard mode to walk user through the setup process. But for advanced users this might be time consuming and Quorum Maker provides non-interactive mode to speed up the setup. It also useful to run in non-interactive mode from shell scripts or DevOps tools. 
+
+For a quick help on usage and options available, run `./setup.sh -h` or `./setup.sh --help`
+
+Quorum Maker follows Unix style flags, prefixed with `-` for single letter flags and `--` for multi letter flags.
+
+Default usage is `./setup.sh COMMAND [OPTIONS]`
+
+### Create Node
+
+Run `./setup.sh create [OPTIONS]` for creating node. Following are the options available.
+
+```
+For create command:
+  -n, --name              Name of the node to be created
+  --ip                    IP address of this node (IP of the host machine)
+  -r, --rpc               RPC port of this node
+  -w, --whisper           Discovery port of this node
+  -c, --constellation     Constellation port of this node
+  --raft                  Raft port of this node
+  --nm                    Node Manager port of this node
+  --ws                    Web Socket port of this node
+```
+
+E.g. 
+
+`./setup.sh create -n master --ip 10.0.2.15 -r 22000 -w 22001 -c 22002 --raft 22003 --nm 22004 --ws 22005` 
+
+OR 
+
+`./setup.sh create --name master --ip 10.0.2.15 --rpc 22000 --whisper 22001 --constellation 22002 --raft 22003 --nm 22004 --ws 22005`
+
+### Join Node
+
+Run `./setup.sh join [OPTIONS]` for joining an existing network. Following are the options available.
+
+```
+For join command:
+  
+  -n, --name              Name of the node to be created
+  --oip                   IP address of the other node (IP of the existing node)
+  --onm                   Node Manager port of the other node
+  --tip                   IP address of this node (IP of the host machine)
+  -r, --rpc               RPC port of this node
+  -w, --whisper           Discovery port of this node
+  -c, --constellation     Constellation port of this node
+  --raft                  Raft port of this node
+  --nm                    Node Manager port of this node
+  --ws                    Web Socket port of this node
+```
+
+E.g.
+
+`./setup.sh join -n slave1 --oip 10.0.2.15 --onm 22004 --tip 10.0.2.15 -r 23000 -w 23001 -c 23002 --raft 23003 --nm 23004 --ws 23005`
+
+OR 
+
+`./setup.sh join -n slave1 --oip 10.0.2.15 --onm 22004 --tip 10.0.2.15 --rpc 23000 --whisper 23001 --constellation 23002 --raft 23003 --nm 23004 --ws 23005`
+
+### Attach Node
+
+Run `./setup.sh attach [OPTIONS]` for attaching to an existing Quorum Node. Following are the options available.
+
+```
+For attach command:
+  -n, --name              Name of the node to be created
+  --ip                    IP address of existing Quorum
+  --pk                    Public Key of existing Constellation
+  -r, --rpc               RPC port of the existing Quorum
+  -w, --whisper           Discovery port of this node
+  -c, --constellation     Constellation port existing node
+  --raft                  Raft port of existing node
+  --nm                    Node Manager port of this node (New Node Manager will be created by this command)
+  --active                Active attachment mode
+  --passive               Passive attachment mode
+```
+
+E.g.
+
+`./setup.sh attach -n node1 --ip 10.0.2.15 --pk BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo= -r 22000 --whisper 21000 --c 9001 --raft 50401 --nm 11004 --active`
+
+OR
+
+`./setup.sh attach --name node1 --ip 10.0.2.15 --pk BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo= --rpc 22000 --whisper 21000 --constellation 9001 --raft 50401 --nm 11004 --active`
+
+### Create Dev/Test Network
+
+Run `./setup.sh dev [OPTIONS]` for creating a Quorum Network for Development and Test purposes. Following are the options available.
+
+```
+For dev command:
+  -p, --project       Project Name
+  -n, --nodecount     Number of nodes to be created
+```
+E.g.
+
+`./setup.sh dev -p TestNetwork -n 3`
+
+OR
+
+`./setup.sh dev --project TestNetwork --nodecount 3`
 
 ## Quorum Maker Web UI
 
@@ -432,6 +543,10 @@ We expect the following areas to be part of future upgrades:
 ## FAQ
 
 ## Change Log
+
+Change log V2.4
+1. Added command line flags for running Quorum Maker non-interactively 
+
 
 Change log V2.3
 1. Attaching nodes to exisisting Quorum node is fully supported.
