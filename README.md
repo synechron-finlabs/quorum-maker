@@ -546,6 +546,12 @@ We expect the following areas to be part of future upgrades:
 
 Change log V2.4
 1. Added command line flags for running Quorum Maker non-interactively 
+2. Whitelist feature added for automatically accepting join requests from whitelisted IPs 
+3. Account explorer with account creation feature added 
+4. Attach mode restart notification added to UI 
+5. Attach mode contract updation based on enode instead of nodename from setup.conf 
+6. Logging added for incoming join requests 
+7. Redundant node name updation steps removed
 
 
 Change log V2.3
