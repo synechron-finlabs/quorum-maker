@@ -110,7 +110,7 @@ function help(){
     echo "  -n, --name              Name of the node to be created"
     echo "  --oip                   IP address of the other node (IP of the existing node)"
     echo "  --onm                   Node Manager port of the other node"
-    echo "  --tip                    IP address of this node (IP of the host machine)"
+    echo "  --tip                   IP address of this node (IP of the host machine)"
     echo "  -r, --rpc               RPC port of this node"
     echo "  -w, --whisper           Discovery port of this node"
     echo "  -c, --constellation     Constellation port of this node"
