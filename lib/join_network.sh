@@ -3,18 +3,96 @@
 source qm.variables
 source lib/common.sh
 
+function readParameters() {
+    
+    POSITIONAL=()
+    while [[ $# -gt 0 ]]
+    do
+        key="$1"
+
+        case $key in
+            -n|--name)
+            sNode="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --oip)
+            pMainIp="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --onm)
+            mgoPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --tip)
+            pCurrentIp="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -r|--rpc)
+            rPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -w|--whisper)
+            wPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -c|--constellation)
+            cPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --raft)
+            raPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --nm)
+            tgoPort="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            --ws)
+            wsPort="$2"
+            shift # past argument
+            shift # past value
+            ;;            
+            *)    # unknown option
+            POSITIONAL+=("$1") # save it in an array for later
+            shift # past argument
+            ;;
+        esac
+    done
+    set -- "${POSITIONAL[@]}" # restore positional parameters
+
+    if [[ -z "$sNode" && -z "$pMainIp" && -z "$mgoPort" && -z "$pCurrentIp" && -z "$rPort" && -z "$wPort" && -z "$cPort" && -z "$raPort" && -z "$tgoPort" && -z "$wsPort" ]]; then
+        return
+    fi
+
+    if [[ -z "$sNode" || -z "$pMainIp" || -z "$mgoPort" || -z "$pCurrentIp" || -z "$rPort" || -z "$wPort" || -z "$cPort" || -z "$raPort" || -z "$tgoPort" || -z "$wsPort" ]]; then
+        help
+    fi
+
+    NON_INTERACTIVE=true
+}
+
 function readInputs(){  
     
-	getInputWithDefault 'Please enter IP Address of existing node' "" pMainIp $RED
-    getInputWithDefault 'Please enter Node Manager Port of existing node' "" mgoPort $YELLOW
-    getInputWithDefault 'Please enter IP Address of this node' "" pCurrentIp $RED
-    getInputWithDefault 'Please enter RPC Port of this node' 22000 rPort $GREEN
-    getInputWithDefault 'Please enter Network Listening Port of this node' $((rPort+1)) wPort $GREEN
-    getInputWithDefault 'Please enter Constellation Port of this node' $((wPort+1)) cPort $GREEN
-    getInputWithDefault 'Please enter Raft Port of this node' $((cPort+1)) raPort $PINK
-    getInputWithDefault 'Please enter Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
-    getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
-    
+    if [ -z "$NON_INTERACTIVE" ]; then   
+        getInputWithDefault 'Please enter IP Address of existing node' "" pMainIp $RED
+        getInputWithDefault 'Please enter Node Manager Port of existing node' "" mgoPort $YELLOW
+        getInputWithDefault 'Please enter IP Address of this node' "" pCurrentIp $RED
+        getInputWithDefault 'Please enter RPC Port of this node' 22000 rPort $GREEN
+        getInputWithDefault 'Please enter Network Listening Port of this node' $((rPort+1)) wPort $GREEN
+        getInputWithDefault 'Please enter Constellation Port of this node' $((wPort+1)) cPort $GREEN
+        getInputWithDefault 'Please enter Raft Port of this node' $((cPort+1)) raPort $PINK
+        getInputWithDefault 'Please enter Node Manager Port of this node' $((raPort+1)) tgoPort $BLUE
+        getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
+    fi
     role="Unassigned"
     
 }
@@ -114,7 +192,12 @@ function cleanup() {
 }
 
 function main(){    
-    getInputWithDefault 'Please enter node name' "" sNode $GREEN
+
+    readParameters $@
+
+    if [ -z "$NON_INTERACTIVE" ]; then        
+        getInputWithDefault 'Please enter node name' "" sNode $GREEN
+    fi
     
     cleanup
     readInputs
@@ -127,4 +210,4 @@ function main(){
     
 }
 
-main
+main $@

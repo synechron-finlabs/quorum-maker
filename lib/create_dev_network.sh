@@ -19,17 +19,17 @@ function generateNodeConf(){
 }
 
 function generateSetupConf(){
-echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
-echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
-echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
-echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
-echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
-echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
-echo 'ROLE=' >> $projectName/node$1/setup.conf
-echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
-echo 'REGISTERED=' >> $projectName/node$1/setup.conf
-echo 'MODE=ACTIVE' >> $projectName/node$1/setup.conf
-echo 'STATE=I' >> $projectName/node$1/setup.conf
+    echo 'NODENAME='node$1 > $projectName/node$1/setup.conf
+    echo 'CURRENT_IP='${DOCKER_NETWORK_IP}$(($1+1)) >> $projectName/node$1/setup.conf
+    echo 'THIS_NODEMANAGER_PORT=22004' >> $projectName/node$1/setup.conf
+    echo 'RPC_PORT=22000' >> $projectName/node$1/setup.conf    
+    echo 'RAFT_ID='$1 >> $projectName/node$1/setup.conf
+    echo 'PUBKEY='$(cat $projectName/node$1/node/keys/node$1.pub)>> $projectName/node$1/setup.conf
+    echo 'ROLE=' >> $projectName/node$1/setup.conf
+    echo 'CONTRACT_ADD=' >> $projectName/node$1/setup.conf
+    echo 'REGISTERED=' >> $projectName/node$1/setup.conf
+    echo 'MODE=ACTIVE' >> $projectName/node$1/setup.conf
+    echo 'STATE=I' >> $projectName/node$1/setup.conf
 }
 
 #function to generate keyPair for node
@@ -191,7 +191,8 @@ function generateGenesis(){
     cat lib/dev/genesis_template.json >> $projectName/genesis.json
     sed -i $PATTERN $projectName/genesis.json
 
-    DATA=`cat $projectName/accountsBalances.txt | tr -d '\n' | tr -d [:space:]`
+    DATA=`cat $projectName/accountsBalances.txt | tr -d '[:space:]' | tr -d '\n'`
+
     PATTERN="s/#AccountBalance#/$DATA/g"
     sed -i $PATTERN $projectName/genesis.json
 }
@@ -222,10 +223,56 @@ function cleanup() {
     sed $PATTERN lib/dev/header.yml > $projectName/docker-compose.yml
 }
 
+
+function readParameters() {
+    POSITIONAL=()
+    while [[ $# -gt 0 ]]
+    do
+        key="$1"
+
+        case $key in
+            -p|--project)
+            projectName="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -n|--nodecount)
+            nodeCount="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -h|--help)
+            help
+            
+            ;;
+            *)    # unknown option
+            POSITIONAL+=("$1") # save it in an array for later
+            shift # past argument
+            ;;
+        esac
+    done
+    set -- "${POSITIONAL[@]}" # restore positional parameters
+
+    if [[ -z "$projectName" && -z "$nodeCount" ]]; then
+        return
+    fi
+
+    if [[ -z "$projectName" || -z "$nodeCount" ]]; then
+        help
+    fi
+
+    NON_INTERACTIVE=true
+}
+
 function main(){    
-    getInputWithDefault 'Please enter a project name' "TestNetwork" projectName $RED
-    getInputWithDefault 'Please enter number of nodes to be created' 3 nodeCount $GREEN
-        
+
+    readParameters $@
+
+    if [ -z "$NON_INTERACTIVE" ]; then
+        getInputWithDefault 'Please enter a project name' "TestNetwork" projectName $RED
+        getInputWithDefault 'Please enter number of nodes to be created' 3 nodeCount $GREEN
+    fi
+   
     echo -e $BLUE'Creating '$projectName' with '$nodeCount' nodes. Please wait... '$COLOR_END
 
     displayProgress $nodeCount 0
@@ -243,4 +290,4 @@ function main(){
 
     echo -e $GREEN'Project '$projectName' created successfully. Please execute docker-compose up from '$projectName' directory'$COLOR_END
 }
-main
+main $@
