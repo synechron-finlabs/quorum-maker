@@ -20,11 +20,6 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 Quorum Maker v2.4 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-|#|Test|Value|
-|-|----|-----|
-|1.|A|A1|
-|1.|B|B1|
-
 |#| Features | V 1.0 | V 2.4 |
 |-| ------ | ------ |-----|
 |1| Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
