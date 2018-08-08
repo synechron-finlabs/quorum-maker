@@ -20,32 +20,37 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 Quorum Maker v2.4 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-| Features | V 1.0 | V 2.4 |
-| ------ | ------ |-----|
-| Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
-|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available")|
-|Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|Wizard Based Setup	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|Non Interactive Setup  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
-|Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
-|Network Map Service  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Node Monitoring	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Block Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Transaction Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Auto ABI upload for Truffle Deployments | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|Multi Operating System Support	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|Mobile Device Support	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|#|Test|Value|
+|-|----|-----|
+|1.|A|A1|
+|1.|B|B1|
+
+|#| Features | V 1.0 | V 2.4 |
+|-| ------ | ------ |-----|
+|1| Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|2|Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
+|3|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available")|
+|4|Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|5|Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|6|Wizard Based Setup	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|7|Non Interactive Setup  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|8|Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
+|9|Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|10|Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|11|Network Map Service  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|12|Node Monitoring	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|13|Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|14|Block Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|15|Transaction Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|16|Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|17|Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|18|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|19|Auto ABI upload for Truffle Deployments | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|20|Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|21|Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|22|Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|23|Multi Operating System Support	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|24|Mobile Device Support	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 
 ## Contents
 
