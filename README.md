@@ -473,12 +473,12 @@ Quorum Maker provides APIs that it used internally, that are also useful for app
 |--|--|--|
 |/block|GET|This endpoint returns a list of latest n blocks if the query string parameter number is equal to n. If the query string parameter reference is provided with query string parameter number equal to n, then n blocks starting before (reference – 1) is returned|
 |/block/{block_no}|GET|This endpoint returns the details of a particular block based on block number|
-|/txn||This endpoint returns a list of latest n transactions if the query string parameter number is equal to n|
+|/txn|GET|This endpoint returns a list of latest n transactions if the query string parameter number is equal to n|
 |/txn/{txn_hash}|GET|This endpoint gets the transaction details of a transaction based on hash. If txn_hash is sent as "pending" it returns a list of all pending transactions|
 |/txnrcpt/{txn_hash}|GET|This endpoint gets the transaction receipt details of a transaction based on hash|
 |/txnsearch/{txn_hash}|GET|This endpoint returns details of a particular transaction based on transaction hash alongside its corresponding block details for displaying the corresponding block information of the queried transaction on UI|
 |/latestBlock|GET|This endpoint the latest block number and the difference between present time and the time of creation of the block|
-|/peer||This endpoint returns a combination of admin.nodeInfo and certain other details such as current node name, node count, active status, IP, RPC port, raft role, raft ID, blocknumber, pending transaction count as well as the genesis file|
+|/peer|GET|This endpoint returns a combination of admin.nodeInfo and certain other details such as current node name, node count, active status, IP, RPC port, raft role, raft ID, blocknumber, pending transaction count as well as the genesis file|
 |/peer/{peer_id}|GET|This endpoint returns the information gleaned from admin.peers but filtered by enode-id of a particular peer for displaying the pop up from the node table|
 |/getNodeList|GET|This endpoint returns the Name, Role, Public Key, Enode, IP address, Blockchain ID (Raft ID), Geth Health (Active/Inactive) of all participants in the network by querying the Network Manager contract|
 |/deployContract|POST|Multiple contracts can be uploaded via multipart file upload through this endpoint. The source .sol files are compiled using solc and subsequently deployed. The deployment is done either publicly or privately. In case of private deployment the public keys of the concerned parties are sent from UI. The list of network participants and their corresponding public keys are fetched using a REST API call. Error messages that occur from compilation failures are also displayed on UI. All the deployed contracts are easily accessible from the UI in the format|
