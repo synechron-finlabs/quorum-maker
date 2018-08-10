@@ -20,32 +20,33 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 Quorum Maker v2.4 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-|#| Features | V 1.0 | V 2.4 |
-|-| ------ | ------ |-----|
-|1| Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|2|Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
-|3|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available")|
-|4|Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|5|Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|6|Wizard Based Setup	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|7|Non Interactive Setup  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|8|Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
-|9|Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|10|Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
-|11|Network Map Service  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|12|Node Monitoring	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|13|Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|14|Block Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|15|Transaction Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|16|Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|17|Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|18|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|19|Auto ABI upload for Truffle Deployments | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|20|Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|21|Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|22|Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
-|23|Multi Operating System Support	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
-|24|Mobile Device Support	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+| Features | V 1.0 | V 2.4 |
+| ------ | ------ |-----|
+| Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
+|Attach to existing Quorum Node	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available")|
+|Quick Setup with Docker	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Quick network with Docker Compose	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Wizard Based Setup	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Non Interactive Setup  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
+|Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Network Map Service  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Node Monitoring	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Block Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Transaction Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Smart Contract Deployer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Smart Contract Explorer	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Transaction Parameters View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Auto ABI upload for Truffle Deployments | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Email Notification	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Online Logs View	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Ethereum Account Management      | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Restful API	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
+|Multi Operating System Support	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
+|Mobile Device Support	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 
 ## Contents
 
@@ -472,15 +473,23 @@ Quorum Maker provides APIs that it used internally, that are also useful for app
 |--|--|--|
 |/block|GET|This endpoint returns a list of latest n blocks if the query string parameter number is equal to n. If the query string parameter reference is provided with query string parameter number equal to n, then n blocks starting before (reference – 1) is returned|
 |/block/{block_no}|GET|This endpoint returns the details of a particular block based on block number|
-|/txn |GET |This endpoint returns a list of latest n transactions if the query string parameter number is equal to n|
+|/txn|GET|This endpoint returns a list of latest n transactions if the query string parameter number is equal to n|
 |/txn/{txn_hash}|GET|This endpoint gets the transaction details of a transaction based on hash. If txn_hash is sent as "pending" it returns a list of all pending transactions|
+|/txnrcpt/{txn_hash}|GET|This endpoint gets the transaction receipt details of a transaction based on hash|
 |/txnsearch/{txn_hash}|GET|This endpoint returns details of a particular transaction based on transaction hash alongside its corresponding block details for displaying the corresponding block information of the queried transaction on UI|
 |/latestBlock|GET|This endpoint the latest block number and the difference between present time and the time of creation of the block|
 |/peer|GET|This endpoint returns a combination of admin.nodeInfo and certain other details such as current node name, node count, active status, IP, RPC port, raft role, raft ID, blocknumber, pending transaction count as well as the genesis file|
 |/peer/{peer_id}|GET|This endpoint returns the information gleaned from admin.peers but filtered by enode-id of a particular peer for displaying the pop up from the node table|
-|/nodeList|GET|This endpoint returns the node name, role, public key and enode of all participants in the network by querying the Network Manager contract|
-|/pubkeys|GET|This endpoint returns a list of network participants and their corresponding public keys for populating the contract deployment tab's network participants list|
+|/getNodeList|GET|This endpoint returns the Name, Role, Public Key, Enode, IP address, Blockchain ID (Raft ID), Geth Health (Active/Inactive) of all participants in the network by querying the Network Manager contract|
 |/deployContract|POST|Multiple contracts can be uploaded via multipart file upload through this endpoint. The source .sol files are compiled using solc and subsequently deployed. The deployment is done either publicly or privately. In case of private deployment the public keys of the concerned parties are sent from UI. The list of network participants and their corresponding public keys are fetched using a REST API call. Error messages that occur from compilation failures are also displayed on UI. All the deployed contracts are easily accessible from the UI in the format|
+|/mailserver|POST|This endpoint helps the user configure the SMTP Server Address, Port Number, Recipient List and Username of the Mail Server for subscribing to the Quorum Maker Email Notification Service|
+|/chartData|GET|This endpoint returns the number of blocks and transactions mined in each of the last 10 minutes|
+|/contractList|GET|This endpoint returns the contract address, contract name, ABI, sender address, contract type (public/private), creation time and optional description of all contracts deployed on the blockchain|
+|/createAccount|POST|This endpoint allows the creation of a new ethereum account|
+|/getAccounts|GET|This endpoint returns a list of all ethereum accounts present on a node along with their balances and also adds an indicator for coinbase|
+|/getWhitelist|GET|This endpoint returns the current contents of the whitelisted IPs from which join requests are automatically accepted along with a list of all IPs on which connected nodes are present including indicators for those IPs which are currently whitelisted|
+|/updateWhitelist|POST|This endpoint allows IPs to be added/deleted to the whitelist from which join requests are automatically accepted|
+
 
 ## Using a different version of Geth/Constellation
 
