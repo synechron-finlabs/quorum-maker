@@ -1,10 +1,12 @@
 {
   "config": {
     "chainId": 0,
-    "homesteadBlock": 0,
-        "eip155Block": null,
-        "eip158Block": null,
-        "isQuorum": true
+    "byzantiumBlock": 0,
+    "eip150Block": 0,
+    "eip155Block": 0,
+    "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "eip158Block": 0,
+    "isQuorum": true
   },
   "coinbase"   : "0x0000000000000000000000000000000000000000",
   "difficulty" : "0x0",

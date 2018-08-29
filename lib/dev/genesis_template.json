@@ -1,11 +1,13 @@
 {
   "config": {
-        "chainId": #CHAIN_ID#,
-        "homesteadBlock": 0,
-        "eip155Block": null,
-        "eip158Block": null,
-        "isQuorum": true
-    },
+    "chainId": #CHAIN_ID#,
+    "byzantiumBlock": 0,
+    "eip150Block": 0,
+    "eip155Block": 0,
+    "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "eip158Block": 0,
+    "isQuorum": true
+  },
   "alloc"      : {
     #AccountBalance#
   },
