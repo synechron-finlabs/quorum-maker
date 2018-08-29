@@ -2,8 +2,8 @@
 
 Synechron's Quorum Maker is a tool that allows users to create and manage Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
-- run with docker-compose (Raft consensus/Quorum 2.0.2) for easy use in development environments; or,
-- nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.0.2)
+- run with docker-compose (Raft consensus/Quorum 2.1.0) for easy use in development environments; or,
+- nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.1.0)
 
 ![Quorum Maker 2](img/QM2.png)
 
@@ -18,9 +18,9 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 ## Features at a glance
 
-Quorum Maker v2.4 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
+Quorum Maker v2.5 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-| Features | V 1.0 | V 2.4 |
+| Features | V 1.0 | V 2.5 |
 | ------ | ------ |-----|
 | Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
