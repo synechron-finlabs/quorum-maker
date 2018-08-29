@@ -1,4 +1,4 @@
-# Quorum Maker V2.4
+# Quorum Maker V2.5
 
 Synechron's Quorum Maker is a tool that allows users to create and manage Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
@@ -552,6 +552,9 @@ We expect the following areas to be part of future upgrades:
 ## FAQ
 
 ## Change Log
+
+Change log V2.5
+1. Quorum version changed to V2.1.0 
 
 Change log V2.4
 1. Added command line flags for running Quorum Maker non-interactively 
