@@ -92,7 +92,7 @@ Quorum Maker v2.5.1 is an upgrade on v1.0 released by Synechron in October 2017.
 The first step to use Quorum Maker is to clone the source code from GitHub.
 
 ```bash
-$ git clone git@github.com:synechron-finlabs/quorum-maker.git 
+$ git clone https://github.com/synechron-finlabs/quorum-maker 
 ```
 
 Once the repository is successfully cloned, change to the Quorum Maker directory by `$ cd quorum-maker` and run `$ ./setup.sh` script. To minimize the pre-requisites and make setup easy, Quorum Maker uses docker and rest of the dependencies are baked to `syneblock/quorum-maker` image.
