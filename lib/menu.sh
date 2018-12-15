@@ -5,16 +5,20 @@ source qm.variables
 source lib/common.sh
 
 function banner() {
-	echo -e $CYAN'    ______'$RED'   __      __\n' \
-	        $CYAN'  / ____ \'$RED' |  \    /  |  \n'\
-			$CYAN' / /    \ \'$RED'|   \  /   |  \n'\
-			$CYAN' | |     | '$RED'|    \/    |  \n'\
-			$CYAN' | |     | '$RED'| |\    /| |  \n'\
-			$CYAN' | |     | \ '$RED'| \  / | |  \n'\
-			$CYAN' \ \____/ /\ \'$RED'  \/  | |  \n'\
-			$CYAN'  \______/  \_\'$RED'     |_|  \n'
-            
-    
+	printf $CYAN'   ______'$RED'   __      __\n' 
+	printf $CYAN'  / ____ \'$RED' |  \    /  |  \n'
+	printf $CYAN' / /    \ \'$RED'|   \  /   |  \n'
+	printf $CYAN' | |     | '$RED'|    \/    |  \n'
+	printf $CYAN' | |     | '$RED'| |\    /| |  \n'
+	printf $CYAN' | |     |  \'$RED'| \  / | |  \n'
+	printf $CYAN' \ \____/ /\ \'$RED'  \/  | |  \n'
+	printf $CYAN'  \______/  \_\'$RED'     |_|  '
+
+	local __version=$(egrep -Eo "[0-9].*" <<< $dockerImage)
+	    
+	IFS='_'; arrIN=($__version); unset IFS;
+
+	echo -e $GREEN'Version '${arrIN[1]}' Built on Quorum '${arrIN[0]}'\n'
 }
 
 function readParameters() {
