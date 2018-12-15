@@ -4,6 +4,19 @@
 source qm.variables
 source lib/common.sh
 
+function banner() {
+	echo -e $CYAN'    ______'$RED'   __      __\n' \
+	        $CYAN'  / ____ \'$RED' |  \    /  |  \n'\
+			$CYAN' / /    \ \'$RED'|   \  /   |  \n'\
+			$CYAN' | |     | '$RED'|    \/    |  \n'\
+			$CYAN' | |     | '$RED'| |\    /| |  \n'\
+			$CYAN' | |     | \ '$RED'| \  / | |  \n'\
+			$CYAN' \ \____/ /\ \'$RED'  \/  | |  \n'\
+			$CYAN'  \______/  \_\'$RED'     |_|  \n'
+            
+    
+}
+
 function readParameters() {
     POSITIONAL=()
     while [[ $# -gt 0 ]]
@@ -51,6 +64,7 @@ function readParameters() {
 
 function main() {
 
+	banner
 	readParameters $@
 
 	if [ -z "$NON_INTERACTIVE" ]; then
