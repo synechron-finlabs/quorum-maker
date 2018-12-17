@@ -57,6 +57,8 @@ function copyStartTemplate(){
     cp lib/dev/start_template.sh $projectName/node$1/start.sh
 
     cp lib/common.sh $projectName/node$1/node/common.sh
+
+    
 }
 
 #function to generate enode
@@ -125,6 +127,9 @@ function addNodeToDC(){
     echo "      - ./node$1:/home" >> $projectName/docker-compose.yml
     echo "      - ./node1:/master" >> $projectName/docker-compose.yml
   
+    echo -ne "node$1" >> $projectName/project.info
+    echo -ne "\t$(cat $projectName/node$1/node/keys/node$1.pub)" >> $projectName/project.info
+
     if [ -f .qm_export_ports ]; then
         i=$1
 
@@ -138,6 +143,24 @@ function addNodeToDC(){
         echo "      - \"2${i}03:22003\"" >> $projectName/docker-compose.yml
         echo "      - \"2${i}04:22004\"" >> $projectName/docker-compose.yml
         echo "      - \"2${i}05:22005\"" >> $projectName/docker-compose.yml
+
+        echo -ne "\tlocalhost" >> $projectName/project.info
+        echo -ne "\t2${i}00" >> $projectName/project.info
+        echo -ne "\t2${i}01" >> $projectName/project.info
+        echo -ne "\t2${i}02" >> $projectName/project.info
+        echo -ne "\t2${i}03" >> $projectName/project.info
+        echo -ne "\t2${i}04" >> $projectName/project.info
+        echo -ne "\t2${i}05\n" >> $projectName/project.info
+
+    else
+    
+        echo -ne "\t$DOCKER_NETWORK_IP$(($1+1))" >> $projectName/project.info
+        echo -ne "\t22000" >> $projectName/project.info
+        echo -ne "\t22001" >> $projectName/project.info    
+        echo -ne "\t22002" >> $projectName/project.info
+        echo -ne "\t22003" >> $projectName/project.info
+        echo -ne "\t22004" >> $projectName/project.info
+        echo -ne "\t22005\n" >> $projectName/project.info
         
     fi
 
@@ -289,5 +312,10 @@ function main(){
     initNodes
 
     echo -e $GREEN'Project '$projectName' created successfully. Please execute docker-compose up from '$projectName' directory'$COLOR_END
+
+    echo ""
+    (printf "NODE PUBLIC-KEY IP RPC WHISPER CONSTELLATION RAFT NODEMANAGER WS\n" \
+        ; cat $projectName/project.info) | column -t
+    echo ""
 }
 main $@
