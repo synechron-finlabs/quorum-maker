@@ -557,10 +557,11 @@ We expect the following areas to be part of future upgrades:
 
 ## Change Log
 
-Change log V2.5.1
+Change log V2.5.2
 1. Quorum version changed to V2.2.0
 1. Added detach mode for non-interactive setup
 1. Print Project details in table for Dev/Test network
+1. Fix for WS support
 1. QM banner and version information on startup
 
 Change log V2.5.1
