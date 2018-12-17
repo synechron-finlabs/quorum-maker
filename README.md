@@ -1,9 +1,9 @@
-# Quorum Maker V2.5.1
+# Quorum Maker V2.5.2
 
 Synechron's Quorum Maker is a tool that allows users to create and manage Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
-- run with docker-compose (Raft consensus/Quorum 2.1.1) for easy use in development environments; or,
-- nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.1.1)
+- run with docker-compose (Raft consensus/Quorum 2.2.0) for easy use in development environments; or,
+- nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.2.0)
 
 ![Quorum Maker 2](img/QM2.png)
 
@@ -18,9 +18,9 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 ## Features at a glance
 
-Quorum Maker v2.5.1 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
+Quorum Maker v2.5.2 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-| Features | V 1.0 | V 2.5.1 |
+| Features | V 1.0 | V 2.5.2 |
 | ------ | ------ |-----|
 | Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
@@ -32,6 +32,7 @@ Quorum Maker v2.5.1 is an upgrade on v1.0 released by Synechron in October 2017.
 |Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
 |Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Tessera Support 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
 |Network Map Service  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Node Monitoring	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
@@ -285,11 +286,12 @@ For create command:
   --raft                  Raft port of this node
   --nm                    Node Manager port of this node
   --ws                    Web Socket port of this node
+  -d                      Start in detached mode (Optional)
 ```
 
 E.g. 
 
-`./setup.sh create -n master --ip 10.0.2.15 -r 22000 -w 22001 -c 22002 --raft 22003 --nm 22004 --ws 22005` 
+`./setup.sh create -n master --ip 10.0.2.15 -r 22000 -w 22001 -c 22002 --raft 22003 --nm 22004 --ws 22005 -d` 
 
 OR 
 
@@ -312,11 +314,12 @@ For join command:
   --raft                  Raft port of this node
   --nm                    Node Manager port of this node
   --ws                    Web Socket port of this node
+  -d                      Start in detached mode (Optional)
 ```
 
 E.g.
 
-`./setup.sh join -n slave1 --oip 10.0.2.15 --onm 22004 --tip 10.0.2.15 -r 23000 -w 23001 -c 23002 --raft 23003 --nm 23004 --ws 23005`
+`./setup.sh join -n slave1 --oip 10.0.2.15 --onm 22004 --tip 10.0.2.15 -r 23000 -w 23001 -c 23002 --raft 23003 --nm 23004 --ws 23005 -d`
 
 OR 
 
@@ -338,11 +341,12 @@ For attach command:
   --nm                    Node Manager port of this node (New Node Manager will be created by this command)
   --active                Active attachment mode
   --passive               Passive attachment mode
+  -d                      Start in detached mode (Optional)
 ```
 
 E.g.
 
-`./setup.sh attach -n node1 --ip 10.0.2.15 --pk BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo= -r 22000 --whisper 21000 --c 9001 --raft 50401 --nm 11004 --active`
+`./setup.sh attach -n node1 --ip 10.0.2.15 --pk BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo= -r 22000 --whisper 21000 --c 9001 --raft 50401 --nm 11004 --active -d`
 
 OR
 
@@ -552,6 +556,12 @@ We expect the following areas to be part of future upgrades:
 ## FAQ
 
 ## Change Log
+
+Change log V2.5.1
+1. Quorum version changed to V2.2.0
+1. Added detach mode for non-interactive setup
+1. Print Project details in table for Dev/Test network
+1. QM banner and version information on startup
 
 Change log V2.5.1
 1. Quorum version changed to V2.1.1 
