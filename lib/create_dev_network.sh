@@ -58,6 +58,10 @@ function copyStartTemplate(){
 
     cp lib/common.sh $projectName/node$1/node/common.sh
 
+    cp lib/migrate_to_tessera.sh $projectName/node$1
+
+    PATTERN="s/#mNode#/node$1/g"
+    sed -i $PATTERN $projectName/node$1/migrate_to_tessera.sh
     
 }
 
