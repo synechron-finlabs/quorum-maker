@@ -1,4 +1,4 @@
-# Quorum Maker V2.6
+# Quorum Maker V2.6.1
 
 Synechron's Quorum Maker is a tool that allows users to create and manage Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
@@ -18,9 +18,9 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 ## Features at a glance
 
-Quorum Maker v2.6 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
+Quorum Maker v2.6.1 is an upgrade on v1.0 released by Synechron in October 2017. This upgrade, and future expected upgrades, aim to support application developers in the pursuit of production readiness for the growing number of applications built on top of the Quorum platform.
 
-| Features | V 1.0 | V 2.6 |
+| Features | V 1.0 | V 2.6.1 |
 | ------ | ------ |-----|
 | Create Network | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Join Network | ![No](img/cross.png "Not Available")  | ![Yes](img/tick.png "Available")|
@@ -83,7 +83,8 @@ Quorum Maker v2.6 is an upgrade on v1.0 released by Synechron in October 2017. T
    * [Using Docker](#using-docker)
    * [Using Vagrant](#using-vagrant)
 1. [Mobile Device Support](#mobile-device-support)
-1. [Using a different version of Geth/Constellation](#using-a-different-version-of-gethconstellation)
+1. [Using a different version of Geth/Constellation/Tessera](#using-a-different-version-of-gethconstellationtessera)
+1. [Securing Quorum Maker UI](#securing-quorum-maker-ui)
 1. [Work In Progress](#work-in-progress)
 1. [Troubleshooting](#troubleshooting)
 1. [Change Log](#change-log)
@@ -132,7 +133,7 @@ You can now connect to the Quorum Maker UI for each node from a web browser by p
 
 ![Screenshot 9](img/screenshot9.png)
 
-> Note: By default, Quorum Maker doesn't expose ports to the host due to possible conflicts, when running Development/Test Network. You can update `docker-compose.yml` to expose any port you would like to be accessible outside your computer.
+> Note: By default, Quorum Maker doesn't expose ports to the host due to possible conflicts, when running Development/Test Network. You can pass `-e` or `--expose` flags to `./setup.sh` to expose docker ports automatically. See [Non Interactive Setup](#non-interactive-setup) for more details.
 
 ## Setting up Quorum Network on multiple machines
 
@@ -522,9 +523,15 @@ Quorum Maker provides APIs that it used internally, that are also useful for app
 |/updateWhitelist|POST|This endpoint allows IPs to be added/deleted to the whitelist from which join requests are automatically accepted|
 
 
-## Using a different version of Geth/Constellation
+## Using a different version of Geth/Constellation/Tessera
 
-If you need to run Quorum Maker with a different version of Geth or Constellation than comes with default docker image, use [Quorum-Maker-Image](https://github.com/synechron-finlabs/quorum-maker-image "Quorum-Maker-Image"). Create docker image locally and run Quorum Maker again.
+If you need to run Quorum Maker with a different version of Geth,  Constellation or Tessera than comes with default docker image, use [Quorum-Maker-Image](https://github.com/synechron-finlabs/quorum-maker-image "Quorum-Maker-Image") to custom build docker image. Create docker image locally and run Quorum Maker again.
+
+## Securing Quorum Maker UI
+
+Quorum Maker UI listens on HTTP port by default. Though we can build support for HTTPS or user authentication in Quorum Maker, We belive that it should be left to softwares best suitable for that.
+
+Please configure NGINX or Apache as reverse proxy and enable HTTPS in them. Create firewall rules to only allow connetions to Quorum Maker UI from reverse proxy. Also you can configure OpenID Connect or OAuth 2.0 modules in these reverse proxies for user authentication.
 
 ## Windows/Mac Support
 
@@ -572,17 +579,35 @@ Quorum Maker provides a responsive Web UI that can be viewed from smaller Mobile
 We expect the following areas to be part of future upgrades:
 
 - Support for Istanbul PBFT
-- HTTPS support
 - Password for private keys
 
 ## Known Issues
 
- ~~* Invalid Genesis  
- This happens while creating the nodes and this seems to be random issue. Please quit `./setup.sh` and try again~~ FIXED
+ * Tessera - Constalletion interaction in Dev/Test Network
+
+ Currenly for Dev/Test Network, all nodes need to be on either Constellation or Tessera for the network to work. We are still identifying the solution as it is possible on multi-machine setup. 
 
 ## FAQ
 
+* Accessing QM UI when running in Vagrant
+
+If you running QM2 on Vagrant using the Vagrantfile included in QM2, ports are exposed same way, and the IP of the virtual machine is 192.168.33.11 by default. So you if you want to connect to RPC ports from host OS while running using Vagant, node one is available at 192.168.33.11:20100, node two is available at 192.168.33.11:20200, node three is available at 192.168.33.11:20300 and so on. Same way QM2 UI can be accessed 20104, 20204, 20204 on IP Addreess 192.168.33.11. You can connectt to these URLs from your host Windows or Mac OS.
+
+* Error setting up on localhost
+
+Do not use localhost or 127.0.0.1 for IP address while setting up QM nodes. Since docker container will try to connect to itself, the call wont go to the other. Use host IP you get from ifconfig probably for interface eth0 or similar.
+
+* Running nodes in background
+
+Pass `-d` flag to `./setup.sh` so that once the node is created, it will be started in backround. This flag works for `./start.sh` as well. 
+
+Also any docker container can be sent to background by hitting `Ctrl` + `P` + `Q` 
+
+
 ## Change Log
+
+Change log V2.6.1
+1. Added flag to expose ports automatically in Dev/Test Network setup
 
 Change log V2.6
 1. Added Tessera support for Dev/Test network creation
