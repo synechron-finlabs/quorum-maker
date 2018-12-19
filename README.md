@@ -32,7 +32,7 @@ Quorum Maker v2.5.2 is an upgrade on v1.0 released by Synechron in October 2017.
 |Quorum Chain Consensus	 	  | ![Yes](img/tick.png "Available") | ![No](img/cross.png "Not Available") |
 |Raft Consensus	 	  | ![Yes](img/tick.png "Available") | ![Yes](img/tick.png "Available") |
 |Istanbul PBFT Consensus	 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
-|Tessera Support 	  | ![No](img/cross.png "Not Available") | ![WIP](img/wip.png "Work In Progress") |
+|Tessera Support 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Network Map Service  	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Node Monitoring	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
 |Web UI	 	  | ![No](img/cross.png "Not Available") | ![Yes](img/tick.png "Available") |
@@ -68,6 +68,7 @@ Quorum Maker v2.5.2 is an upgrade on v1.0 released by Synechron in October 2017.
    * [Join Node](#join-node)   
    * [Attach Node](#attach-node)   
    * [Create Dev/Test Network](#create-devtest-network)   
+1. [Tessera Support](#tessera-support)
 1. [Quorum Maker Web UI](#quorum-maker-web-ui)
    * [Node Explorer](#node-explorer)
    * [Blockchain Explorer](#blockchain-explorer)
@@ -249,6 +250,32 @@ Active Attachment allows you to migrate your existing nodes that was not created
 ### Passive Attachment
 
 If you do not wish Quorum Maker to deploy a public contract but still want to use some of the features of Quorum Maker, you can attach in **Passive** mode. Most of the features except **Node Explorer** work as expected in this mode.
+
+### Tessera Support
+
+Quorum Maker has added support for Tessera from V2.6. The nodes are by default created with Constellation, but a migration utility is autocreated according the node configuration. After creating the node, please open a terminal to the Docker node, and run the `migrate_to_tessera.sh` script.
+
+Eg.
+
+```
+quourm-maker $ ./setup.sh dev -p TestNetwork -n 2
+
+quourm-maker $ cd TestNetwork
+
+TestNetwork $ docker-compose up -d
+
+TestNetwork $ docker exec -it node1 bash
+
+root # ./migrate_to_tessera.sh
+
+```
+
+After migrating other nodes, restart the nodes. 
+
+Currently Quorum Maker migrates Constellation data to H2 database. This database can be found in the qdata directory. We are working to add support for more databases and configurations through Quorum Maker UI in the future releases.
+
+> Note: Tessera is supported on standalone nodes as well.
+
 
 ### Configure Log paths and Genesis
 
