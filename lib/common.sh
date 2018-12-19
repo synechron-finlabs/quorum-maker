@@ -97,7 +97,7 @@ function help(){
     echo ""
     echo "Options:"
     echo ""
-    echo "For create command:"
+    echo -e $GREEN'For create command:'$COLOR_END
     echo "  -n, --name              Name of the node to be created"
     echo "  --ip                    IP address of this node (IP of the host machine)"
     echo "  -r, --rpc               RPC port of this node"
@@ -110,7 +110,7 @@ function help(){
     echo "E.g."
     echo "./setup.sh create -n master --ip 10.0.2.15 -r 22000 -w 22001 -c 22002 --raft 22003 --nm 22004 --ws 22005"
     echo ""
-    echo "For join command:"
+    echo -e $PINK'For join command:'$COLOR_END
     echo "  "
     echo "  -n, --name              Name of the node to be created"
     echo "  --oip                   IP address of the other node (IP of the existing node)"
@@ -126,7 +126,7 @@ function help(){
     echo "E.g."
     echo "./setup.sh join -n slave1 --oip 10.0.2.15 --onm 22004 --tip 10.0.2.15 -r 23000 -w 23001 -c 23002 --raft 23003 --nm 23004 --ws 23005"
     echo ""
-    echo "For attach command:"
+    echo -e $BLUE'For attach command:'$COLOR_END
     echo "  -n, --name              Name of the node to be created"
     echo "  --ip                    IP address of existing Quorum"
     echo "  --pk                    Public Key of existing Constellation"
@@ -141,9 +141,10 @@ function help(){
     echo "E.g."
     echo "./setup.sh attach -n slave1 --ip 10.0.2.15 --pk BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo= -r 22000 --whisper 21000 --constellation 9001 --raft 50401 --nm 11004 --active"
     echo ""
-    echo "For dev command:"
+    echo -e $CYAN'For dev command:'$COLOR_END
     echo "  -p, --project           Project Name"
     echo "  -n, --nodecount         Number of nodes to be created"
+    echo "  -e, --expose            Expose docker container ports"
     echo ""
     echo "E.g."
     echo "./setup.sh dev -p TestNetwork -n 3"

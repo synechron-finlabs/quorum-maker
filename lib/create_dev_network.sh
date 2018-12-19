@@ -3,8 +3,6 @@
 source qm.variables
 source lib/common.sh
 
-DOCKER_NETWORK_IP=10.50.0.
-
 #create node configuration file
 function generateNodeConf(){
     PATTERN="s/#mNode#/node$1/g"
@@ -133,8 +131,9 @@ function addNodeToDC(){
   
     echo -ne "node$1" >> $projectName/project.info
     echo -ne "\t$(cat $projectName/node$1/node/keys/node$1.pub)" >> $projectName/project.info
-
-    if [ -f .qm_export_ports ]; then
+        
+    if [[ -f .qm_export_ports || ! -z "$exposePorts" ]]; then
+    
         i=$1
 
         if [ $i -lt 10 ]; then 
@@ -265,6 +264,11 @@ function readParameters() {
             ;;
             -n|--nodecount)
             nodeCount="$2"
+            shift # past argument
+            shift # past value
+            ;;
+            -e|--expose)
+            exposePorts="true"
             shift # past argument
             shift # past value
             ;;
