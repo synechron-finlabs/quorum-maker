@@ -13,9 +13,9 @@ fi
 killall geth
 killall constellation-node
 
-${tessera_data_migration} -storetype dir -inputpath qdata/storage/payloads -dbuser -dbpass -outputfile qdata/#mNode# -exporttype h2 >> /dev/null
+${tessera_data_migration} -storetype dir -inputpath qdata/storage/payloads -dbuser -dbpass -outputfile qdata/#mNode# -exporttype h2 >> /dev/null 2>&1
 
-${tessera_config_migration} --tomlfile="#mNode#.conf" --outputfile tessera-config.json >> /dev/null
+${tessera_config_migration} --tomlfile="#mNode#.conf" --outputfile tessera-config.json >> /dev/null 2>&1
 
 sed -i "s|jdbc:h2:mem:tessera|jdbc:h2:file:/home/node/qdata/#mNode#;AUTO_SERVER=TRUE|" tessera-config.json
 sed -i "s|/home/node/qdata/home|/home|" tessera-config.json

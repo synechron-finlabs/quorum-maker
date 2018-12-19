@@ -31,10 +31,4 @@ fi
 
 mkdir -p node/qdata/tesseraLogs
 
-pushd node >> /dev/null
-
-./start_#mNode#.sh
-
-popd >> /dev/null
-
 echo "Completed Tessera migration. Restart node to complete take effect."
