@@ -13,18 +13,17 @@ fi
 killall geth
 killall constellation-node
 
-${tessera_data_migration} -storetype dir -inputpath /#mNode#/node/qdata/storage/payloads -dbuser -dbpass -outputfile /#mNode#/node/qdata/#mNode# -exporttype h2
+${tessera_data_migration} -storetype dir -inputpath /#mNode#/node/qdata/storage/payloads -dbuser -dbpass -outputfile /#mNode#/node/qdata/#mNode# -exporttype h2 >> /dev/null 2>&1
 
-${tessera_config_migration} --tomlfile="node/#mNode#.conf" --outputfile node/tessera-config.json
+${tessera_config_migration} --tomlfile="node/#mNode#.conf" --outputfile node/tessera-config.json >> /dev/null 2>&1
 
 sed -i "s|jdbc:h2:mem:tessera|jdbc:h2:file:/#mNode#/node/qdata/#mNode#;AUTO_SERVER=TRUE|" node/tessera-config.json
 sed -i "s|/#mNode#/qdata/#mNode#|/#mNode#|" node/tessera-config.json
 sed -i "s|/#mNode#.ipc|/#mNode#/node/qdata/#mNode#.ipc|" node/tessera-config.json
 
 sed -i "s|Starting Constellation node|Starting Tessera node|" node/start_#mNode#.sh
-sed -i "s|qdata/constellationLogs/constellation_#mNode#.log|qdata/tesseraLogs/tessera_#mNode#.log|" node/start_#mNode#.sh
+sed -i "s|qdata/constellationLogs/constellation_|qdata/tesseraLogs/tessera_|" node/start_#mNode#.sh
 sed -i "s|constellation-node #mNode#.conf|\$tessera -configfile tessera-config.json|" node/start_#mNode#.sh
-sed -i "s|#upcheck|upcheck|" node/start_#mNode#.sh
 
 if [ ! -z "$1" ]; then
     sed -i "s|\"peer\" : \[ \]|\"peer\" : \[ {\n      \"url\" : \"$1\"\n   } \]|" node/tessera-config.json     
@@ -37,3 +36,5 @@ pushd node >> /dev/null
 ./start_#mNode#.sh
 
 popd >> /dev/null
+
+echo "Completed Tessera migration. Restart node to complete take effect."

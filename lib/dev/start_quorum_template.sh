@@ -47,6 +47,8 @@ echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_#
 
 constellation-node #mNode#.conf >> qdata/constellationLogs/constellation_#mNode#.log 2>&1 &
 
+upcheck
+
 echo "[*] Starting #mNode# node" >> qdata/gethLogs/#mNode#.log
 
 echo "[*] Waiting for Constellation/Tessera to start..." >> qdata/gethLogs/#mNode#.log

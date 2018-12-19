@@ -133,9 +133,9 @@ function generateConstellationConf() {
     PATTERN2="s/#C_PORT#/$cPort/g"
     PATTERN3="s/#mNode#/$nodeName/g"
 
-    sed -i "$PATTERN1" node/constellation.conf
-    sed -i "$PATTERN2" node/constellation.conf
-    sed -i "$PATTERN3" node/constellation.conf
+    sed -i "$PATTERN1" node/$nodeName.conf
+    sed -i "$PATTERN2" node/$nodeName.conf
+    sed -i "$PATTERN3" node/$nodeName.conf
 }
 
 function main(){

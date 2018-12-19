@@ -162,7 +162,11 @@ function copyScripts(){
 
     cp lib/common.sh  ${sNode}/node
 
-    cp lib/slave/constellation_template.conf ${sNode}/node/constellation.conf
+    cp lib/slave/constellation_template.conf ${sNode}/node/${sNode}.conf
+
+    cp lib/slave/migrate_to_tessera.sh ${sNode}/node
+    PATTERN="s/#mNode#/${sNode}/g"
+    sed -i $PATTERN ${sNode}/node/migrate_to_tessera.sh
 }
 
 function createSetupConf() {

@@ -1,35 +1,43 @@
 #!/bin/bash
-set -u
-set -e
+
+function upcheck() {
+    DOWN=true
+    k=10
+    while ${DOWN}; do
+        sleep 1
+        DOWN=false
+        
+        if [ ! -S "qdata/${NODENAME}.ipc" ]; then
+            echo "Node is not yet listening on ${NODENAME}.ipc" >> qdata/gethLogs/${NODENAME}.log
+            DOWN=true
+        fi
+
+        result=$(curl -s http://$CURRENT_NODE_IP:$C_PORT/upcheck)
+
+        if [ ! "${result}" == "I'm up!" ]; then
+            echo "Node is not yet listening on http" >> qdata/gethLogs/${NODENAME}.log
+            DOWN=true
+        fi
+    
+        k=$((k - 1))
+        if [ ${k} -le 0 ]; then
+            echo "Constellation/Tessera is taking a long time to start.  Look at the Constellation/Tessera logs for help diagnosing the problem." >> qdata/gethLogs/${NODE_NAME}.log
+        fi
+       
+        sleep 5
+    done
+}
 
 ENABLED_API="admin,db,eth,debug,miner,nethh,txpool,personal,web3,quorum,raft"
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID  --rpc --rpcaddr 0.0.0.0 --rpcapi $ENABLED_API --emitcheckpoints"
 
+tessera="java -jar /tessera/tessera-app.jar"
+
 echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_${NODENAME}.log
 
-constellation-node \
---url=http://$CURRENT_NODE_IP:$C_PORT/ \
---port=$C_PORT \
---workdir=qdata \
---socket=$NODENAME.ipc \
---publickeys=/home/node/keys/$NODENAME.pub \
---privatekeys=/home/node/keys/$NODENAME.key \
---tls=off \
---othernodes=http://$MASTER_IP:$MC_PORT/ >> qdata/constellationLogs/constellation_${NODENAME}.log 2>&1 &
+constellation-node ${NODENAME}.conf >> qdata/constellationLogs/constellation_${NODENAME}.log 2>&1 &
 
-# Fix to wait till ipc file get generated
-while : ; do
-    
-    sleep 1
-
-    re="$NODENAME.ipc"
-	enodestr=$(ls -al qdata)
-    
-    if [[ $enodestr =~ $re ]];then
-        break;
-    fi
-
-done
+upcheck
 
 echo "[*] Starting ${NODENAME} node" >> qdata/gethLogs/${NODENAME}.log
 echo "[*] geth --verbosity 6 --datadir qdata --raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft --emitcheckpoints --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --nat extip:$CURRENT_NODE_IP">> qdata/gethLogs/${NODENAME}.log

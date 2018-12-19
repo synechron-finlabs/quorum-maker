@@ -70,7 +70,10 @@ function requestGenesis(){
 	do
     	replyMap[$key]="$value"
 	done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" input1.json)
-	echo 'MASTER_CONSTELLATION_PORT='${replyMap[contstellation-port]} >>  setup.conf
+
+    MASTER_CONSTELLATION_PORT=${replyMap[contstellation-port]}
+   
+	echo 'MASTER_CONSTELLATION_PORT='$MASTER_CONSTELLATION_PORT >>  setup.conf
 	echo 'NETWORK_ID='${replyMap[netID]} >>  setup.conf
 	echo ${replyMap[genesis]}  > node/genesis.json
         rm -f input1.json
@@ -82,13 +85,13 @@ function generateConstellationConf() {
     PATTERN2="s/#C_PORT#/$CONSTELLATION_PORT/g"
     PATTERN3="s/#mNode#/$NODENAME/g"
     PATTERN4="s/#MASTER_IP#/$MASTER_IP/g"
-    PATTERN5="s/#MASTER_CONSTELLATION_PORT#/$mconstv/g"
+    PATTERN5="s/#MASTER_CONSTELLATION_PORT#/$MASTER_CONSTELLATION_PORT/g"
 
-    sed -i "$PATTERN1" node/constellation.conf
-    sed -i "$PATTERN2" node/constellation.conf
-    sed -i "$PATTERN3" node/constellation.conf
-    sed -i "$PATTERN4" node/constellation.conf
-    sed -i "$PATTERN5" node/constellation.conf
+    sed -i "$PATTERN1" node/$NODENAME.conf
+    sed -i "$PATTERN2" node/$NODENAME.conf
+    sed -i "$PATTERN3" node/$NODENAME.conf
+    sed -i "$PATTERN4" node/$NODENAME.conf
+    sed -i "$PATTERN5" node/$NODENAME.conf
 }
 
 # execute init script

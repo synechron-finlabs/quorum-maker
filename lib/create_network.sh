@@ -44,7 +44,11 @@ function copyScripts(){
     cp lib/master/nodemanager_template.sh ${mNode}/node/nodemanager.sh
     chmod +x ${mNode}/node/nodemanager.sh
 
-    cp lib/master/constellation_template.conf ${mNode}/node/constellation.conf
+    cp lib/master/constellation_template.conf ${mNode}/node/${mNode}.conf
+
+    cp lib/master/migrate_to_tessera.sh ${mNode}/node
+    PATTERN="s/#mNode#/${mNode}/g"
+    sed -i $PATTERN ${mNode}/node/migrate_to_tessera.sh
 
 }
 
