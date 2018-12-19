@@ -87,6 +87,7 @@ Quorum Maker v2.6.1 is an upgrade on v1.0 released by Synechron in October 2017.
 1. [Securing Quorum Maker UI](#securing-quorum-maker-ui)
 1. [Work In Progress](#work-in-progress)
 1. [Troubleshooting](#troubleshooting)
+1. [FAQ](#faq)
 1. [Change Log](#change-log)
 
 
