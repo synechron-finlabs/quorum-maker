@@ -239,6 +239,22 @@ function initNodes(){
     done
 }
 
+function migrateToTessera(){
+    
+    i=1
+    while : ; do        
+        
+        pushd $projectName/node$i
+        . ./migrate_to_tessera.sh "http://"$DOCKER_NETWORK_IP"3:22002/" >> /dev/null 2>&1
+        popd
+        
+        if [ $i -eq $nodeCount ]; then
+            break;
+        fi
+        let "i++"
+    done
+}
+
 function cleanup() {
     rm -rf $projectName
     mkdir $projectName
@@ -269,6 +285,11 @@ function readParameters() {
             ;;
             -e|--expose)
             exposePorts="true"
+            shift # past argument
+            shift # past value
+            ;;
+            -t|--tessera)
+            tessera="true"
             shift # past argument
             shift # past value
             ;;
@@ -319,10 +340,16 @@ function main(){
 
     initNodes
 
+    PRIVACY="CONSTELLATION"
+    if [ ! -z $tessera ]; then
+        migrateToTessera
+        PRIVACY="TESSERA"
+    fi
+    
     echo -e $GREEN'Project '$projectName' created successfully. Please execute docker-compose up from '$projectName' directory'$COLOR_END
 
     echo ""
-    (printf "NODE PUBLIC-KEY IP RPC WHISPER CONSTELLATION RAFT NODEMANAGER WS\n" \
+    (printf "NODE PUBLIC-KEY IP RPC WHISPER  $PRIVACY RAFT NODEMANAGER WS\n" \
         ; cat $projectName/project.info) | column -t
     echo ""
 }
