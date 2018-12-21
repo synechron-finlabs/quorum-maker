@@ -609,6 +609,7 @@ Also any docker container can be sent to background by hitting `Ctrl` + `P` + `Q
 
 Change log V2.6.1
 1. Added flag to expose ports automatically in Dev/Test Network setup
+1. Added flag to create nodes in Tessera by default in Dev/Test Network setup
 
 Change log V2.6
 1. Added Tessera support for Dev/Test network creation
