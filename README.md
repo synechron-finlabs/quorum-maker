@@ -113,6 +113,8 @@ Once the repository is successfully cloned, change to the Quorum Maker directory
 
 A series of commands will be executed and you can see that a new directory with the name of the project your entered get created. This directory contains a `docker-compose.yml` and as many directories as the number of nodes you asked to create.
 
+> Unless specified, Quourm Maker creates node with Constellation. If you like to setup node with Tessera by default, run `./setup.sh --tessera` or `./setup.sh -t` 
+
 ## Running Test/Development Network
 
 After the project is created, change to the directory just created and run `$ docker-compose up` to bring up the network. You will see each node coming up and node managers for each node getting started. Once the activities stop, you will have a fully functioning Quorum Network running.
@@ -389,6 +391,8 @@ Run `./setup.sh dev [OPTIONS]` for creating a Quorum Network for Development and
 For dev command:
   -p, --project       Project Name
   -n, --nodecount     Number of nodes to be created
+  -e, --expose        Expose docker container ports (Optional)
+  -t, --tessera       Create node with Tessera support instead of Constellation (Optional)
 ```
 E.g.
 
