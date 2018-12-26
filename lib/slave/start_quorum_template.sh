@@ -28,7 +28,7 @@ function upcheck() {
     done
 }
 
-ENABLED_API="admin,db,eth,debug,miner,nethh,txpool,personal,web3,quorum,raft"
+ENABLED_API="admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft"
 GLOBAL_ARGS="--raft --nodiscover --networkid $NETID --raftjoinexisting $RAFTID  --rpc --rpcaddr 0.0.0.0 --rpcapi $ENABLED_API --emitcheckpoints"
 
 tessera="java -jar /tessera/tessera-app.jar"
