@@ -144,7 +144,8 @@ function help(){
     echo -e $CYAN'For dev command:'$COLOR_END
     echo "  -p, --project           Project Name"
     echo "  -n, --nodecount         Number of nodes to be created"
-    echo "  -e, --expose            Expose docker container ports"
+    echo "  -e, --expose            Expose docker container ports (Optional)"
+    echo "  -t, --tessera           Create node with Tessera Support (Optional)"
     echo ""
     echo "E.g."
     echo "./setup.sh dev -p TestNetwork -n 3"
