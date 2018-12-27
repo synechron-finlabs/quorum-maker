@@ -18,7 +18,7 @@ Synechron's Quorum Maker is a tool that allows users to create and manage Quorum
 
 ## Quickstart
 
-Please refer to [Quorum Maker Wiki](https://github.com/synechron-finlabs/quorum-maker/wiki/Quorum-Maker) for complete reference on using Quorum Maker. 
+Please refer to [Quorum Maker Wiki](https://github.com/synechron-finlabs/quorum-maker/wiki) for complete reference on using Quorum Maker. 
 
 > For quick help, run `./setup.sh --help` 
 
