@@ -102,8 +102,14 @@ function executeInit(){
     ./init.sh
 }
 
-function main(){
+function migrateToTessera() {
     
+    pushd node
+    . ./migrate_to_tessera.sh >> /dev/null 2>&1
+    popd
+}
+
+function main(){    
 
     source setup.conf
     
@@ -113,6 +119,10 @@ function main(){
         executeInit
         updateNmcAddress
         generateConstellationConf
+        
+        if [ ! -z $TESSERA ]; then
+            migrateToTessera            
+        fi
 
         publickey=$(cat node/keys/$NODENAME.pub)
         echo 'PUBKEY='$publickey >> setup.conf
