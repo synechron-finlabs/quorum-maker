@@ -63,7 +63,7 @@ function displayProgress(){
     while : ; do  
 
         if [ $__j -lt $__PER ]; then
-            __PROG+="#"
+            __PROG+="\xE2\x96\x90"
         else
             __PROG+=" "
         fi
