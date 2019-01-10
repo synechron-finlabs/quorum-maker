@@ -1,0 +1,26 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+comand: ""
+rootDir: ""
+
+image:
+  respositroy:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+Storage: 
+  provisioner: kubernetes.io/gce-pd
+  type: pd-standard
+  replicationType: regional-pd
+  #zones 
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

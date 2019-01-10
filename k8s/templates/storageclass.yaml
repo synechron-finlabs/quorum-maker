@@ -1,0 +1,15 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ include "quorum.fullname" . }}-storageclass
+  labels:
+    app.kubernetes.io/name: {{ include "quorum.name" . }}
+    helm.sh/chart: {{ include "quorum.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+provisioner: {{ .Values.storage.provisioner }}
+allowVolumeExpansion: true
+parameters:
+  type: {{ .Values.storage.type }}
+  replication-type: {{ .Values.storage.replicationType }}
+  zones: {{ .Values.storage.zones }}

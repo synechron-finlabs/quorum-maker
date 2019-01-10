@@ -78,7 +78,8 @@ function main() {
 				$PINK'2) Join Network \n' \
 				$BLUE'3) Attach to an existing Node \n' \
 				$CYAN'4) Setup Development/Test Network \n' \
-				$RED'5) Exit' 
+				$PURPLE '5) create network via K8s \n' \
+				$RED'6) Exit' 
 
 		printf $WHITE'option: '$COLOR_END
 
@@ -95,6 +96,8 @@ function main() {
 		4)
 			lib/create_dev_network.sh $@;;
 		5)
+			lib/create_network_k8s.sh $@;;
+		6)
 			flagmain=false	;;
 		*)
 			echo "Please enter a valid option"	;;

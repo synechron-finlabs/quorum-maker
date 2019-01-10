@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "quorum.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "quorum.name" . }}
+    helm.sh/chart: {{ include "quorum.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 22000
+      targetPort: 22000
+      name: r_port
+    - port: 22002
+      targetPort: 22002
+      name: c_port
+    - port: 22003
+      targetPort: 22003
+      name: ra_port
+    - port: 22004
+      targetPort: 22004
+      name: node_manager_port
+    - port: 22005
+      targetPort: 22005
+      name: ws_port
+    - port: 15475
+      targetPort: 15475
+      name: netid
+  selector:
+    app.kubernetes.io/name: {{ include "quorum.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
