@@ -1,7 +1,7 @@
 #!/bin/bash
- 
- source qm.variables
- source lib/common.sh
+
+source qm.variables
+source lib/common.sh
 
 #function to generate keyPair for node
 function generateKeyPair(){
@@ -45,6 +45,10 @@ function copyScripts(){
     chmod +x ${mNode}/node/nodemanager.sh
 
     cp lib/master/constellation_template.conf ${mNode}/node/${mNode}.conf
+
+    cp lib/master/tessera-migration.properties ${mNode}/node/qdata
+
+    cp lib/master/empty_h2.mv.db ${mNode}/node/qdata/${mNode}.mv.db
 
     cp lib/master/migrate_to_tessera.sh ${mNode}/node
     PATTERN="s/#mNode#/${mNode}/g"

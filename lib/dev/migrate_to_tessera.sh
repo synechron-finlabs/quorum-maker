@@ -2,7 +2,7 @@
 
 tessera="java -jar /tessera/tessera-app.jar"
 tessera_data_migration="java -jar /tessera/data-migration-cli.jar"
-tessera_config_migration="java -jar /tessera/config-migration-cli.jar"
+tessera_config_migration="java -Djavax.xml.bind.JAXBContextFactory=org.eclipse.persistence.jaxb.JAXBContextFactory -Djavax.xml.bind.context.factory=org.eclipse.persistence.jaxb.JAXBContextFactory -jar /tessera/config-migration-cli.jar"
 
 OTHER_NODES_EMPTY=$(sed -n '/othernodes/p' node/#mNode#.conf)
 if [[ -z "$OTHER_NODES_EMPTY" && -z "$1" ]]; then
@@ -13,7 +13,15 @@ fi
 killall geth
 killall constellation-node
 
-${tessera_data_migration} -storetype dir -inputpath /#mNode#/node/qdata/storage/payloads -dbuser -dbpass -outputfile /#mNode#/node/qdata/#mNode# -exporttype h2 >> /dev/null 2>&1
+mv /#mNode#/node/qdata/#mNode#.mv.db /#mNode#/node/qdata/#mNode#.mv.db.bak
+
+sed -i "s|h2url|jdbc:h2:file:/#mNode#/node/qdata/#mNode#;AUTO_SERVER=TRUE|" node/tessera-migration.properties
+
+${tessera_data_migration} -storetype dir -inputpath /#mNode#/node/qdata/storage/payloads -dbuser -dbpass -outputfile /#mNode#/node/qdata/#mNode# -exporttype JDBC -dbconfig node/tessera-migration.properties >> /dev/null 2>&1
+
+if [ ! -f /#mNode#/node/qdata/#mNode#.mv.db ]; then
+    mv /#mNode#/node/qdata/#mNode#.mv.db.bak /#mNode#/node/qdata/#mNode#.mv.db
+fi
 
 ${tessera_config_migration} --tomlfile="node/#mNode#.conf" --outputfile node/tessera-config.json --workdir= --socket=/#mNode#.ipc  >> /dev/null 2>&1
 
@@ -32,3 +40,5 @@ fi
 mkdir -p node/qdata/tesseraLogs
 
 echo "Completed Tessera migration. Restart node to complete take effect."
+
+killall NodeManager

@@ -169,6 +169,10 @@ function copyScripts(){
 
     cp lib/slave/constellation_template.conf ${sNode}/node/${sNode}.conf
 
+    cp lib/master/tessera-migration.properties ${sNode}/node/qdata
+
+    cp lib/master/empty_h2.mv.db ${sNode}/node/qdata/${sNode}.mv.db
+
     cp lib/slave/migrate_to_tessera.sh ${sNode}/node
     PATTERN="s/#mNode#/${sNode}/g"
     sed -i $PATTERN ${sNode}/node/migrate_to_tessera.sh

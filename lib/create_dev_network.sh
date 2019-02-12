@@ -58,6 +58,10 @@ function copyStartTemplate(){
 
     cp lib/dev/migrate_to_tessera.sh $projectName/node$1
 
+    cp lib/dev/tessera-migration.properties $projectName/node$1/node
+
+    cp lib/dev/empty_h2.mv.db $projectName/node$1/node/qdata/node$1.mv.db
+
     PATTERN="s/#mNode#/node$1/g"
     sed -i $PATTERN $projectName/node$1/migrate_to_tessera.sh
     

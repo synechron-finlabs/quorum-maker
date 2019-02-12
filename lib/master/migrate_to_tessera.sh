@@ -2,7 +2,7 @@
 
 tessera="java -jar /tessera/tessera-app.jar"
 tessera_data_migration="java -jar /tessera/data-migration-cli.jar"
-tessera_config_migration="java -jar /tessera/config-migration-cli.jar"
+tessera_config_migration="java -Djavax.xml.bind.JAXBContextFactory=org.eclipse.persistence.jaxb.JAXBContextFactory -Djavax.xml.bind.context.factory=org.eclipse.persistence.jaxb.JAXBContextFactory -jar /tessera/config-migration-cli.jar"
 
 OTHER_NODES_EMPTY=$(sed -n '/othernodes/p' #mNode#.conf)
 if [[ -z "$OTHER_NODES_EMPTY" && -z "$1" ]]; then
@@ -13,7 +13,15 @@ fi
 killall geth
 killall constellation-node
 
-${tessera_data_migration} -storetype dir -inputpath qdata/storage/payloads -dbuser -dbpass -outputfile qdata/#mNode# -exporttype h2 >> /dev/null 2>&1
+mv qdata/#mNode#.mv.db qdata/#mNode#.mv.db.bak
+
+sed -i "s|h2url|jdbc:h2:file:/home/node/qdata/#mNode#;AUTO_SERVER=TRUE|" qdata/tessera-migration.properties
+
+${tessera_data_migration} -storetype dir -inputpath qdata/storage/payloads -dbuser -dbpass -outputfile qdata/#mNode# -exporttype JDBC -dbconfig node/tessera-migration.properties >> /dev/null 2>&1
+
+if [ ! -f qdata/#mNode#.mv.db ]; then
+    mv qdata/#mNode#.mv.db.bak qdata/#mNode#.mv.db
+fi
 
 ${tessera_config_migration} --tomlfile="#mNode#.conf" --outputfile tessera-config.json --workdir= >> /dev/null 2>&1
 
