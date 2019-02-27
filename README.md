@@ -28,6 +28,7 @@ Change log V2.6.2
 1. Upgraded to Tessera 0.8
 1. Upgraded to Quorum 2.2.1
 1. Fixed bug on private transaction with Constellation
+1. Fixed issue #87 (https://github.com/synechron-finlabs/quorum-maker/issues/87) Block structure not preserved 
 
 Change log V2.6.1
 1. Added flag to expose ports automatically in Dev/Test Network setup
