@@ -32,4 +32,4 @@ function main() {
     cd node
     startNode
 }
-main
+main $@
