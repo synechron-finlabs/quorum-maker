@@ -5,7 +5,7 @@ source node/common.sh
 # Function to send post call to go endpoint joinNode 
 function updateNmcAddress(){
         
-    url=http://${MASTER_IP}:${MAIN_NODEMANAGER_PORT}/peer
+    url=http://${MASTER_IP}:${MAIN_NODEMANAGER_PORT}/qm/peer
 
     response=$(curl -s -X POST \
     --max-time 310 ${url} \
@@ -34,7 +34,7 @@ function requestGenesis(){
     pending="Pending user response"
     rejected="Access denied"
     timeout="Response Timed Out"
-    urlG=http://${MASTER_IP}:${MAIN_NODEMANAGER_PORT}/genesis
+    urlG=http://${MASTER_IP}:${MAIN_NODEMANAGER_PORT}/qm/genesis
 
     echo -e $RED'\nJoin Request sent to '$MASTER_IP'. Waiting for approval...'$COLOR_END
 

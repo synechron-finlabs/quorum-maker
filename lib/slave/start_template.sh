@@ -22,7 +22,7 @@ function startNode() {
 
 function main() {
 
-    node/pre_start_check.sh
+    node/pre_start_check.sh $@
 
     source setup.conf
 
@@ -34,4 +34,4 @@ function main() {
     
     startNode
 }
-main
+main $@
