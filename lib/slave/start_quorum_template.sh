@@ -54,7 +54,7 @@ echo "[*] geth --verbosity 6 --datadir qdata --raft --nodiscover --networkid $NE
 
 touch passwords.txt
 
-PRIVATE_CONFIG=qdata/$NODENAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --rpccorsdomain "*" --rpcvhosts "*" --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --ws --wsaddr 0.0.0.0 --wsport $WS_PORT --wsorigins '*' --wsapi $ENABLED_API --unlock --password passwords.txt --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODENAME}.log &
+PRIVATE_CONFIG=qdata/$NODENAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --rpccorsdomain "*" --rpcvhosts "*" --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --ws --wsaddr 0.0.0.0 --wsport $WS_PORT --wsorigins '*' --wsapi $ENABLED_API --unlock 0 --password passwords.txt --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODENAME}.log &
 
 cd /root/quorum-maker/
 ./start_nodemanager.sh $R_PORT $NM_PORT
