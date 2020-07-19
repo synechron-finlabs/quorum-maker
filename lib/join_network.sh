@@ -192,7 +192,9 @@ function createSetupConf() {
     echo 'REGISTERED=' >> ${sNode}/setup.conf
     echo 'MODE=ACTIVE' >> ${sNode}/setup.conf
     echo 'STATE=I' >> ${sNode}/setup.conf
-    
+    echo 'CONTEXT_PATH=/qm' >> ${sNode}/setup.conf
+    echo 'AUTO_ACCEPT_JOIN_REQUEST=YES' >> ${sNode}/setup.conf
+
     if [ ! -z $tessera ]; then
         echo 'TESSERA=true' >> ${sNode}/setup.conf        
     fi
