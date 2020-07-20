@@ -22,6 +22,8 @@ function upcheck() {
         k=$((k - 1))
         if [ ${k} -le 0 ]; then
             echo "Constellation/Tessera is taking a long time to start.  Look at the Constellation/Tessera logs for help diagnosing the problem." >> qdata/gethLogs/${NODE_NAME}.log
+
+            exit 1
         fi
        
         sleep 5
