@@ -56,5 +56,15 @@ touch passwords.txt
 
 PRIVATE_CONFIG=qdata/$NODENAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --rpccorsdomain "*" --rpcvhosts "*" --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --ws --wsaddr 0.0.0.0 --wsport $WS_PORT --wsorigins '*' --wsapi $ENABLED_API --unlock 0 --password passwords.txt --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODENAME}.log &
 
+DOWN=1
+
+until [[ $DOWN == 0 ]]; do
+    echo "Waiting for Geth to start" >> qdata/gethLogs/${NODENAME}.log
+    sleep 2
+    curl --silent -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_coinbase","params":[],"id":64}' http://localhost:$R_PORT | jq -er '.result'
+
+    DOWN=$?
+done
+
 cd /root/quorum-maker/
 ./start_nodemanager.sh $R_PORT $NM_PORT

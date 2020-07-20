@@ -56,4 +56,14 @@ touch passwords.txt
 
 PRIVATE_CONFIG=qdata/$NODE_NAME.ipc geth --verbosity 6 --datadir qdata $GLOBAL_ARGS --rpcvhosts "*" --rpccorsdomain "*" --raftport $RA_PORT --rpcport $R_PORT --port $W_PORT --ws --wsaddr 0.0.0.0 --wsport $WS_PORT --wsorigins '*' --wsapi $ENABLED_API --unlock 0 --password passwords.txt --nat extip:$CURRENT_NODE_IP 2>>qdata/gethLogs/${NODE_NAME}.log &
 
+DOWN=1
+
+until [[ $DOWN == 0 ]]; do
+    echo "Waiting for Geth to start" >> qdata/gethLogs/${NODE_NAME}.log
+    sleep 2
+    curl --silent -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_coinbase","params":[],"id":64}' http://localhost:$R_PORT | jq -er '.result'
+
+    DOWN=$?
+done
+
 ./nodemanager.sh $R_PORT $NODE_MANAGER_PORT
