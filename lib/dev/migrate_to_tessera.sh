@@ -23,11 +23,13 @@ if [ ! -f /#mNode#/node/qdata/#mNode#.mv.db ]; then
     mv /#mNode#/node/qdata/#mNode#.mv.db.bak /#mNode#/node/qdata/#mNode#.mv.db
 fi
 
-${tessera_config_migration} --tomlfile="node/#mNode#.conf" --outputfile node/tessera-config.json --workdir= --socket=/#mNode#.ipc  >> /dev/null 2>&1
+${tessera_config_migration} --tomlfile node/#mNode#.conf --outputfile node/tessera-config.json --workdir "" --socket /#mNode#.ipc  >> /dev/null 2>&1
 
 sed -i "s|jdbc:h2:mem:tessera|jdbc:h2:file:/#mNode#/node/qdata/#mNode#;AUTO_SERVER=TRUE|" node/tessera-config.json
 sed -i "s|/#mNode#/qdata/#mNode#|/#mNode#|" node/tessera-config.json
 sed -i "s|/#mNode#.ipc|/#mNode#/node/qdata/#mNode#.ipc|" node/tessera-config.json
+
+sed -i "s|\"autoCreateTables\" : false|\"autoCreateTables\" : true|" node/tessera-config.json
 
 sed -i "s|Starting Constellation node|Starting Tessera node|" node/start_#mNode#.sh
 sed -i "s|qdata/constellationLogs/constellation_|qdata/tesseraLogs/tessera_|" node/start_#mNode#.sh

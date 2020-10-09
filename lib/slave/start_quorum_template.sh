@@ -28,8 +28,10 @@ function upcheck() {
     done
 }
 
+rm -f /home/node/qdata/${NODENAME}.ipc
+
 ENABLED_API="admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft"
-GLOBAL_ARGS="--raft --nodiscover --gcmode=archive --networkid $NETID --raftjoinexisting $RAFTID  --rpc --rpcaddr 0.0.0.0 --rpcapi $ENABLED_API --emitcheckpoints"
+GLOBAL_ARGS="--raft --nodiscover --gcmode=archive --networkid $NETID --raftjoinexisting $RAFTID  --rpc --rpcaddr 0.0.0.0 --rpcapi $ENABLED_API --emitcheckpoints --allow-insecure-unlock"
 
 tessera="java -jar /tessera/tessera-app.jar"
 

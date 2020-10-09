@@ -60,13 +60,14 @@ function copyScripts(){
 function generateEnode(){
     bootnode -genkey nodekey
     nodekey=$(cat nodekey)
-	bootnode -nodekey nodekey 2>enode.txt &
-	pid=$!
-	sleep 5
-	kill -9 $pid
-	wait $pid 2> /dev/null
-	re="enode:.*@"
-	enode=$(cat enode.txt)
+    bootnode -nodekey nodekey -verbosity 0 2>&1 > enode.txt &
+
+    pid=$!
+    sleep 5
+    kill -9 $pid
+    wait $pid 2> /dev/null
+    re="enode:.*@"
+    enode=$(cat enode.txt)
     
     if [[ $enode =~ $re ]];
     	then
@@ -85,11 +86,13 @@ function generateEnode(){
 #function to create node accout and append it into genesis.json file
 function createAccount(){
     mAccountAddress="$(geth --datadir datadir --password lib/master/passwords.txt account new 2>> /dev/null)"
-    re="\{([^}]+)\}"
+
+    re="(0x[0-9A-Fa-f]+)"
     if [[ $mAccountAddress =~ $re ]];
     then
-        mAccountAddress="0x"${BASH_REMATCH[1]};
+        mAccountAddress=${BASH_REMATCH[1]};
     fi
+
     cp datadir/keystore/* ${mNode}/node/qdata/keystore/${mNode}key
     PATTERN="s|#mNodeAddress#|${mAccountAddress}|g"
     PATTERN1="s|#CHAIN_ID#|${NET_ID}|g"

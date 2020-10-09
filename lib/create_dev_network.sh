@@ -69,15 +69,15 @@ function copyStartTemplate(){
 
 #function to generate enode
 function generateEnode(){
-    bootnode -genkey nodekey
+    bootnode -genkey nodekey 
     nodekey=$(cat nodekey)
-	bootnode -nodekey nodekey 2>enode.txt &
-	pid=$!
-	sleep 5
-	kill -9 $pid
-	wait $pid 2> /dev/null
-	re="enode://(.*)@"
-	enodestr=$(cat enode.txt)
+    bootnode -nodekey nodekey -verbosity 0 2>&1 > enode.txt &
+    pid=$!
+    sleep 5
+    kill -9 $pid
+    wait $pid 2> /dev/null
+    re="enode://(.*)@"
+    enodestr=$(cat enode.txt)
     
     if [[ $enodestr =~ $re ]];
     	then
@@ -100,11 +100,13 @@ function generateEnode(){
 
 #function to create node accout to prepare for Genesis creation
 function createAccount(){
+
     mAccountAddress="$(geth --datadir datadir --password lib/dev/passwords.txt account new 2>> /dev/null)"
-    re="\{([^}]+)\}"
+
+    re="(0x[0-9A-Fa-f]+)"
     if [[ $mAccountAddress =~ $re ]];
     then
-        mAccountAddress="0x"${BASH_REMATCH[1]};
+        mAccountAddress=${BASH_REMATCH[1]};
         echo $mAccountAddress > $projectName/node$1/coinbase.txt
     fi
 
