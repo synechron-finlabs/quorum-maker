@@ -23,11 +23,13 @@ if [ ! -f qdata/#mNode#.mv.db ]; then
     mv qdata/#mNode#.mv.db.bak qdata/#mNode#.mv.db
 fi
 
-${tessera_config_migration} --tomlfile="#mNode#.conf" --outputfile tessera-config.json --workdir= >> /dev/null 2>&1
+${tessera_config_migration} --tomlfile #mNode#.conf --outputfile tessera-config.json --workdir "" >> /dev/null 2>&1
 
 sed -i "s|jdbc:h2:mem:tessera|jdbc:h2:file:/home/node/qdata/#mNode#;AUTO_SERVER=TRUE|" tessera-config.json
 sed -i "s|/home/node/qdata/home|/home|" tessera-config.json
 sed -i "s|/.*.ipc|/home/node/qdata/#mNode#.ipc|" tessera-config.json
+
+sed -i "s|\"autoCreateTables\" : false|\"autoCreateTables\" : true|" tessera-config.json
 
 # LOCAL_NODE_IP="$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')"
 

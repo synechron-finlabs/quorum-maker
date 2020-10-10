@@ -1,9 +1,12 @@
-# Quorum Maker V2.6.2
+# Quorum Maker V2.6.5
 
 Synechron's Quorum Maker is a tool that allows users to create and manage Quorum network. Manually editing configuration files and creating nodes is a slow and error-prone process. Quorum Maker can create any number of nodes of various configurations dynamically with reduced user input. This provides a wizard-like interface with a series of questions to guide the user when creating nodes. Quorum Maker can create nodes to:
 
-- run with docker-compose (Raft consensus/Quorum 2.2.0) for easy use in development environments; or,
-- nodes to be distributed on separate Linux boxes or cloud instances for a production environment (Raft consensus/Quorum 2.2.0)
+- run with docker-compose for easy use in development environments
+- nodes to be distributed on separate Linux boxes or cloud instances for a production environment
+- support to run on Kubernetes 
+
+**Uses Quorum 2.6 and Tessera 0.10.6**
 
 ![Quorum Maker 2](img/QM2.png)
 
@@ -23,6 +26,10 @@ Please refer to [Quorum Maker Wiki](https://github.com/synechron-finlabs/quorum-
 > For quick help, run `./setup.sh --help` 
 
 ## Change Log
+
+Change log V2.6.5
+1. Upgraded to Tessera 0.10.6
+1. Upgraded to Quorum 2.6
 
 Change log V2.6.2
 1. Upgraded to Tessera 0.8

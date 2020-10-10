@@ -64,8 +64,11 @@ function readParameters() {
             -t|--tessera)
             tessera="true"
             shift # past argument
-            shift # past value
-            ;;            
+            ;;
+            --aa|--autoaccept)
+            autoaccept="true"
+            shift # past argument
+            ;;
             *)    # unknown option
             POSITIONAL+=("$1") # save it in an array for later
             shift # past argument
@@ -122,7 +125,7 @@ function createInitNodeScript(){
 function generateEnode(){
     bootnode -genkey nodekey
     nodekey=$(cat nodekey)
-    bootnode -nodekey nodekey 2>enode.txt &
+    bootnode -nodekey nodekey -verbosity 0 2>&1 > enode.txt &
     pid=$!
     sleep 5
     kill -9 $pid
@@ -145,11 +148,13 @@ function generateEnode(){
 #function to create node accout and append it into genesis.json file
 function createAccount(){
     sAccountAddress="$(geth --datadir datadir --password lib/slave/passwords.txt account new 2>> /dev/null)"
-    re="\{([^}]+)\}"
-    if [[ $sAccountAddress =~ $re ]];
+
+    re="(0x[0-9A-Fa-f]+)"
+        if [[ $sAccountAddress =~ $re ]];
     then
-        sAccountAddress="0x"${BASH_REMATCH[1]};
+        sAccountAddress=${BASH_REMATCH[1]};
     fi
+
     mv datadir/keystore/* ${sNode}/node/qdata/keystore/${sNode}key
     rm -rf datadir
 }
@@ -197,6 +202,10 @@ function createSetupConf() {
 
     if [ ! -z $tessera ]; then
         echo 'TESSERA=true' >> ${sNode}/setup.conf        
+    fi
+
+    if [ ! -z $autoaccept ]; then
+        echo 'AUTO_ACCEPT_JOIN_REQUEST=YES' >> ${sNode}/setup.conf
     fi
 }
 
