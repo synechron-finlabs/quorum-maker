@@ -64,8 +64,11 @@ function readParameters() {
             -t|--tessera)
             tessera="true"
             shift # past argument
-            shift # past value
-            ;;            
+            ;;
+            --aa|--autoaccept)
+            autoaccept="true"
+            shift # past argument
+            ;;
             *)    # unknown option
             POSITIONAL+=("$1") # save it in an array for later
             shift # past argument
@@ -197,6 +200,10 @@ function createSetupConf() {
     
     if [ ! -z $tessera ]; then
         echo 'TESSERA=true' >> ${sNode}/setup.conf        
+    fi
+
+    if [ ! -z $autoaccept ]; then
+        echo 'AUTO_ACCEPT_JOIN_REQUEST=YES' >> ${sNode}/setup.conf
     fi
 }
 
