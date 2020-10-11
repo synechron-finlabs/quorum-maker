@@ -112,7 +112,6 @@ function readInputs(){
     echo 'REGISTERED=' >> ./setup.conf
     echo 'MODE=ACTIVE' >> ./setup.conf
     echo 'STATE=I' >> ./setup.conf
-    echo 'CONTEXT_PATH=/qm' >> ./setup.conf
     echo 'AUTO_ACCEPT_JOIN_REQUEST=YES' >> ./setup.conf
 
     PATTERN="s/r_Port/${rPort}/g"
