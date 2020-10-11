@@ -177,7 +177,7 @@ function main(){
         fi
         
         publickey=$(cat node/keys/$nodeName.pub)
-        uiUrl="http://localhost:"$tgoPort"/"
+        uiUrl="http://localhost:"$tgoPort"/qm"
         echo 'PUBKEY='$publickey >> ./setup.conf
 
         echo -e '****************************************************************************************************************'

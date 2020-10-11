@@ -129,7 +129,7 @@ function main(){
         role="Unassigned"
         echo 'ROLE='$role >> setup.conf
 
-        uiUrl="http://localhost:"$THIS_NODEMANAGER_PORT"/"
+        uiUrl="http://localhost:"$THIS_NODEMANAGER_PORT"/qm"
 
         echo -e '****************************************************************************************************************'
 
