@@ -37,13 +37,6 @@ GLOBAL_ARGS="--raft --nodiscover --gcmode=archive --networkid $NETID --raftjoine
 
 tessera="java -jar /tessera/tessera-app.jar"
 
-LOCAL_NODE_IP="$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')"
-
-PORT=$(var="$(grep -F -m 1 'port" : ' tessera-config.json)"; var="${var#*:}"; echo $var | awk '{print substr($1, 1, length($1)-1)'})
-
-#sed  -i "s|\"hostName\".*,|\"hostName\" : \"http://$LOCAL_NODE_IP\",|" tessera-config.json
-
-sed  -i "s|\"communicationType\" : \"REST\",|\"bindingAddress\": \"http://$LOCAL_NODE_IP:$PORT\",\n      \"communicationType\" : \"REST\", |" tessera-config.json
 
 echo "[*] Starting Constellation node" > qdata/constellationLogs/constellation_${NODENAME}.log
 
