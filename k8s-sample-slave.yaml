@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qm-slave
+spec:
+  selector:
+    matchLabels:
+      run: qm-slave
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: qm-slave
+    spec:
+      containers:
+        - name: slave
+          image: "syneblock/quorum-maker:2.6.0_2.6.5"
+          imagePullPolicy: always
+          ports:
+            - name: rpc
+              containerPort: 22000
+              protocol: TCP
+            - name: whisper
+              containerPort: 22001
+              protocol: TCP
+            - name: tessera
+              containerPort: 22002
+              protocol: TCP
+            - name: raft
+              containerPort: 22003
+              protocol: TCP
+            - name: nodemanager
+              containerPort: 22004
+              protocol: TCP
+          volumeMounts:
+          - mountPath: "/home"
+            name: qm-node
+            subPath: quorum-maker/slave
+          workingDir: /home
+          command: ["/bin/bash"]
+          args: ["-c", "./start.sh -n slave --oip 10.233.12.45 --onm 22004 --tip 10.233.12.46 -r 22000 -w 22001 -c 22002 --raft 22003 --nm 22004 --ws 22005 -t --aa"]
+          livenessProbe:
+            tcpSocket:
+              port: 22000
+            initialDelaySeconds: 900
+            periodSeconds: 30
+      initContainers:
+      - name: init-slave
+        image: "syneblock/quorum-maker:2.6.0_2.6.5"
+        imagePullPolicy: always
+        volumeMounts:
+        - mountPath: "/home"
+          name: qm-node
+        workingDir: /home
+        command: ["/bin/bash"]
+        args: ['-c', '[ ! -d "quorum-maker" ] && git clone https://github.com/synechron-finlabs/quorum-maker.git -b k8s; cd quorum-maker; [ ! -d "slave" ] && ./setup.sh join -n slave --oip 10.233.12.45 --onm 22004 --tip 10.233.12.46 -r 22000 -w 22001 -c 22002 --raft 22003 --nm 22004 --ws 22005 -t; exit 0']
+      volumes:
+      - name: qm-node
+        persistentVolumeClaim:
+          claimName: pv-qm-slave
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qm-slave
+  labels:
+    run: qm-slave
+spec:
+  clusterIP: 10.233.12.45
+  ports:
+  - port: 80
+    targetPort: 22004
+    protocol: TCP
+    name: http
+  selector:
+    run: qm-slave
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-qm-slave
+  labels:
+    type: local
+spec:
+  storageClassName: pv-qm-slave
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/CHANGE_PATH_TO_LOCAL_DIR"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-qm-slave
+spec:
+  storageClassName: pv-qm-slave
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
