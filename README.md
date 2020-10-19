@@ -30,6 +30,8 @@ Please refer to [Quorum Maker Wiki](https://github.com/synechron-finlabs/quorum-
 Change log V2.6.5
 1. Upgraded to Tessera 0.10.6
 1. Upgraded to Quorum 2.6
+1. Added Kubernetes Support (Use Tag *_k8s)
+1. Added flag (--aa/--autoaccept) for auto accepting join request
 
 Change log V2.6.2
 1. Upgraded to Tessera 0.8
