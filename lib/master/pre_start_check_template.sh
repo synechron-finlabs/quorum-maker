@@ -93,7 +93,7 @@ function readInputs(){
         getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
             
     fi
-    role="Unassigned"
+    role="Peer"
 	
     #append values in Setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ./setup.conf
@@ -164,6 +164,9 @@ function main(){
         readInputs
         staticNode
         generateConstellationConf
+
+        # change contract
+        mv -f node/NetworkManagerContract.sol /root/quorum-maker/NetworkManagerContract.sol
         
         if [ ! -z $tessera ]; then
             migrateToTessera
