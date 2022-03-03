@@ -164,9 +164,6 @@ function main(){
         readInputs
         staticNode
         generateConstellationConf
-
-        # change contract
-        mv -f node/NetworkManagerContract.sol /root/quorum-maker/NetworkManagerContract.sol
         
         if [ ! -z $tessera ]; then
             migrateToTessera

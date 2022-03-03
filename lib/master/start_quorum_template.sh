@@ -28,6 +28,9 @@ function upcheck() {
     done
 }
 
+# change contract
+mv -f /home/node/NetworkManagerContract.sol /root/quorum-maker/NetworkManagerContract.sol
+
 rm -f /home/node/qdata/${NODE_NAME}.ipc
 
 ENABLED_API="admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,raft"
