@@ -54,6 +54,8 @@ function copyScripts(){
     PATTERN="s/#mNode#/${mNode}/g"
     sed -i $PATTERN ${mNode}/node/migrate_to_tessera.sh
 
+    #  新增 Contract
+    cp lib/sol/NetworkManagerContract_20220302.sol ${mNode}/node/NetworkManagerContract.sol
 }
 
 #function to generate enode

@@ -1,25 +1,8 @@
 #!/bin/bash
 
 #Menu system for launching appropriate scripts based on user choice
-source qm.variables
+source em.variables
 source lib/common.sh
-
-function banner() {
-	printf $CYAN'   ______'$RED'   __      __\n' 
-	printf $CYAN'  / ____ \'$RED' |  \    /  |  \n'
-	printf $CYAN' / /    \ \'$RED'|   \  /   |  \n'
-	printf $CYAN' | |     | '$RED'|    \/    |  \n'
-	printf $CYAN' | |     | '$RED'| |\    /| |  \n'
-	printf $CYAN' | |     |  \'$RED'| \  / | |  \n'
-	printf $CYAN' \ \____/ /\ \'$RED'  \/  | |  \n'
-	printf $CYAN'  \______/  \_\'$RED'     |_|  '
-
-	local __version=$(egrep -Eo "[0-9].*" <<< $dockerImage)
-	    
-	IFS='_'; arrIN=($__version); unset IFS;
-
-	echo -e $GREEN'Version '${arrIN[1]}' Built on Quorum '${arrIN[0]}'\n'
-}
 
 function readParameters() {
     POSITIONAL=()
@@ -36,12 +19,16 @@ function readParameters() {
             option="2"
             shift # past argument            
             ;;
-			attach)
+            joinLeaf)
             option="3"
             shift # past argument            
             ;;
-			dev)
+			attach)
             option="4"
+            shift # past argument            
+            ;;
+			dev)
+            option="5"
             shift # past argument            
             ;;
             -h|--help)
@@ -68,7 +55,6 @@ function readParameters() {
 
 function main() {
 
-	banner
 	readParameters $@
 
 	if [ -z "$NON_INTERACTIVE" ]; then
@@ -76,9 +62,10 @@ function main() {
 		echo -e $YELLOW'Please select an option: \n' \
 				$GREEN'1) Create Network \n' \
 				$PINK'2) Join Network \n' \
-				$BLUE'3) Attach to an existing Node \n' \
-				$CYAN'4) Setup Development/Test Network \n' \
-				$RED'5) Exit' 
+				$PINK'3) Join Network(Leaf Node) \n' \
+				$BLUE'4) Attach to an existing Node \n' \
+				$CYAN'5) Setup Development/Test Network \n' \
+				$RED'6) Exit' 
 
 		printf $WHITE'option: '$COLOR_END
 
@@ -91,10 +78,12 @@ function main() {
 		2)
 			lib/join_network.sh $@;;
 		3)
-			lib/attach_node.sh $@;; 
+			lib/join_leaf_network.sh $@;;
 		4)
-			lib/create_dev_network.sh $@;;
+			lib/attach_node.sh $@;; 
 		5)
+			lib/create_dev_network.sh $@;;
+		6)
 			flagmain=false	;;
 		*)
 			echo "Please enter a valid option"	;;

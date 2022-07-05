@@ -93,7 +93,7 @@ function readInputs(){
         getInputWithDefault 'Please enter WS Port of this node' $((tgoPort+1)) wsPort $GREEN
             
     fi
-    role="Unassigned"
+    role="Peer"
 	
     #append values in Setup.conf file 
     echo 'CURRENT_IP='$pCurrentIp > ./setup.conf

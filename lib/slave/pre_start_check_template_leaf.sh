@@ -2,8 +2,42 @@
 
 source node/common.sh
 
-# Function to send post call to go endpoint joinNode 
-function updateNmcAddress(){
+
+function addLearner() {
+        
+    url=http://${MASTER_IP}:${MASTER_RPC_PORT}
+
+    response=$(curl -X POST \
+    --max-time 310 ${url} \
+    -H "content-type: application/json" \
+    -d '{
+       "jsonrpc":"2.0",
+       "method":"raft_addLearner",
+       "params":["'${enode}'"],
+       "id":"10"
+    }') 
+    response=$(echo $response | tr -d \")
+    echo $response > input.txt
+    RAFTV=$(awk -F'[}:]' '{ print $4 }' input.txt)
+
+    PATTERN="s/#raftId#/$RAFTV/g"
+    sed -i $PATTERN node/start_${NODENAME}.sh
+
+    echo 'RAFT_ID='$RAFTV >> setup.conf
+    rm -f input.txt
+
+    geth -exec net.version attach ${url} >> input.txt
+    NETWORK_ID=$(awk -F'["]' '{ print $0 }' input.txt)
+    echo 'NETWORK_ID='$NETWORK_ID >>  setup.conf
+
+    rm -f input.txt
+
+    #echo "{"jsonrpc":"2.0","id":10,"result":14}" | awk -F ':' '{print $4}' | awk -F '}' '{print $1}'
+    #echo "{"jsonrpc":"2.0","id":10,"result":14}" | awk -F '[}:]' '{print $4}'
+}
+
+# Function to send post call to go endpoint joinNode - 取得Contract Address
+function updateNmcAddress() {
         
     url=http://${MASTER_IP}:${MAIN_NODEMANAGER_PORT}/qm/peer
 
@@ -16,16 +50,11 @@ function updateNmcAddress(){
     }') 
     response=$(echo $response | tr -d \")
     echo $response > input.txt
-    RAFTV=$(awk -F':' '{ print $1 }' input.txt)
 
     contractAdd=$(awk -F':' '{ print $2 }' input.txt)
     updateProperty setup.conf CONTRACT_ADD $contractAdd
 
-    PATTERN="s/#raftId#/$RAFTV/g"
-    sed -i $PATTERN node/start_${NODENAME}.sh
-
-    echo 'RAFT_ID='$RAFTV >> setup.conf
-    rm -f input.txt
+    # rm -f input.txt
         
 }
 
@@ -74,7 +103,7 @@ function requestGenesis(){
     MASTER_CONSTELLATION_PORT=${replyMap[contstellation-port]}
    
 	echo 'MASTER_CONSTELLATION_PORT='$MASTER_CONSTELLATION_PORT >>  setup.conf
-	echo 'NETWORK_ID='${replyMap[netID]} >>  setup.conf
+	# echo 'NETWORK_ID='${replyMap[netID]} >>  setup.conf
 	echo ${replyMap[genesis]}  > node/genesis.json
         rm -f input1.json
     fi
@@ -116,8 +145,9 @@ function main(){
     if [ -z $NETWORK_ID ]; then
         enode=$(cat node/enode.txt)
         requestGenesis
-        executeInit
+        addLearner
         updateNmcAddress
+        executeInit
         generateConstellationConf
         
         if [ ! -z $TESSERA ]; then
@@ -126,7 +156,7 @@ function main(){
 
         publickey=$(cat node/keys/$NODENAME.pub)
         echo 'PUBKEY='$publickey >> setup.conf
-        role="Peer"
+        role="Leaf"
         echo 'ROLE='$role >> setup.conf
 
         uiUrl="http://localhost:"$THIS_NODEMANAGER_PORT"/qm"
